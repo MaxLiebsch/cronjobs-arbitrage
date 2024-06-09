@@ -1,7 +1,8 @@
-import pkg from "lodash";
+import pkg, { shuffle } from "lodash";
 const { get } = pkg;
 import axios from "axios";
 import {
+  KEEPA_MINUTES,
   KEEPA_RATE_LIMIT,
   PENDING_KEEPA_LOOKUPS_INTERVAL,
 } from "../constants.js";
@@ -11,11 +12,12 @@ import {
   lockProductsForKeepa,
   updateProductWithQuery,
 } from "./db/util/crudArbispotterProduct.js";
-
 import "dotenv/config";
 import { config } from "dotenv";
 
-config();
+config({
+  path: [`.env`],
+});
 
 // Mock queue with Asins (initially empty)
 const asinQueue = [];
@@ -99,7 +101,7 @@ async function makeRequestsForId(product) {
         }
       );
       console.log(
-        `Request 1 for ID ${trimedAsin} - ${product.shopDomain} failed with status ${response.status}`,
+        `Request for ID ${trimedAsin} - ${product.shopDomain} failed with status ${response.status}`,
         response.data.error
       );
     }
@@ -123,7 +125,7 @@ export async function processQueue() {
 
     for (let i = 0; i < KEEPA_RATE_LIMIT; i++) {
       if (asinQueue.length > 0) {
-        const product = asinQueue.shift();
+        const product = shuffle(asinQueue).shift();
         promises.push(makeRequestsForId(product));
       } else {
         break; // Break the loop if the queue is empty
@@ -152,13 +154,19 @@ export function addToQueue(newAsins) {
 export async function lookForPendingKeepaLookups() {
   const activeShops = await getActiveShops();
 
+  const numberOfActiveShops = activeShops.length;
+  const totalProducts = KEEPA_MINUTES * KEEPA_RATE_LIMIT;
+  const productsPerShop = parseInt(
+    Math.floor(totalProducts / numberOfActiveShops)
+  );
+
   for (const shop of Object.values(activeShops)) {
     const progress = await getKeepaProgress(shop.d);
     if (progress.pending > 0) {
       console.log(
         `Shop ${shop.d} has ${progress.pending} pending keepa lookups`
       );
-      const products = await lockProductsForKeepa(shop.d);
+      const products = await lockProductsForKeepa(shop.d, productsPerShop);
       const asins = products.map((product) => {
         return { asin: product.asin, shopDomain: shop.d, _id: product._id };
       });
