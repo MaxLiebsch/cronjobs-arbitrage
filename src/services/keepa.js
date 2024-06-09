@@ -80,7 +80,7 @@ const keepa = async ({ shopDomain, asin, _id, analysis }) => {
 
 // Function to make two requests for each ID
 async function makeRequestsForId(product) {
-  const trimedAsin = product.asin.replace(/\W/g, "")
+  const trimedAsin = product.asin.replace(/\W/g, "");
   try {
     const response = await axios.get(
       `${process.env.KEEPA_URL}/product?key=${process.env.KEEPA_API_KEY}&domain=3&asin=${trimedAsin}&stats=90&history=1&days=90`
@@ -88,8 +88,16 @@ async function makeRequestsForId(product) {
 
     if (response.status === 200 && response.data.error === undefined) {
       console.log(`Request 1 for ID ${trimedAsin} - ${product.shopDomain}`);
-      await keepa({ ...product, analysis: response.data, asin: trimedAsin});
+      await keepa({ ...product, analysis: response.data, asin: trimedAsin });
     } else {
+      await updateProductWithQuery(
+        product.shopDomain,
+        { _id: product._id },
+        {
+          keepa_lckd: false,
+          asin: trimedAsin,
+        }
+      );
       console.log(
         `Request 1 for ID ${trimedAsin} - ${product.shopDomain} failed with status ${response.status}`,
         response.data.error
@@ -161,4 +169,5 @@ export async function lookForPendingKeepaLookups() {
   }
 }
 
-export const createIntervalForPendingKeepalookups = () => setInterval(lookForPendingKeepaLookups, PENDING_KEEPA_LOOKUPS_INTERVAL);
+export const createIntervalForPendingKeepalookups = () =>
+  setInterval(lookForPendingKeepaLookups, PENDING_KEEPA_LOOKUPS_INTERVAL);
