@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: `cronjobs_${version}`,
-      script: "./src/index.js",
+      script: "node ./src/index.js",
       env: {
         NODE_ENV: "production",
       },
