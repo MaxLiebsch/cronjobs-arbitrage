@@ -4,7 +4,8 @@ module.exports = {
   apps: [
     {
       name: `cronjobs_${version}`,
-      script: "node ./src/index.js",
+      script: "/root/.nvm/versions/node/v20.11.1/bin/yarn",
+      args: "--cwd '/root/cronjobs-arbitrage' start",
       env: {
         NODE_ENV: "production",
       },
