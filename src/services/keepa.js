@@ -1,5 +1,6 @@
-import pkg, { shuffle } from "lodash";
-const { get } = pkg;
+import pkg from "lodash";
+const { get, shuffle } = pkg;
+
 import axios from "axios";
 import {
   KEEPA_MINUTES,
@@ -14,8 +15,7 @@ import {
 } from "./db/util/crudArbispotterProduct.js";
 import "dotenv/config";
 import { config } from "dotenv";
-import pkg from 'lodash';
-const { shuffle } = pkg;
+
 
 config({
   path: [`.env`],
