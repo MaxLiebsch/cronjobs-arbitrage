@@ -1,0 +1,3 @@
+export const KEEPA_RATE_LIMIT = 20;
+export const MAX_EARNING_MARGIN = 150;
+export const PENDING_KEEPA_LOOKUPS_INTERVAL = 1000 * 60 * 20;

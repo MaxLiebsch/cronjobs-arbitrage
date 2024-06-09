@@ -1,0 +1,31 @@
+{
+  "name": "cronjobs-arbitrage",
+  "version": "0.0.1",
+  "description": "Cronjobs for arbispotter",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxLiebsch/cronjobs-arbitrage.git"
+  },
+  "author": "MaxLiebsch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxLiebsch/cronjobs-arbitrage/issues"
+  },
+  "homepage": "https://github.com/MaxLiebsch/cronjobs-arbitrage#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "lodash": "^4.17.21",
+    "mongodb": "^6.7.0",
+    "node-schedule": "^2.1.1"
+  }
+}
