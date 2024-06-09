@@ -14,6 +14,8 @@ import {
 } from "./db/util/crudArbispotterProduct.js";
 import "dotenv/config";
 import { config } from "dotenv";
+import pkg from 'lodash';
+const { shuffle } = pkg;
 
 config({
   path: [`.env`],
