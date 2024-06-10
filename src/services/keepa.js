@@ -16,7 +16,6 @@ import {
 import "dotenv/config";
 import { config } from "dotenv";
 
-
 config({
   path: [`.env`],
 });
@@ -26,6 +25,7 @@ const asinQueue = [];
 
 // Event mechanism
 let queueResolve;
+
 const queuePromise = () =>
   new Promise((resolve) => {
     queueResolve = resolve;
@@ -115,11 +115,12 @@ async function makeRequestsForId(product) {
   }
 }
 
-// Function to process up to 10 Asins from the queue (20 requests)
+// Function to process up to 20 Asins from the queue (20 requests)
 export async function processQueue() {
   while (true) {
     if (asinQueue.length === 0) {
-      console.log("Queue is empty. Waiting for new Asins...");
+      console.log("Queue is empty. Looking for pending keepa lookups...");
+      await lookForPendingKeepaLookups();
       await queuePromise();
     }
 
@@ -178,6 +179,3 @@ export async function lookForPendingKeepaLookups() {
     }
   }
 }
-
-export const createIntervalForPendingKeepalookups = () =>
-  setInterval(lookForPendingKeepaLookups, PENDING_KEEPA_LOOKUPS_INTERVAL);
