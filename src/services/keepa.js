@@ -186,7 +186,7 @@ export async function lookForPendingKeepaLookups() {
   const products = await Promise.all(
     pendingShops.map(async (shop) => {
       console.log(
-        `Shop ${shop.d} has ${progress.pending} pending keepa lookups`
+        `Shop ${shop.d} has ${shop.pending} pending keepa lookups`
       );
       const products = await lockProductsForKeepa(shop.d, productsPerShop);
       const asins = products.map((product) => {
