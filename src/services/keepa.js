@@ -164,29 +164,35 @@ export function addToQueue(newAsins) {
 export async function lookForPendingKeepaLookups() {
   const activeShops = await getActiveShops();
 
-  const numberOfActiveShops = activeShops.length;
-  const totalProducts = KEEPA_MINUTES * KEEPA_RATE_LIMIT;
-  const productsPerShop = parseInt(
-    Math.floor(totalProducts / numberOfActiveShops)
-  );
-  const products = await Promise.all(
+  const keepaProgressPerShop = await Promise.all([
     Object.values(
       activeShops.map(async (shop) => {
         const progress = await getKeepaProgress(shop.d);
-        if (progress.pending > 0) {
-          console.log(
-            `Shop ${shop.d} has ${progress.pending} pending keepa lookups`
-          );
-          const products = await lockProductsForKeepa(shop.d, productsPerShop);
-          const asins = products.map((product) => {
-            return { asin: product.asin, shopDomain: shop.d, _id: product._id };
-          });
-          return asins;
-        } else {
-          console.log(`Shop ${shop.d} has no pending keepa lookups`);
-        }
+        return { pending: progress.pending, d: shop.d };
       })
-    )
+    ),
+  ]);
+
+  const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
+
+  const numberOfPendingShops = pendingShops.length;
+  const totalProducts = KEEPA_MINUTES * KEEPA_RATE_LIMIT;
+  const productsPerShop = parseInt(
+    Math.floor(totalProducts / numberOfPendingShops)
   );
+
+  const products = await Promise.all(
+    pendingShops.map(async (shop) => {
+      console.log(
+        `Shop ${shop.d} has ${progress.pending} pending keepa lookups`
+      );
+      const products = await lockProductsForKeepa(shop.d, productsPerShop);
+      const asins = products.map((product) => {
+        return { asin: product.asin, shopDomain: shop.d, _id: product._id };
+      });
+      return asins;
+    })
+  );
+
   addToQueue(products.flatMap((ps) => ps));
 }

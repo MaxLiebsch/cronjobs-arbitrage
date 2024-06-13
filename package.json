@@ -1,6 +1,6 @@
 {
   "name": "cronjobs-arbitrage",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Cronjobs for arbispotter",
   "main": "./src/index.js",
   "type": "module",
