@@ -164,16 +164,18 @@ export function addToQueue(newAsins) {
 export async function lookForPendingKeepaLookups() {
   const activeShops = await getActiveShops();
 
-  const keepaProgressPerShop = await Promise.all([
+  const keepaProgressPerShop = await Promise.all(
     Object.values(
       activeShops.map(async (shop) => {
         const progress = await getKeepaProgress(shop.d);
         return { pending: progress.pending, d: shop.d };
       })
-    ),
-  ]);
+    )
+  );
 
+  console.log("keepaProgressPerShop:", keepaProgressPerShop);
   const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
+  console.log("pendingShops:", pendingShops);
 
   const numberOfPendingShops = pendingShops.length;
   const totalProducts = KEEPA_MINUTES * KEEPA_RATE_LIMIT;
