@@ -134,7 +134,7 @@ export async function processQueue() {
     for (let i = 0; i < KEEPA_RATE_LIMIT; i++) {
       if (asinQueue.length > 0) {
         const product = asinQueue.shift();
-        promises.push(makeRequestsForId(product));
+        if (product?.asin) promises.push(makeRequestsForId(product));
       } else {
         break; // Break the loop if the queue is empty
       }
