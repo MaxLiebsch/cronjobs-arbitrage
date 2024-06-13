@@ -106,6 +106,7 @@ export const updateProducts = async (domain, query, update) => {
   );
 };
 
+
 export const updateProductWithQuery = async (domain, query, update) => {
   const collectionName = domain;
   const db = await getArbispotterDb();

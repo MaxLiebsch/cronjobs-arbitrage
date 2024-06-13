@@ -15,21 +15,11 @@ import {
 } from "./db/util/crudArbispotterProduct.js";
 import "dotenv/config";
 import { config } from "dotenv";
+import { scheduleJob } from "node-schedule";
 
 config({
   path: [`.env`],
 });
-
-// Mock queue with Asins (initially empty)
-const asinQueue = [];
-
-// Event mechanism
-let queueResolve;
-
-const queuePromise = () =>
-  new Promise((resolve) => {
-    queueResolve = resolve;
-  });
 
 const properties = [
   // { key: "products[0].asin", name: "" },
@@ -91,7 +81,7 @@ async function makeRequestsForId(product) {
     );
 
     if (response.status === 200 && response.data.error === undefined) {
-      console.log(`Request 1 for ID ${trimedAsin} - ${product.shopDomain}`);
+      console.log(`Request for ID ${trimedAsin} - ${product.shopDomain}`);
       await keepa({ ...product, analysis: response.data, asin: trimedAsin });
     } else {
       await updateProductWithQuery(
@@ -108,27 +98,42 @@ async function makeRequestsForId(product) {
       );
     }
   } catch (error) {
-    console.error(
-      `Error for ID ${trimedAsin} - ${product.shopDomain}:`,
-      error.message
-    );
+    console.error(`Error for ID ${trimedAsin} - ${product.shopDomain}:`, error);
   }
 }
 
+// Mock queue with Asins (initially empty)
+const asinQueue = [];
+
+// Event mechanism
+let queueResolve;
+// Job, when all products have been sourced
+let job = null;
+
+const queuePromise = () =>
+  new Promise((resolve) => {
+    queueResolve = resolve;
+  });
 // Function to process up to 20 Asins from the queue (20 requests)
+
 export async function processQueue() {
   while (true) {
+    console.log("Remaining Asins in batch:", asinQueue.length);
     if (asinQueue.length === 0) {
-      console.log("Queue is empty. Looking for pending keepa lookups...");
-      await lookForPendingKeepaLookups();
       await queuePromise();
+      console.log(
+        "Queue is empty after processing all pending products. Starting job to look for pending keepa lookups..."
+      );
+      job = scheduleJob("0 */6 * * *", async () => {
+        await lookForPendingKeepaLookups();
+      });
     }
 
     const promises = [];
 
     for (let i = 0; i < KEEPA_RATE_LIMIT; i++) {
       if (asinQueue.length > 0) {
-        const product = shuffle(asinQueue).shift();
+        const product = asinQueue.shift();
         promises.push(makeRequestsForId(product));
       } else {
         break; // Break the loop if the queue is empty
@@ -138,7 +143,9 @@ export async function processQueue() {
     await Promise.all(promises);
 
     if (asinQueue.length === 0) {
-      console.log("Queue is empty after processing batch.");
+      if (job) job.cancel();
+      console.log("Batch is done. Looking for pending keepa lookups...");
+      await lookForPendingKeepaLookups();
     }
 
     await new Promise((resolve) => setTimeout(resolve, 60 * 1000)); // Wait for 1 minute
@@ -162,20 +169,24 @@ export async function lookForPendingKeepaLookups() {
   const productsPerShop = parseInt(
     Math.floor(totalProducts / numberOfActiveShops)
   );
-
-  for (const shop of Object.values(activeShops)) {
-    const progress = await getKeepaProgress(shop.d);
-    if (progress.pending > 0) {
-      console.log(
-        `Shop ${shop.d} has ${progress.pending} pending keepa lookups`
-      );
-      const products = await lockProductsForKeepa(shop.d, productsPerShop);
-      const asins = products.map((product) => {
-        return { asin: product.asin, shopDomain: shop.d, _id: product._id };
-      });
-      addToQueue(asins);
-    } else {
-      console.log(`Shop ${shop.d} has no pending keepa lookups`);
-    }
-  }
+  const products = await Promise.all(
+    Object.values(
+      activeShops.map(async (shop) => {
+        const progress = await getKeepaProgress(shop.d);
+        if (progress.pending > 0) {
+          console.log(
+            `Shop ${shop.d} has ${progress.pending} pending keepa lookups`
+          );
+          const products = await lockProductsForKeepa(shop.d, productsPerShop);
+          const asins = products.map((product) => {
+            return { asin: product.asin, shopDomain: shop.d, _id: product._id };
+          });
+          return asins;
+        } else {
+          console.log(`Shop ${shop.d} has no pending keepa lookups`);
+        }
+      })
+    )
+  );
+  addToQueue(products.flatMap((ps) => ps));
 }

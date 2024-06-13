@@ -8,7 +8,6 @@ const main = async () => {
     await deleteUnwatchedProduts();
   });
   job.once("scheduled", () => console.log("Job scheduled"));
-
   // Look for pending keepa lookups
   await lookForPendingKeepaLookups();
   await processQueue();
