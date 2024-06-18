@@ -5,7 +5,6 @@ import axios from "axios";
 import {
   KEEPA_MINUTES,
   KEEPA_RATE_LIMIT,
-  PENDING_KEEPA_LOOKUPS_INTERVAL,
 } from "../constants.js";
 import { getActiveShops } from "./db/util/shops.js";
 import { getKeepaProgress } from "./db/util/getKeepaProgress.js";
@@ -22,8 +21,6 @@ config({
 });
 
 const properties = [
-  // { key: "products[0].asin", name: "" },
-  // { key: "products[0].title", name: "" },
   { key: "products[0].categories", name: "" },
   { key: "products[0].eanList", name: "" },
   { key: "products[0].brand", name: "" },
@@ -35,7 +32,6 @@ const properties = [
   { key: "products[0].csv[0]", name: "ahstprcs" }, // Amazon history prices
   { key: "products[0].csv[1]", name: "anhstprcs" }, // Amazon new history prices
   { key: "products[0].csv[2]", name: "auhstprcs" }, // Amazon used history prices
-  // { key: "products[0].csv[18]", name: "bb" }, // Amazon used history prices
   { key: "products[0].stats.current[0]", name: "curr_ahsprcs" },
   { key: "products[0].stats.current[1]", name: "curr_ansprcs" },
   { key: "products[0].stats.current[2]", name: "curr_ausprcs" },
@@ -173,9 +169,7 @@ export async function lookForPendingKeepaLookups() {
     )
   );
 
-  console.log("keepaProgressPerShop:", keepaProgressPerShop);
   const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
-  console.log("pendingShops:", pendingShops);
 
   const numberOfPendingShops = pendingShops.length;
   const totalProducts = KEEPA_MINUTES * KEEPA_RATE_LIMIT;

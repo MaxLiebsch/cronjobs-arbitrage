@@ -6,16 +6,20 @@ import {
   shopCollectionName,
 } from "../mongo.js";
 
-export const getAllShops = async (shopsDomains = []) => {
+export const getAllShops = async (shopDomains = []) => {
   const collectionName = shopCollectionName;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
-  const shops = await collection.find({ d: { $in: shopsDomains } }).toArray();
+  let query = {};
+  if (shopDomains.length) {
+    query = { d: { $in: shopDomains } };
+  }
+  const shops = await collection.find(query).toArray();
   return shops;
 };
 
 export const getShops = async (retailerList) => {
-  const collectionName = shopCollectionName;
+  const collectionName = shopCollectionName ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
 

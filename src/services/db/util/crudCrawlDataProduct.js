@@ -1,5 +1,8 @@
-import { createHash } from "../../../util/hash.js";
+import { createHash } from "./hash.js";
 import { getCrawlerDataDb, hostname } from "../mongo.js";
+import { pendingEanLookupProductsQuery } from "../queries.js";
+import { getEanLookupProgress } from "./getEanLookupProgress.js";
+import { getActiveShops } from "./shops.js";
 
 //Add crawled product //crawler-data
 export const upsertCrawledProduct = async (domain, product) => {
@@ -18,6 +21,17 @@ export const upsertCrawledProduct = async (domain, product) => {
       upsert: true,
     }
   );
+};
+
+export const findCrawlDataProducts = async (domain, query, limit = 500, page = 0) => {
+  const collectionName = domain + ".products";
+  const db = await getCrawlerDataDb();
+  const collection = db.collection(collectionName);
+  return collection
+    .find({ ...query })
+    .limit(limit ?? 500)
+    .skip(page * limit)
+    .toArray();
 };
 
 export const findCrawledProductByName = async (domain, name) => {
@@ -123,9 +137,87 @@ export const lockProducts = async (domain, limit = 0, taskId, action) => {
   return documents;
 };
 
+export const lockProductsForEanLookup = async (domain, limit = 0) => {
+  const collectionName = domain + '.products';
+  const db = await getCrawlerDataDb();
+
+  const options = {};
+  let query = pendingEanLookupProductsQuery;
+
+  if (limit) {
+    options["limit"] = limit;
+  }
+
+  const documents = await db
+    .collection(collectionName)
+    .find(query, options)
+    .toArray();
+
+  // Update documents to mark them as locked
+  await db
+    .collection(collectionName)
+    .updateMany(
+      { _id: { $in: documents.map((doc) => doc._id) } },
+      { $set: { ean_locked: true } }
+    );
+
+  return documents;
+};
+
 export const deleteAllProducts = async (domain) => {
   const collectionName = domain + ".products";
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
   return collection.deleteMany({});
+};
+
+export async function lookForPendingEanLookups() {
+  const activeShops = await getActiveShops();
+
+  const filteredShops = activeShops.filter((shop) => shop.ean);
+
+  const shops = await getShops(filteredShops);
+  const eanLookupProgressPerShop = await Promise.all(
+    Object.values(
+      Object.keys(shops).map(async (shop) => {
+        const progress = await getEanLookupProgress(shops[shop].d);
+        return { pending: progress.pending, shop: shops[shop] };
+      })
+    )
+  );
+
+  const pendingShops = eanLookupProgressPerShop.filter(
+    (shop) => shop.pending > 0
+  );
+  numberOfShops = pendingShops.length;
+
+  const products = await Promise.all(
+    pendingShops.map(async ({ shop, pending }) => {
+      console.log(`Shop ${shop.d} has ${pending} pending ean lookup lookups`);
+      const products = await lockProductsForEanLookup(
+        shop.d,
+        PRODUCTS_PER_MINUTE
+      );
+      const productsWithShop = products.map((product) => {
+        return { shop, product, retry: 0 };
+      });
+      return productsWithShop;
+    })
+  );
+
+  addToQueue(shuffle(products).flatMap((ps) => ps));
+}
+
+export const insertCrawlDataProducts = async (collectionName, products) => {
+  const db = await getCrawlerDataDb();
+  const collection = db.collection(collectionName);
+  return collection.insertMany(products);
+};
+
+
+export const deleteCrawlDataProducts = async (domain, query = {}) => {
+  const collectionName = domain + ".products";
+  const db = await getCrawlerDataDb();
+  const collection = db.collection(collectionName);
+  return collection.deleteMany(query);
 };
