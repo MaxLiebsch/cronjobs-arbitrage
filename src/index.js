@@ -1,7 +1,6 @@
 import { scheduleJob } from "node-schedule";
 import { lookForPendingKeepaLookups, processQueue } from "./services/keepa.js";
 import { deleteUnwatchedProduts } from "./services/deleteUnwatchedProducts.js";
-import { lookForPendingEanLookups, processEanQueue } from "./services/ean.js";
 import { deleteUnwatchedCrawlDataProduts } from "./services/deleteUnwatchedCrawlDataProducts.js";
 
 const main = async () => {
