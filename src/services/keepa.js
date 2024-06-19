@@ -1,5 +1,5 @@
 import pkg from "lodash";
-const { get, shuffle } = pkg;
+const { get } = pkg;
 
 import axios from "axios";
 import { KEEPA_MINUTES, KEEPA_RATE_LIMIT } from "../constants.js";
@@ -113,13 +113,15 @@ export async function processQueue() {
   while (true) {
     console.log("Remaining Asins in batch:", asinQueue.length);
     if (asinQueue.length === 0) {
-      await queuePromise();
       console.log(
         "Queue is empty after processing all pending products. Starting job to look for pending keepa lookups..."
       );
-      job = scheduleJob("0 */6 * * *", async () => {
+      job = scheduleJob("*/10 * * * *", async () => {
+        console.log("Checking for pending products...");
         await lookForPendingKeepaLookups();
       });
+      job.schedule();
+      await queuePromise();
     }
 
     const promises = [];
@@ -185,5 +187,16 @@ export async function lookForPendingKeepaLookups() {
     })
   );
 
-  if (products.length) addToQueue(products.flatMap((ps) => ps));
+  if (products.length) {
+    addToQueue(products.flatMap((ps) => ps));
+  } else {
+    console.log("No pending products. Starting job!");
+    if (!job) {
+      job = scheduleJob("*/10 * * * *", async () => {
+        console.log("Checking for pending products...");
+        await lookForPendingKeepaLookups();
+      });
+      job.schedule();
+    }
+  }
 }

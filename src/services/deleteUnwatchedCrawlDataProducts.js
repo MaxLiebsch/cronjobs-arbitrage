@@ -40,4 +40,3 @@ export const deleteUnwatchedCrawlDataProduts = async () => {
   }
 };
 
-deleteUnwatchedCrawlDataProduts().then(() => console.log("Done"));
