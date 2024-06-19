@@ -1,3 +1,4 @@
+import { MAX_AGE_PRODUCTS } from "../constants.js";
 import {
   deleteArbispotterProducts,
   findProducts,
@@ -15,9 +16,9 @@ export const deleteUnwatchedProduts = async () => {
       const products = await findProducts(
         shop.d,
         {
-          // Find products that have not been updated in the last 21 days
+          // Find products that have not been updated in the last 14 days
           updatedAt: {
-            $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 21).toISOString(),
+            $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * MAX_AGE_PRODUCTS).toISOString(),
           },
         },
         batchSize

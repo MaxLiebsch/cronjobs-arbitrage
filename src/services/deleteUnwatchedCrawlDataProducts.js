@@ -1,4 +1,9 @@
-import { deleteCrawlDataProducts, findCrawlDataProducts, insertCrawlDataProducts } from "./db/util/crudCrawlDataProduct.js";
+import { MAX_AGE_PRODUCTS } from "../constants.js";
+import {
+  deleteCrawlDataProducts,
+  findCrawlDataProducts,
+  insertCrawlDataProducts,
+} from "./db/util/crudCrawlDataProduct.js";
 import { getActiveShops } from "./db/util/shops.js";
 
 export const deleteUnwatchedCrawlDataProduts = async () => {
@@ -13,7 +18,9 @@ export const deleteUnwatchedCrawlDataProduts = async () => {
         {
           // Find products that have not been updated in the last 21 days
           updatedAt: {
-            $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 21).toISOString(),
+            $lt: new Date(
+              Date.now() - 1000 * 60 * 60 * 24 * MAX_AGE_PRODUCTS
+            ).toISOString(),
           },
         },
         batchSize
@@ -39,4 +46,3 @@ export const deleteUnwatchedCrawlDataProduts = async () => {
     }
   }
 };
-
