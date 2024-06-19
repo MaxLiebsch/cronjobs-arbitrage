@@ -2,10 +2,7 @@ import pkg from "lodash";
 const { get, shuffle } = pkg;
 
 import axios from "axios";
-import {
-  KEEPA_MINUTES,
-  KEEPA_RATE_LIMIT,
-} from "../constants.js";
+import { KEEPA_MINUTES, KEEPA_RATE_LIMIT } from "../constants.js";
 import { getActiveShops } from "./db/util/shops.js";
 import { getKeepaProgress } from "./db/util/getKeepaProgress.js";
 import {
@@ -22,7 +19,7 @@ config({
 
 const properties = [
   { key: "products[0].categories", name: "" },
-  { key: "products[0].eanList", name: "" },
+  { key: "products[0].eanList", name: "k_eanList" },
   { key: "products[0].brand", name: "" },
   { key: "products[0].numberOfItems", name: "" },
   { key: "products[0].availabilityAmazon", name: "" },
@@ -179,9 +176,7 @@ export async function lookForPendingKeepaLookups() {
 
   const products = await Promise.all(
     pendingShops.map(async (shop) => {
-      console.log(
-        `Shop ${shop.d} has ${shop.pending} pending keepa lookups`
-      );
+      console.log(`Shop ${shop.d} has ${shop.pending} pending keepa lookups`);
       const products = await lockProductsForKeepa(shop.d, productsPerShop);
       const asins = products.map((product) => {
         return { asin: product.asin, shopDomain: shop.d, _id: product._id };
@@ -190,5 +185,5 @@ export async function lookForPendingKeepaLookups() {
     })
   );
 
-  addToQueue(products.flatMap((ps) => ps));
+  if (products.length) addToQueue(products.flatMap((ps) => ps));
 }
