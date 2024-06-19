@@ -121,10 +121,12 @@ export async function processQueue() {
       console.log(
         "Queue is empty after processing all pending products. Starting job to look for pending keepa lookups..."
       );
-      job = scheduleJob("*/10 * * * *", async () => {
-        console.log("Checking for pending products...");
-        await lookForPendingKeepaLookups();
-      });
+      if (!job) {
+        job = scheduleJob("*/10 * * * *", async () => {
+          console.log("Checking for pending products...");
+          await lookForPendingKeepaLookups();
+        });
+      }
       await queuePromise();
     }
 
