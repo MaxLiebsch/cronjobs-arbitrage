@@ -12,6 +12,7 @@ import {
 import "dotenv/config";
 import { config } from "dotenv";
 import { scheduleJob } from "node-schedule";
+import { upsertAsin } from "./db/util/asinTable.js";
 
 config({
   path: [`.env`],
@@ -52,6 +53,10 @@ const keepa = async ({ shopDomain, asin, _id, analysis }) => {
 
     result[key] = get(analysis, property.key, null);
   });
+
+  if (asin) {
+    await upsertAsin(asin, result["k_eanList"] ?? []);
+  }
 
   await updateProductWithQuery(
     shopDomain,
@@ -120,7 +125,6 @@ export async function processQueue() {
         console.log("Checking for pending products...");
         await lookForPendingKeepaLookups();
       });
-      job.schedule();
       await queuePromise();
     }
 
@@ -196,7 +200,6 @@ export async function lookForPendingKeepaLookups() {
         console.log("Checking for pending products...");
         await lookForPendingKeepaLookups();
       });
-      job.schedule();
     }
   }
 }
