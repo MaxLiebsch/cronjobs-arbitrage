@@ -9,7 +9,7 @@ const recoverEans = async () => {
 
   for (const shop of Object.values(activeShops)) {
     let hasMoreProducts = true;
-    const batchSize = 500;
+    const batchSize = 2000;
     while (hasMoreProducts) {
       const products = await findCrawlDataProducts(
         shop.d,

@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/index.js",
+    "recoverEans": "cross-env NODE_ENV=production node ./src/maintenance/recoverEans.js",
     "test": "jest"
   },
   "repository": {
