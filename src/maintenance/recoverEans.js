@@ -1,12 +1,12 @@
 import { updateProduct } from "../services/db/util/crudArbispotterProduct.js";
 import { findCrawlDataProducts } from "../services/db/util/crudCrawlDataProduct.js";
+import { getProductCount } from "../services/db/util/getMatchingProgress.js";
 import { getActiveShops } from "../services/db/util/shops.js";
 
 const recoverEans = async () => {
   const activeShops = await getActiveShops();
 
   for (const shop of Object.values(activeShops)) {
-    let hasMoreProducts = true;
     const batchSize = 500;
     const total = await getProductCount(shop.d, {
       ean: { $exists: true, $ne: "" },
