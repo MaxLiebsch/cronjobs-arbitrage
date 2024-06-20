@@ -1,6 +1,4 @@
-import {
-  updateProduct,
-} from "../services/db/util/crudArbispotterProduct.js";
+import { updateProduct } from "../services/db/util/crudArbispotterProduct.js";
 import { findCrawlDataProducts } from "../services/db/util/crudCrawlDataProduct.js";
 import { getActiveShops } from "../services/db/util/shops.js";
 
@@ -9,31 +7,36 @@ const recoverEans = async () => {
 
   for (const shop of Object.values(activeShops)) {
     let hasMoreProducts = true;
-    const batchSize = 2000;
-    while (hasMoreProducts) {
+    const batchSize = 500;
+    const total = await getProductCount(shop.d, {
+      ean: { $exists: true, $ne: "" },
+    });
+    let remaining = total;
+
+    const rounds = total > batchSize ? Math.ceil(total / batchSize) : 1;
+
+    for (let index = 0; index < rounds; index++) {
       const products = await findCrawlDataProducts(
         shop.d,
         { ean: { $exists: true, $ne: "" } },
-        batchSize
+        remaining > batchSize ? batchSize : remaining
       );
       if (products.length) {
+        remaining -= products.length;
         await Promise.all(
           products.map((p) => {
             return updateProduct(shop.d, p.link, { eanList: [p.ean] });
           })
         );
-        console.log(
-          `Corrected ${products.length} product's eans in ${shop.d}`
-        );
+        console.log(`Corrected ${products.length} product's eans in ${shop.d}`);
       } else {
         console.log(`No unwatched products found for shop ${shop.d}`);
       }
-      hasMoreProducts = products.length === batchSize;
     }
   }
 };
 
 recoverEans().then((r) => {
-  console.log('We are done with ean recovery!');
+  console.log("We are done with ean recovery!");
   process.exit(0);
 });

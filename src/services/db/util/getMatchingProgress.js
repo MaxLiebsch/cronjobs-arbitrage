@@ -19,10 +19,10 @@ export const getProductsToMatchCount = async (shopProductCollectionName) => {
   });
 };
 
-export const getProductCount = async (shopProductCollectionName) => {
+export const getProductCount = async (shopProductCollectionName, query ={}) => {
   const db = await getCrawlerDataDb();
   const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.count();
+  return shopProductCollection.count(query);
 };
 
 export const getMatchingProgress = async (shopDomain) => {
