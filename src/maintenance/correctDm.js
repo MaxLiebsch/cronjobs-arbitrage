@@ -30,7 +30,7 @@ const correctDm = async () => {
         products.map(async (p, i) => {
           const ean = p.link.match(new RegExp(shop.ean, "g"));
           if (ean) {
-            return updateCrawledProduct(shop.d, p.link, {
+            return await updateCrawledProduct(shop.d, p.link, {
               $set: {
                 ean: ean[0].replaceAll(/\D/g, ""),
                 ean_prop: "found",
@@ -38,7 +38,7 @@ const correctDm = async () => {
               },
             });
           }else {
-            return updateCrawledProduct(shop.d, p.link, {
+            return await updateCrawledProduct(shop.d, p.link, {
               $set: {
                 ean: "",
                 ean_prop: "invalid"
