@@ -1,7 +1,7 @@
 import { scheduleJob } from "node-schedule";
 import { lookForPendingKeepaLookups, processQueue } from "./services/keepa.js";
 import { deleteUnwatchedProduts } from "./services/deleteUnwatchedProducts.js";
-import { deleteUnwatchedCrawlDataProduts } from "./services/deleteUnwatchedCrawlDataProducts.js";
+import { deleteUnwatchedCrawlDataProducts } from "./services/deleteUnwatchedCrawlDataProducts.js";
 
 const main = async () => {
   // Look for old products
@@ -10,7 +10,7 @@ const main = async () => {
   });
   job.once("scheduled", () => console.log("Job scheduled"));
   const job2 = scheduleJob("0 */16 * * *", async () => {
-    await deleteUnwatchedCrawlDataProduts();
+    await deleteUnwatchedCrawlDataProducts();
   });
   job2.once("scheduled", () => console.log("Job scheduled"));
   // Look for pending keepa lookups

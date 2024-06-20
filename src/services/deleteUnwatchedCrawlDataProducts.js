@@ -6,7 +6,7 @@ import {
 } from "./db/util/crudCrawlDataProduct.js";
 import { getActiveShops } from "./db/util/shops.js";
 
-export const deleteUnwatchedCrawlDataProduts = async () => {
+export const deleteUnwatchedCrawlDataProducts = async () => {
   const activeShops = await getActiveShops();
 
   for (const shop of Object.values(activeShops)) {
