@@ -27,7 +27,7 @@ const correctDm = async () => {
     if (products.length) {
       remaining -= products.length;
       await Promise.all(
-        products.map((p) => {
+        products.map(async (p, i) => {
           const ean = p.link.match(new RegExp(shop.ean, "g"));
           if (ean) {
             return updateCrawledProduct(shop.d, p.link, {

@@ -26,7 +26,7 @@ const recoverEans = async () => {
       if (products.length) {
         remaining -= products.length;
         await Promise.all(
-          products.map((p) => {
+          products.map(async (p) => {
             return updateProduct(shop.d, p.link, { eanList: [p.ean] });
           })
         );
