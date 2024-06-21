@@ -8,6 +8,7 @@
     "start": "node ./src/index.js",
     "recoverEans": "cross-env NODE_ENV=production node ./src/maintenance/recoverEans.js",
     "correctEans": "cross-env NODE_ENV=production node ./src/maintenance/correctEans.js",
+    "retrieveAsins": "cross-env NODE_ENV=production node ./src/maintenance/retrieveAsins.js",
     "correctDm": "cross-env NODE_ENV=production node ./src/maintenance/correctDm.js",
     "test": "jest"
   },

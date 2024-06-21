@@ -11,11 +11,9 @@ const recoverEans = async () => {
     const total = await getProductCount(shop.d + '.products', {
       ean: { $exists: true, $ne: "" },
     });
-    console.log(shop.d,' total: ', total)
     let remaining = total;
 
     const rounds = total > batchSize ? Math.ceil(total / batchSize) : 1;
-    console.log('rounds:', rounds)
 
     for (let index = 0; index < rounds; index++) {
       const products = await findCrawlDataProducts(
