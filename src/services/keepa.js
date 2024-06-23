@@ -122,6 +122,7 @@ export async function processQueue() {
         "Queue is empty after processing all pending products. Starting job to look for pending keepa lookups..."
       );
       if (!job) {
+        console.log("Queue is empty, starting job");
         job = scheduleJob("*/10 * * * *", async () => {
           console.log("Checking for pending products...");
           await lookForPendingKeepaLookups();
@@ -144,7 +145,11 @@ export async function processQueue() {
     await Promise.all(promises);
 
     if (asinQueue.length === 0) {
-      if (job) job.cancel();
+      if (job) {
+        console.log("Batch is done, cancel job!");
+        job.cancel();
+        job = null;
+      }
       console.log("Batch is done. Looking for pending keepa lookups...");
       await lookForPendingKeepaLookups();
     }
@@ -194,10 +199,17 @@ export async function lookForPendingKeepaLookups() {
   );
 
   if (products.length) {
+    console.log("Products: ", products.length);
+    if (job) {
+      console.log("Cancel Job");
+      job.cancel();
+      job = null;
+    }
     addToQueue(products.flatMap((ps) => ps));
   } else {
-    console.log("No pending products. Starting job!");
+    console.log("No pending products.");
     if (!job) {
+      console.log("Starting Job...");
       job = scheduleJob("*/10 * * * *", async () => {
         console.log("Checking for pending products...");
         await lookForPendingKeepaLookups();
