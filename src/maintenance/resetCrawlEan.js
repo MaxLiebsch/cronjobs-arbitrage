@@ -20,7 +20,10 @@ const resetEanLookup = async () => {
       return updateCrawlDataProducts(
         shopDomain,
         {},
-        { ean_locked: false, ean: "", ean_taskId: "" }
+        {
+          $set: { ean_locked: false, ean: "", ean_taskId: ""},
+          $unset: { ean_prop: "" },
+        }
       );
     })
   );

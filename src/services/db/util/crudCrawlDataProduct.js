@@ -65,15 +65,11 @@ export const updateCrawlDataProducts = async (domain, query, update) => {
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
 
-  update["updatedAt"] = new Date().toISOString();
+  update.$set["updatedAt"] = new Date().toISOString();
 
   return collection.updateMany(
     { ...query },
-    {
-      $set: {
-        ...update,
-      },
-    }
+    update 
   );
 };
 
