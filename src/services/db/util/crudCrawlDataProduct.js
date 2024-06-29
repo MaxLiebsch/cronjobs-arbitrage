@@ -3,7 +3,7 @@ import { getCrawlerDataDb, hostname } from "../mongo.js";
 
 //Add crawled product //crawler-data
 export const upsertCrawledProduct = async (domain, product) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
   product["createdAt"] = new Date().toISOString();
@@ -26,7 +26,7 @@ export const findCrawlDataProducts = async (
   limit = 500,
   page = 0
 ) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
   return collection
@@ -37,21 +37,21 @@ export const findCrawlDataProducts = async (
 };
 
 export const findCrawledProductByName = async (domain, name) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
   return collection.findOne({ name });
 };
 
 export const findCrawledProductByLink = async (domain, link) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
   return collection.findOne({ link });
 };
 
 export const updateCrawledProduct = async (domain, link, query) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
 
@@ -61,7 +61,7 @@ export const updateCrawledProduct = async (domain, link, query) => {
 };
 
 export const updateCrawlDataProducts = async (domain, query, update) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
 
@@ -74,7 +74,7 @@ export const updateCrawlDataProducts = async (domain, query, update) => {
 };
 
 export const unlockProduts = async (domain, products) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   return db.collection(collectionName).updateMany(
     {
@@ -95,7 +95,7 @@ export const unlockProduts = async (domain, products) => {
 };
 
 export const lockProducts = async (domain, limit = 0, taskId, action) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
 
   const options = {};
@@ -129,7 +129,7 @@ export const lockProducts = async (domain, limit = 0, taskId, action) => {
 };
 
 export const deleteAllProducts = async (domain) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
   return collection.deleteMany({});
@@ -142,7 +142,7 @@ export const insertCrawlDataProducts = async (collectionName, products) => {
 };
 
 export const deleteCrawlDataProducts = async (domain, query = {}) => {
-  const collectionName = domain + ".products";
+  const collectionName = domain  ;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
   return collection.deleteMany(query);

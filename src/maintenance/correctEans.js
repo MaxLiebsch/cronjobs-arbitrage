@@ -11,7 +11,7 @@ const correctEans = async () => {
 
   for (const shop of Object.values(activeShops)) {
     const batchSize = 500;
-    const total = await getProductCount(shop.d + ".products", {
+    const total = await getProductCount(shop.d  , {
       ean: { $exists: true, $ne: "" },
     });
     let remaining = total;

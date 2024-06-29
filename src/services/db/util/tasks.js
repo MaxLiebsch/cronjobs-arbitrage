@@ -157,7 +157,7 @@ export const getNewTask = async () => {
       return task;
     }
     if (task.type === "MATCH_PRODUCTS") {
-      const shopProductCollectionName = task.shopDomain + ".products";
+      const shopProductCollectionName = task.shopDomain  ;
       const pending = await getProductsToMatchCount(shopProductCollectionName);
       if (pending === 0) {
         await updateTask(task._id, {
@@ -216,7 +216,7 @@ export const getNewTask = async () => {
     console.log("Fallback:task:", task?.type, " ", task?.id);
     if (task) {
       if (task.type === "MATCH_PRODUCTS") {
-        const shopProductCollectionName = task.shopDomain + ".products";
+        const shopProductCollectionName = task.shopDomain  ;
         const pending = await getProductsToMatchCount(
           shopProductCollectionName
         );

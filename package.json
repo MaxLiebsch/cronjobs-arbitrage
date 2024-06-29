@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node ./src/index.js",
     "recoverEans": "cross-env NODE_ENV=production node ./src/maintenance/recoverEans.js",
+    "cleanSlate": "cross-env NODE_ENV=production node ./src/maintenance/cleanSlate.js",
     "updateAznUpdatedAt": "cross-env NODE_ENV=production node ./src/maintenance/updateAznUpdatedAt.js",
     "correctEans": "cross-env NODE_ENV=production node ./src/maintenance/correctEans.js",
     "retrieveAsins": "cross-env NODE_ENV=production node ./src/maintenance/retrieveAsins.js",

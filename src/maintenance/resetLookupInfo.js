@@ -1,4 +1,8 @@
-import { getActiveShops, getShops } from "../services/db/util/shops.js";
+import {
+  getActiveShops,
+  getAllShops,
+  getShops,
+} from "../services/db/util/shops.js";
 import "dotenv/config";
 import { config } from "dotenv";
 import { updateCrawlDataProducts } from "../services/db/util/crudCrawlDataProduct.js";
@@ -8,21 +12,19 @@ config({
 });
 
 const resetEanLookup = async () => {
-  const activeShops = await getActiveShops();
+  const activeShops = await getAllShops();
 
-  const filteredShops = activeShops.filter((shop) => shop.ean);
-
-  const shops = await getShops(filteredShops);
+  const filteredShops = activeShops.filter((shop) => shop.ean || shop.hasEan);
 
   await Promise.all(
-    Object.keys(shops).map(async (shopDomain) => {
-      console.log(`Shop ${shopDomain} reseted`);
+    filteredShops.map(async (shop) => {
+      console.log(`Shop ${shop.d} reseted`);
       return updateCrawlDataProducts(
-        shopDomain,
+        shop.d,
         {},
         {
-          $set: { info_taskId: "", info_locked: false},
-          $unset: { info_prop: ""  },
+          $set: { info_taskId: "", info_locked: false },
+          // $unset: { info_prop: ""  },
         }
       );
     })

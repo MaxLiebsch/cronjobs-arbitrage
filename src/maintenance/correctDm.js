@@ -11,7 +11,7 @@ const correctDm = async () => {
   const shop = activeShops.filter((shop) => shop.d === "dm.de")[0];
 
   const batchSize = 500;
-  const total = await getProductCount(shop.d + ".products", {
+  const total = await getProductCount(shop.d  , {
     $or: [{ ean: { $exists: false } }, { ean: { $eq: "" } }],
   });
   let remaining = total;
