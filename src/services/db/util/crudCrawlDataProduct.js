@@ -51,7 +51,7 @@ export const findCrawledProductByLink = async (domain, link) => {
 };
 
 export const updateCrawledProduct = async (domain, link, query) => {
-  const collectionName = domain  ;
+  const collectionName = domain;
   const db = await getCrawlerDataDb();
   const collection = db.collection(collectionName);
 

@@ -69,7 +69,7 @@ export const createOrUpdateArbispotterProduct = async (domain, procProd) => {
           };
         }
       }
-      return updateProduct(domain, lnk, procProd);
+      return await updateProduct(domain, lnk, procProd);
     } else {
       const newProduct = {
         a_pblsh: false,
@@ -101,7 +101,7 @@ export const createOrUpdateArbispotterProduct = async (domain, procProd) => {
         newProduct["e_hash"] = e_hash;
       }
 
-      return upsertProduct(domain, newProduct);
+      return await upsertProduct(domain, newProduct);
     }
   } catch (error) {
     if (error instanceof MongoServerError) {

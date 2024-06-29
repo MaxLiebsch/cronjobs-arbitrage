@@ -11,12 +11,12 @@ export const createOrUpdateCrawlDataProduct = async (domain, rawProd) => {
   try {
     if (product) {
       const s_hash = createHash(rawProd.link);
-      return await updateCrawledProduct(domain, rawProd.link, {
+      return updateCrawledProduct(domain, rawProd.link, {
         ...rawProd,
         s_hash,
       });
     } else {
-      return await upsertCrawledProduct(domain, rawProd);
+      return upsertCrawledProduct(domain, rawProd);
     }
   } catch (error) {
     if (error instanceof MongoServerError) {
