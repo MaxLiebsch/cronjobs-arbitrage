@@ -1,9 +1,9 @@
-import { getCrawlerDataDb , hostname} from "../mongo.js";
+import { getCrawlDataDb , hostname} from "../mongo.js";
 
 const collectionName = "wholesale";
 
 export const unlockProduts = async (products) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   await db.collection(collectionName).updateMany(
     {
       _id: {
@@ -23,7 +23,7 @@ export const unlockProduts = async (products) => {
 };
 
 export const lockProducts = async (limit = 0, taskId, action) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
 
   const options = {};
   const query = {};
@@ -59,7 +59,7 @@ export const lockProducts = async (limit = 0, taskId, action) => {
 };
 
 export const updateWholeSaleProduct = async (productId, update) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
 
   update["updatedAt"] = new Date().toISOString();
@@ -75,7 +75,7 @@ export const updateWholeSaleProduct = async (productId, update) => {
 };
 
 export const updateWholeSaleProducts = async (query, update) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.updateMany(
     { ...query },
@@ -88,7 +88,7 @@ export const updateWholeSaleProducts = async (query, update) => {
 };
 
 export const deleteProductsForTask = async (taskId) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.deleteMany({ taskId });
 };

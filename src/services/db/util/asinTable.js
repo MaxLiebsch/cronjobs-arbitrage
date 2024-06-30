@@ -1,4 +1,4 @@
-import { getCrawlerDataDb } from "../mongo.js";
+import { getCrawlDataDb } from "../mongo.js";
 
 const collectionName = "asinean";
 
@@ -7,13 +7,13 @@ export const createOrUpdateAsinRecord = async (asin, eanList) => {
 };
 
 export const findAsin = async (asin) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.findOne({ asin });
 };
 
 export const upsertAsin = async (asin, eanList) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
 
   return collection.updateOne(

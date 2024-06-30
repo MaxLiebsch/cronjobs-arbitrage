@@ -19,18 +19,18 @@ export const getArbispotterDb = async () => {
   return client.db();
 };
 
-export const getCrawlerDataDb = async () => {
+export const getCrawlDataDb = async () => {
   const client = await clientPool[crawler_data_db];
   return client.db();
 };
 
 export const doesCollectionExists = async (name) => {
-  const collections = (await getCrawlerDataDb()).collections();
+  const collections = (await getCrawlDataDb()).collections();
   return collections.some((collection) => collection.collectionName === name);
 };
 
 export const createCollection = async (name) => {
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   return db.createCollection(name);
 };
 

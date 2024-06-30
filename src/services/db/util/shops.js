@@ -2,13 +2,13 @@
 
 import {
   getArbispotterDb,
-  getCrawlerDataDb,
+  getCrawlDataDb,
   shopCollectionName,
 } from "../mongo.js";
 
 export const getAllShops = async (shopDomains = []) => {
   const collectionName = shopCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   let query = {};
   if (shopDomains.length) {
@@ -20,7 +20,7 @@ export const getAllShops = async (shopDomains = []) => {
 
 export const getShops = async (retailerList) => {
   const collectionName = shopCollectionName ;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
 
   const retailerListQueryArr = retailerList.reduce((targetShops, shop) => {
@@ -44,7 +44,7 @@ export const getShops = async (retailerList) => {
 
 export const insertShop = async (shop) => {
   const collectionName = shopCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return await collection.replaceOne({ d: shop.d }, shop, { upsert: true });
 };

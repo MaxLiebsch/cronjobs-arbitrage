@@ -1,5 +1,5 @@
 import { startOfDay } from "date-fns";
-import { getCrawlerDataDb, hostname, tasksCollectionName } from "../mongo.js";
+import { getCrawlDataDb, hostname, tasksCollectionName } from "../mongo.js";
 import { getAmazonProductsToLookupCount } from "./getLookupProgress.js";
 import { getProductsToMatchCount } from "./getMatchingProgress.js";
 import {
@@ -10,7 +10,7 @@ import {
 
 export const getNewTask = async () => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const taskCollection = db.collection(collectionName);
   const today = new Date();
 
@@ -258,7 +258,7 @@ export const getNewTask = async () => {
 
 export const findTasks = async (query) => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
 
   return collection.find(query).toArray();
@@ -266,7 +266,7 @@ export const findTasks = async (query) => {
 
 export const findTask = async (query) => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
 
   return collection.findOne(query);
@@ -274,14 +274,14 @@ export const findTask = async (query) => {
 
 export const getTasks = async () => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.find().toArray();
 };
 
 export const updateTask = async (id, update) => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.updateOne(
     { _id: id },
@@ -295,7 +295,7 @@ export const updateTask = async (id, update) => {
 
 export const updateTaskWithQuery = async (query, update) => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.updateOne(
     { ...query },
@@ -309,7 +309,7 @@ export const updateTaskWithQuery = async (query, update) => {
 
 export const updateTasks = async (taskType, update) => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.updateMany(
     { type: taskType },
@@ -323,14 +323,14 @@ export const updateTasks = async (taskType, update) => {
 
 export const addTask = async (task) => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.insertOne(task);
 };
 
 export const deleteTask = async (id) => {
   const collectionName = tasksCollectionName;
-  const db = await getCrawlerDataDb();
+  const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);
   return collection.findOneAndDelete({ _id: id });
 };
