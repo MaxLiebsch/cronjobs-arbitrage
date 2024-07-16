@@ -8,6 +8,7 @@ import { retrieveProductsForBatches } from "./createBatches.js";
 import { createJsonlFile } from "./createJsonlFile.js";
 
 export const checkForPendingProductsAndCreateBatches = async () => {
+  console.log('WHY IS THIS NOT RUNNING?')
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
   console.log('tasksCol:', tasksCol)
