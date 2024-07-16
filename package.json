@@ -8,6 +8,7 @@
     "start": "node ./src/index.js",
     "recoverEans": "cross-env NODE_ENV=production node ./src/maintenance/recoverEans.js",
     "cleanSlate": "cross-env NODE_ENV=production node ./src/maintenance/cleanSlate.js",
+    "packageRecognition": "cross-env NODE_ENV=production node ./src/services/packageBatch.js",
     "correctMargin": "cross-env NODE_ENV=production node ./src/maintenance/correctMargin.js",
     "updateAznUpdatedAt": "cross-env NODE_ENV=production node ./src/maintenance/updateAznUpdatedAt.js",
     "correctEans": "cross-env NODE_ENV=production node ./src/maintenance/correctEans.js",

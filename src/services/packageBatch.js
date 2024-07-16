@@ -16,7 +16,7 @@ const packageBatchInteration = async (intervalId) => {
   const task = await tasksCol.findOne({ type: "DETECT_QUANTITY" });
 
   if (!task) throw new Error("No task found for type DETECT_QUANTITY");
-  
+
   const { batches: batchesData } = task;
 
   await checkAndProcessBatches(batchesData);
@@ -34,4 +34,4 @@ const packageBatchProcessing = async (init = true) => {
   }, CHECK_PACKAGE_BATCH_INTERVAL);
 };
 
-export default packageBatchProcessing;
+packageBatchProcessing().then();
