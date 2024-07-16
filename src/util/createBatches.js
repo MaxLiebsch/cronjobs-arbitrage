@@ -65,6 +65,7 @@ export const retrieveProductsForBatches = async () => {
         costs: 1,
         tax: 1,
         prc: 1,
+        mnfctr: 1,
         qty: 1,
         uprc: 1,
         ebyCategories: 1,

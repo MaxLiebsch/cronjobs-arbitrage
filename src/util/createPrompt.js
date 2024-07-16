@@ -5,7 +5,9 @@ export const createPrompt = (shopDomain, id, product, retry) => {
   let format = "Format:";
   let formatArr = [];
   if (product.nm) {
-    content += `"nm":"${replaceAllHiddenCharacters(product.nm)}",`;
+    content += `"nm":"${product.mnfctr} ${replaceAllHiddenCharacters(
+      product.nm
+    )}",`;
     formatArr.push(`"nm":<Anzahl>`);
   }
   if (product.e_nm) {

@@ -21,11 +21,11 @@ const openai = new OpenAI({
 
 export const createProductnameBatchFile = async () => {
   const db = await getArbispotterDb();
-  const shopDomain = "idealo.de";
+  const shopDomain = "alternate.de";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ s_hash: "944fe103c67663bc04fe17f8e1780b60" }, { limit: 1 })
+    .find({ s_hash: "af6e6935d25a4157339c84600fa4a9fe" }, { limit: 1 })
     .toArray();
   const prompt = createPrompt(shopDomain, products[0].s_hash, products[0],true);
   console.log("prompts:", JSON.stringify(prompt.body.messages, null, 2));
