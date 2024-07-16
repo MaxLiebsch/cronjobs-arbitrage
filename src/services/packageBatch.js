@@ -8,7 +8,7 @@ config({
   path: [`.env`],
 });
 
-const packageBatchInteration = async (intervalId) => {
+const packageBatchInteration = async (intervalId = 0) => {
   clearInterval(intervalId);
   console.log('Interval started...');
   const crawlDataDb = await getCrawlDataDb();
@@ -32,7 +32,7 @@ const packageBatchInteration = async (intervalId) => {
 };
 
 const packageBatchProcessing = async (init = true) => {
-  init && (await packageBatchInteration(intervalId));
+  init && (await packageBatchInteration());
   const intervalId = setInterval(async () => {
     await packageBatchInteration(intervalId);
   }, CHECK_PACKAGE_BATCH_INTERVAL);
