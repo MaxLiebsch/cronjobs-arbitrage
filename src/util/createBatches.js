@@ -6,7 +6,7 @@ import { encodeChat } from "gpt-tokenizer";
 
 export const retrieveProductsForBatches = async () => {
   const shops = await getAllShops();
-  const activeShops = shops.filter((shop) => shop.active);
+  const activeShops = shops.filter((shop) => shop.active).reverse();
   
   const batches = [];
   for (let index = 0; index < activeShops.length; index++) {
@@ -83,7 +83,7 @@ export const retrieveProductsForBatches = async () => {
       batches.push(...shopBatches);
     }
   }
-  return batches;
+  return batches[0];
 };
 
 const createBatches = (shopDomain, products) => {
@@ -132,5 +132,5 @@ const createBatches = (shopDomain, products) => {
   if (batches.length === 0) {
     batches.push({ shopDomain, hashes, prompts, products });
   }
-  return [batches.shift()];
+  return batches;
 };
