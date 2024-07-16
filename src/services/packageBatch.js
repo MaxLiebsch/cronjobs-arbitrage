@@ -32,7 +32,9 @@ const packageBatchInteration = async (intervalId = 0) => {
 };
 
 const packageBatchProcessing = async (init = true) => {
-  init && (await packageBatchInteration());
+  if(init) {
+    await packageBatchInteration();
+  }
   const intervalId = setInterval(async () => {
     await packageBatchInteration(intervalId);
   }, CHECK_PACKAGE_BATCH_INTERVAL);
