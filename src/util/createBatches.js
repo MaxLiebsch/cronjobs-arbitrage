@@ -128,7 +128,7 @@ const createBatches = (shopDomain, products) => {
       prompts.push(prompt);
       hashes.push(product.s_hash);
     } else {
-      batches.push({ shopDomain, hashes, prompts: [...prompts], products });
+      batches.push({ shopDomain, hashes, prompts: [...prompts], products, tokens });
       tokens = 0;
       cnt = 0;
       prompts = [prompt];

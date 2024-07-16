@@ -11,7 +11,6 @@ config({
 let intervalId = 0;
 
 const packageBatchInteration = async () => {
-  console.log("intervalId:", intervalId);
   clearInterval(intervalId);
   console.log("Interval started...");
   const crawlDataDb = await getCrawlDataDb();
