@@ -1,7 +1,7 @@
 import { MAX_AGE_PRODUCTS } from "../constants.js";
 import {
   deleteArbispotterProducts,
-  findProducts,
+  findArbispotterProducts,
   insertArbispotterProducts,
 } from "./db/util/crudArbispotterProduct.js";
 import { getActiveShops } from "./db/util/shops.js";
@@ -13,7 +13,7 @@ export const deleteUnwatchedProduts = async () => {
     let hasMoreProducts = true;
     const batchSize = 500;
     while (hasMoreProducts) {
-      const products = await findProducts(
+      const products = await findArbispotterProducts(
         shop.d,
         {
           // Find products that have not been updated in the last 14 days

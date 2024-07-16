@@ -1,5 +1,4 @@
-import { MAX_EARNING_MARGIN } from "../../../constants.js";
-import { getArbispotterDb, hostname } from "../mongo.js";
+import { getArbispotterDb } from "../mongo.js";
 import { pendingKeepaProductsQuery } from "../queries.js";
 
 export const countProducts = async (domain, query = {}) => {
@@ -9,7 +8,12 @@ export const countProducts = async (domain, query = {}) => {
   return collection.countDocuments({ ...query });
 };
 
-export const findArbispotterProducts = async (domain, query, limit = 500, page = 0) => {
+export const findArbispotterProducts = async (
+  domain,
+  query,
+  limit = 500,
+  page = 0
+) => {
   const collectionName = domain;
   const db = await getArbispotterDb();
   const collection = db.collection(collectionName);
@@ -105,7 +109,6 @@ export const updateProducts = async (domain, query, update) => {
     }
   );
 };
-
 
 export const updateProductWithQuery = async (domain, query, update) => {
   const collectionName = domain;
