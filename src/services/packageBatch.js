@@ -19,8 +19,10 @@ const packageBatchInteration = async (intervalId) => {
 
   const { batches: batchesData } = task;
 
-  await checkAndProcessBatches(batchesData);
-  await checkForPendingProductsAndCreateBatches();
+  const batch = await checkAndProcessBatches(batchesData);
+  if(batch === "processed") {
+    await checkForPendingProductsAndCreateBatches();
+  }
 
   // check for status of batch_ids
   packageBatchProcessing(false).then();

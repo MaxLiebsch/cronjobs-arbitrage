@@ -31,6 +31,7 @@ export const checkForPendingProductsAndCreateBatches = async () => {
     const file = await uploadFile(filepath);
     if (file.id) {
       const batch = await createBatch(file.id);
+      let batchStatus = batch.status
       // check status of batch every 15 seconds
       let success = false;
       let failed = false;
@@ -38,14 +39,15 @@ export const checkForPendingProductsAndCreateBatches = async () => {
       while (!success) {
         cnt++;
         await new Promise((resolve) => setTimeout(resolve, 5000));
-        const batchStatus = await retrieveBatch(batch.id);
+        const _batchStatus = await retrieveBatch(batch.id);
         if (
-          batchStatus.status === "in_progress" ||
-          batchStatus.status === "completed"
+          _batchStatus.status === "in_progress" ||
+          _batchStatus.status === "completed"
         ) {
           success = true;
+          batchStatus = _batchStatus.status;
         }
-        if (batchStatus.status === "failed") {
+        if (_batchStatus.status === "failed") {
           failed = true;
           break;
         }
@@ -75,7 +77,7 @@ export const checkForPendingProductsAndCreateBatches = async () => {
                 shopDomain,
                 count: hashes.length,
                 filepath,
-                status: batch.status,
+                status: batchStatus,
               },
             },
           }

@@ -13,7 +13,7 @@ const { remove } = fsjetpack;
 export const checkAndProcessBatches = async (batchesData) => {
   if (!batchesData.length) {
     console.info("No batches to process");
-    return;
+    return 'processed';
   }
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
@@ -33,6 +33,7 @@ export const checkAndProcessBatches = async (batchesData) => {
         await deleteFile(batch.input_file_id);
         await deleteFile(batch.output_file_id);
         remove(filepath);
+        return "processed";
       }
       if (batch.status === "failed") {
         await deleteFile(batch.input_file_id);

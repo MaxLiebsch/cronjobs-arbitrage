@@ -7,8 +7,8 @@ import { encodeChat } from "gpt-tokenizer";
 export const retrieveProductsForBatches = async () => {
   const shops = await getAllShops();
   const activeShops = shops.filter((shop) => shop.active);
+  
   const batches = [];
-
   for (let index = 0; index < activeShops.length; index++) {
     const shop = activeShops[index];
     const db = await getCrawlDataDb();
@@ -45,7 +45,7 @@ export const retrieveProductsForBatches = async () => {
             },
           ],
         },
-        { limit: 200000 }
+        { limit: 3000 }
       )
       .toArray();
 
@@ -132,5 +132,5 @@ const createBatches = (shopDomain, products) => {
   if (batches.length === 0) {
     batches.push({ shopDomain, hashes, prompts, products });
   }
-  return batches;
+  return [batches.shift()];
 };
