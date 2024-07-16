@@ -8,9 +8,12 @@ config({
   path: [`.env`],
 });
 
-const packageBatchInteration = async (intervalId = 0) => {
+let intervalId = 0;
+
+const packageBatchInteration = async () => {
+  console.log("intervalId:", intervalId);
   clearInterval(intervalId);
-  console.log('Interval started...');
+  console.log("Interval started...");
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
   const task = await tasksCol.findOne({ type: "DETECT_QUANTITY" });
@@ -32,11 +35,11 @@ const packageBatchInteration = async (intervalId = 0) => {
 };
 
 const packageBatchProcessing = async (init = true) => {
-  if(init) {
+  if (init) {
     await packageBatchInteration();
   }
-  const intervalId = setInterval(async () => {
-    await packageBatchInteration(intervalId);
+  intervalId = setInterval(async () => {
+    await packageBatchInteration();
   }, CHECK_PACKAGE_BATCH_INTERVAL);
 };
 
