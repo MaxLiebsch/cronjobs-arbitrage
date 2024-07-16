@@ -30,7 +30,7 @@ export const createPrompt = (shopDomain, id, product, retry) => {
       messages: [
         {
           role: "system",
-          content: `Überprüfe Produktanzahl jedes Titels! Antworte mit der Anzahl pro jedem Titel. Keine ungerechtfertige Annahmen. ${format}`,
+          content: `Du bist ein Warenhaus. Ermittle Produktanzahl jedes Titels! Antworte mit der Anzahl pro jedem Titel. Keine ungerechtfertige Annahmen. ${format}`,
         },
         {
           role: "user",
