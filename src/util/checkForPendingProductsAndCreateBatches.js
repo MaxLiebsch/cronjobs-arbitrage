@@ -10,6 +10,7 @@ import { createJsonlFile } from "./createJsonlFile.js";
 export const checkForPendingProductsAndCreateBatches = async () => {
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
+  console.log('tasksCol:', tasksCol)
   const newBatchFileContents = await retrieveProductsForBatches();
   console.log('newBatchFileContents:', newBatchFileContents.length)
   newBatchFileContents.length &&
