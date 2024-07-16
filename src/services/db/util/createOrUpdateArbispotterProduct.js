@@ -86,8 +86,6 @@ export const createOrUpdateArbispotterProduct = async (domain, procProd) => {
           flags: [],
           flag_cnt: 0,
         },
-        lckd: false,
-        taskId: "",
         ...procProd,
       };
 

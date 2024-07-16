@@ -1,17 +1,16 @@
-import { updateProduct } from "../services/db/util/crudArbispotterProduct.js";
 import {
   findCrawlDataProducts,
-  updateCrawledProduct,
+  updateCrawlDataProduct,
 } from "../services/db/util/crudCrawlDataProduct.js";
 import { getProductCount } from "../services/db/util/getMatchingProgress.js";
-import { getActiveShops, getAllShops } from "../services/db/util/shops.js";
+import { getAllShops } from "../services/db/util/shops.js";
 
 const correctDm = async () => {
   const activeShops = await getAllShops();
   const shop = activeShops.filter((shop) => shop.d === "dm.de")[0];
 
   const batchSize = 500;
-  const total = await getProductCount(shop.d  , {
+  const total = await getProductCount(shop.d, {
     $or: [{ ean: { $exists: false } }, { ean: { $eq: "" } }],
   });
   let remaining = total;
@@ -30,18 +29,18 @@ const correctDm = async () => {
         products.map(async (p, i) => {
           const ean = p.link.match(new RegExp(shop.ean, "g"));
           if (ean) {
-            return await updateCrawledProduct(shop.d, p.link, {
+            return await updateCrawlDataProduct(shop.d, p.link, {
               $set: {
                 ean: ean[0].replaceAll(/\D/g, ""),
                 ean_prop: "found",
                 matched: false,
               },
             });
-          }else {
-            return await updateCrawledProduct(shop.d, p.link, {
+          } else {
+            return await updateCrawlDataProduct(shop.d, p.link, {
               $set: {
                 ean: "",
-                ean_prop: "invalid"
+                ean_prop: "invalid",
               },
             });
           }

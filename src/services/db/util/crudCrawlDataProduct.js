@@ -50,7 +50,7 @@ export const findCrawledProductByLink = async (domain, link) => {
   return collection.findOne({ link });
 };
 
-export const updateCrawledProduct = async (domain, link, query) => {
+export const updateCrawlDataProduct = async (domain, link, query) => {
   const collectionName = domain;
   const db = await getCrawlDataDb();
   const collection = db.collection(collectionName);

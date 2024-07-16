@@ -1,7 +1,7 @@
 import { updateProduct } from "../services/db/util/crudArbispotterProduct.js";
 import {
   findCrawlDataProducts,
-  updateCrawledProduct,
+  updateCrawlDataProduct,
 } from "../services/db/util/crudCrawlDataProduct.js";
 import { getProductCount } from "../services/db/util/getMatchingProgress.js";
 import { getActiveShops } from "../services/db/util/shops.js";
@@ -30,7 +30,7 @@ const correctEans = async () => {
           products.map((p) => {
             return Promise.all([
               updateProduct(shop.d, p.link, { eanList: [] }),
-              updateCrawledProduct(shop.d, p.link, {
+              updateCrawlDataProduct(shop.d, p.link, {
                 $set: { ean: "", ean_prop: "invalid" },
               }),
             ]);

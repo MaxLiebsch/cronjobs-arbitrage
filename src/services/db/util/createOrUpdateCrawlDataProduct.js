@@ -2,7 +2,7 @@ import { MongoServerError } from "mongodb";
 import { createHash } from "./hash.js";
 import {
   findCrawledProductByLink,
-  updateCrawledProduct,
+  updateCrawlDataProduct,
   upsertCrawledProduct,
 } from "./crudCrawlDataProduct.js";
 
@@ -11,7 +11,7 @@ export const createOrUpdateCrawlDataProduct = async (domain, rawProd) => {
   try {
     if (product) {
       const s_hash = createHash(rawProd.link);
-      return updateCrawledProduct(domain, rawProd.link, {
+      return updateCrawlDataProduct(domain, rawProd.link, {
         ...rawProd,
         s_hash,
       });

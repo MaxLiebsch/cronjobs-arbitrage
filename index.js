@@ -2,6 +2,7 @@ import { scheduleJob } from "node-schedule";
 import { lookForPendingKeepaLookups, processQueue } from "./services/keepa.js";
 import { deleteUnwatchedProduts } from "./services/deleteUnwatchedProducts.js";
 import { deleteUnwatchedCrawlDataProducts } from "./services/deleteUnwatchedCrawlDataProducts.js";
+import packageBatchProcessing from "./src/services/packageBatch.js";
 
 const main = async () => {
   // Look for old products
@@ -16,6 +17,7 @@ const main = async () => {
   // Look for pending keepa lookups
   await lookForPendingKeepaLookups();
   await processQueue();
+  await packageBatchProcessing();
 };
 
 main()
