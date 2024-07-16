@@ -36,7 +36,7 @@ export const retrieveProductsForBatches = async () => {
                 {
                   qty_prop: {
                     $exists: true,
-                    $nin: ["complete", "in_progress"],
+                    $nin: ["complete", "in_progress", "backlog"],
                   },
                 },
                 { qty_prop: { $exists: true, $eq: "retry" } },
@@ -50,12 +50,11 @@ export const retrieveProductsForBatches = async () => {
             },
           ],
         },
-        { limit: 3000 }
+        { limit: 6000 }
       )
       .toArray();
 
     const ids = rawProducts.map((p) => p.s_hash);
-    console.log("rawProducts:", ids.length);
     const products = await arbispotterShopCol
       .find({ s_hash: { $in: ids } }, { limit: rawProducts.length })
       .project({
@@ -72,7 +71,20 @@ export const retrieveProductsForBatches = async () => {
       })
       .toArray();
 
-    console.log("products:", products.length);
+    if (products.length < rawProducts.length) {
+      const productsNotInRaw = rawProducts.filter(
+        (p) => !products.some((p2) => p2.s_hash === p.s_hash)
+      );
+      await crawlDataShopCol.updateMany(
+        { _id: { $in: productsNotInRaw.map((p) => p._id) } },
+        {
+          $set: {
+            qty_prop: "backlog",
+            qty_batchId: "",
+          },
+        }
+      );
+    }
 
     const productsWithProp = products.reduce((acc, product) => {
       const crawlDataProduct = rawProducts.find(
