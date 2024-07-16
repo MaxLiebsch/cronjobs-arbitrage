@@ -6,8 +6,14 @@ import { encodeChat } from "gpt-tokenizer";
 
 export const retrieveProductsForBatches = async () => {
   const shops = await getAllShops();
-  const activeShops = shops.filter((shop) => shop.active).reverse();
-  
+  const activeShops = shops.filter(
+    (shop) =>
+      shop.active &&
+      shop.d !== "amazon.de" &&
+      shop.d !== "ebay.de" &&
+      shop.d !== "sellercentral.amazon.de"
+  );
+
   const batches = [];
   for (let index = 0; index < activeShops.length; index++) {
     const shop = activeShops[index];
@@ -82,8 +88,11 @@ export const retrieveProductsForBatches = async () => {
     if (shopBatches) {
       batches.push(...shopBatches);
     }
+    if (rawProducts.length > 0) {
+      break;
+    }
   }
-  return batches[0];
+  return [batches[0]];
 };
 
 const createBatches = (shopDomain, products) => {

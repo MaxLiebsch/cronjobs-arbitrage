@@ -131,14 +131,14 @@ export const processResults = async (fileContents, batchData) => {
         },
       },
     });
-      console.log(
-        "\n\n",
-        "Nm: " + set?.qty + " " + product?.nm,
-        "\n",
-        "A_nm: " + set?.a_qty + " " + product?.a_nm,
-        "\n",
-        "E_nm: " + set?.e_qty + " " + product?.e_nm
-      );
+      // console.log(
+      //   "\n\n",
+      //   "Nm: " + set?.qty + " " + product?.nm,
+      //   "\n",
+      //   "A_nm: " + set?.a_qty + " " + product?.a_nm,
+      //   "\n",
+      //   "E_nm: " + set?.e_qty + " " + product?.e_nm
+      // );
     bulkSpotterUpdates.push({
       updateOne: {
         filter: { s_hash: hash },
