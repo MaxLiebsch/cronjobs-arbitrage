@@ -138,7 +138,7 @@ const createBatches = (shopDomain, products) => {
     }
   }
   if (batches.length === 0) {
-    batches.push({ shopDomain, hashes, prompts, products });
+    batches.push({ shopDomain, hashes, prompts, products, tokens });
   }
   return batches;
 };
