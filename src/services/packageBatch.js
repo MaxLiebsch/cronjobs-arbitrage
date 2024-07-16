@@ -9,7 +9,7 @@ config({
 });
 
 const packageBatchInteration = async (intervalId) => {
-  console.log("Checking for pending products and creating batches...");
+  console.log('Interval started...');
   const crawlDataDb = await getCrawlDataDb();
   clearInterval(intervalId);
   const tasksCol = crawlDataDb.collection("tasks");
@@ -21,12 +21,12 @@ const packageBatchInteration = async (intervalId) => {
 
   const batch = await checkAndProcessBatches(batchesData);
 
-  if(batch === "processed") {
-    console.log('Checking for pending products and creating batches');
+  if (batch === "processed") {
+    console.log("Checking for pending products and creating batches");
     await checkForPendingProductsAndCreateBatches();
   }
 
-  console.log('Checking for pending products and creating batches done');
+  console.log("Checking for pending products and creating batches done");
   // check for status of batch_ids
   packageBatchProcessing(false).then();
 };

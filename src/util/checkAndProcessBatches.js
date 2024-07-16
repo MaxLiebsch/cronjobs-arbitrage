@@ -17,12 +17,15 @@ export const checkAndProcessBatches = async (batchesData) => {
   }
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
+  let inProgress = false;
   for (let index = 0; index < batchesData.length; index++) {
     const batchData = batchesData[index];
     const { filepath, batchId, status } = batchData;
     try {
-
       const batch = await retrieveBatch(batchId);
+      if( batch.status === 'in_progress') {
+        inProgress = true;
+      }
       if (batch.status === status || batchData.status === "done") continue;
       if (batch.status === "completed") {
         const fileContents = await retrieveOutputFile(batch.output_file_id);
@@ -54,4 +57,5 @@ export const checkAndProcessBatches = async (batchesData) => {
       }
     }
   }
+  if(!inProgress) return 'processed';
 };
