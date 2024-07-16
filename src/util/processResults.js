@@ -77,10 +77,10 @@ export const processResults = async (fileContents, batchData) => {
       set.a_qty > 0 &&
       (isRetry || set.a_qty < MAX_PACKAGE_SIZE)
     ) {
-      spotterSet["a_urpc"] = roundToTwoDecimals(product.a_prc / set["a_qty"]);
+      spotterSet["a_uprc"] = roundToTwoDecimals(product.a_prc / set["a_qty"]);
       const arbitrage = calculateAznArbitrage(
         spotterSet["uprc"],
-        spotterSet["a_urpc"],
+        spotterSet["a_uprc"],
         product.costs,
         product?.tax
       );
@@ -96,7 +96,7 @@ export const processResults = async (fileContents, batchData) => {
       set.e_qty > 0 &&
       (isRetry || set.e_qty < MAX_PACKAGE_SIZE)
     ) {
-      spotterSet["e_urpc"] = roundToTwoDecimals(product.e_prc / set["e_qty"]);
+      spotterSet["e_uprc"] = roundToTwoDecimals(product.e_prc / set["e_qty"]);
       const mappedCategories = findMappedCategory(
         product.ebyCategories.reduce((acc, curr) => {
           acc.push(curr.id);
@@ -105,7 +105,7 @@ export const processResults = async (fileContents, batchData) => {
       );
       const arbitrage = calculateEbyArbitrage(
         mappedCategories,
-        spotterSet["e_urpc"],
+        spotterSet["e_uprc"],
         spotterSet["uprc"]
       );
       Object.entries(arbitrage).forEach(([key, value]) => {
@@ -131,14 +131,14 @@ export const processResults = async (fileContents, batchData) => {
         },
       },
     });
-      // console.log(
-      //   "\n\n",
-      //   "Nm: " + set?.qty + " " + product?.nm,
-      //   "\n",
-      //   "A_nm: " + set?.a_qty + " " + product?.a_nm,
-      //   "\n",
-      //   "E_nm: " + set?.e_qty + " " + product?.e_nm
-      // );
+    // console.log(
+    //   "\n\n",
+    //   "Nm: " + set?.qty + " " + product?.nm,
+    //   "\n",
+    //   "A_nm: " + set?.a_qty + " " + product?.a_nm,
+    //   "\n",
+    //   "E_nm: " + set?.e_qty + " " + product?.e_nm
+    // );
     bulkSpotterUpdates.push({
       updateOne: {
         filter: { s_hash: hash },

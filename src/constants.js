@@ -5,6 +5,6 @@ export const PRODUCTS_PER_MINUTE = 60;
 export const MAX_RETRIES = 3;
 export const MAX_AGE_PRODUCTS = 16;
 export const PENDING_KEEPA_LOOKUPS_INTERVAL = 1000 * 60 * KEEPA_MINUTES;
-export const CHECK_PACKAGE_BATCH_INTERVAL = 1000 * 60 * 2;
+export const CHECK_PACKAGE_BATCH_INTERVAL = 1000 * 60 * 1.5;
 export const TOKEN_LIMIT = 160000;
 export const MAX_PACKAGE_SIZE = 11;
