@@ -9,9 +9,9 @@ export const retrieveProductsForBatches = async () => {
   const activeShops = shops.filter(
     (shop) =>
       shop.active &&
-    shop.d !== "amazon.de" &&
-    shop.d !== "ebay.de" &&
-    shop.d !== "sellercentral.amazon.de"
+      shop.d !== "amazon.de" &&
+      shop.d !== "ebay.de" &&
+      shop.d !== "sellercentral.amazon.de"
   );
   const batches = [];
   for (let index = 0; index < activeShops.length; index++) {
@@ -55,9 +55,9 @@ export const retrieveProductsForBatches = async () => {
       .toArray();
 
     const ids = rawProducts.map((p) => p.s_hash);
-
+    console.log("rawProducts:", ids.length);
     const products = await arbispotterShopCol
-      .find({ s_hash: { $in: ids } })
+      .find({ s_hash: { $in: ids } }, { limit: rawProducts.length })
       .project({
         nm: 1,
         e_nm: 1,
@@ -71,6 +71,8 @@ export const retrieveProductsForBatches = async () => {
         ebyCategories: 1,
       })
       .toArray();
+
+    console.log("products:", products.length);
 
     const productsWithProp = products.reduce((acc, product) => {
       const crawlDataProduct = rawProducts.find(
@@ -128,7 +130,13 @@ const createBatches = (shopDomain, products) => {
       prompts.push(prompt);
       hashes.push(product.s_hash);
     } else {
-      batches.push({ shopDomain, hashes, prompts: [...prompts], products, tokens });
+      batches.push({
+        shopDomain,
+        hashes,
+        prompts: [...prompts],
+        products,
+        tokens,
+      });
       tokens = 0;
       cnt = 0;
       prompts = [prompt];
