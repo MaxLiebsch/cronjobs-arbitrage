@@ -9,11 +9,12 @@ export const retrieveProductsForBatches = async () => {
   const activeShops = shops.filter(
     (shop) =>
       shop.active &&
-      shop.d !== "amazon.de" &&
-      shop.d !== "ebay.de" &&
-      shop.d !== "sellercentral.amazon.de"
+    shop.d !== "amazon.de" &&
+    shop.d !== "ebay.de" &&
+    shop.d !== "sellercentral.amazon.de"
   );
-
+  
+  console.log('activeShops:', activeShops.length)
   const batches = [];
   for (let index = 0; index < activeShops.length; index++) {
     const shop = activeShops[index];
@@ -89,6 +90,7 @@ export const retrieveProductsForBatches = async () => {
       batches.push(...shopBatches);
     }
     if (rawProducts.length > 0) {
+      console.log('rawProducts:', rawProducts.length)
       break;
     }
   }

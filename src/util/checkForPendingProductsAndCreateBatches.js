@@ -11,6 +11,7 @@ export const checkForPendingProductsAndCreateBatches = async () => {
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
   const newBatchFileContents = await retrieveProductsForBatches();
+  console.log('newBatchFileContents:', newBatchFileContents.length)
   newBatchFileContents.length &&
     console.log(
       "newBatchFileContents:\n",
