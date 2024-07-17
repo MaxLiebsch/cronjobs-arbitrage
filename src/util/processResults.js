@@ -127,7 +127,12 @@ export const processResults = async (fileContents, batchData) => {
       updateOne: {
         filter: { s_hash: hash },
         update: {
-          $set: { ...set, qty_prop, qty_batchId: "" },
+          $set: {
+            ...set,
+            qty_prop,
+            qty_batchId: "",
+            qty_updatedAt: new Date().toISOString(),
+          },
         },
       },
     });
