@@ -54,56 +54,58 @@ export const retrieveProductsForBatches = async () => {
       )
       .toArray();
 
-    const ids = rawProducts.map((p) => p.s_hash);
-    const products = await arbispotterShopCol
-      .find({ s_hash: { $in: ids } }, { limit: rawProducts.length })
-      .project({
-        nm: 1,
-        e_nm: 1,
-        a_nm: 1,
-        s_hash: 1,
-        costs: 1,
-        tax: 1,
-        prc: 1,
-        mnfctr: 1,
-        qty: 1,
-        uprc: 1,
-        ebyCategories: 1,
-      })
-      .toArray();
+    if (rawProducts.length > 1000) {
+      const ids = rawProducts.map((p) => p.s_hash);
+      const products = await arbispotterShopCol
+        .find({ s_hash: { $in: ids } }, { limit: rawProducts.length })
+        .project({
+          nm: 1,
+          e_nm: 1,
+          a_nm: 1,
+          s_hash: 1,
+          costs: 1,
+          tax: 1,
+          prc: 1,
+          mnfctr: 1,
+          qty: 1,
+          uprc: 1,
+          ebyCategories: 1,
+        })
+        .toArray();
 
-    if (products.length < rawProducts.length) {
-      const productsNotInRaw = rawProducts.filter(
-        (p) => !products.some((p2) => p2.s_hash === p.s_hash)
-      );
-      await crawlDataShopCol.updateMany(
-        { _id: { $in: productsNotInRaw.map((p) => p._id) } },
-        {
-          $set: {
-            qty_prop: "backlog",
-            qty_batchId: "",
-          },
-        }
-      );
-    }
-
-    const productsWithProp = products.reduce((acc, product) => {
-      const crawlDataProduct = rawProducts.find(
-        (p) => p.s_hash === product.s_hash
-      );
-      if (crawlDataProduct) {
-        product.qty_prop = crawlDataProduct.qty_prop;
-        acc.push(product);
+      if (products.length < rawProducts.length) {
+        const productsNotInRaw = rawProducts.filter(
+          (p) => !products.some((p2) => p2.s_hash === p.s_hash)
+        );
+        await crawlDataShopCol.updateMany(
+          { _id: { $in: productsNotInRaw.map((p) => p._id) } },
+          {
+            $set: {
+              qty_prop: "backlog",
+              qty_batchId: "",
+            },
+          }
+        );
       }
-      return acc;
-    }, []);
 
-    const shopBatches = createBatches(shop.d, productsWithProp);
-    if (shopBatches) {
-      batches.push(...shopBatches);
-    }
-    if (rawProducts.length > 0) {
+      const productsWithProp = products.reduce((acc, product) => {
+        const crawlDataProduct = rawProducts.find(
+          (p) => p.s_hash === product.s_hash
+        );
+        if (crawlDataProduct) {
+          product.qty_prop = crawlDataProduct.qty_prop;
+          acc.push(product);
+        }
+        return acc;
+      }, []);
+
+      const shopBatches = createBatches(shop.d, productsWithProp);
+      if (shopBatches) {
+        batches.push(...shopBatches);
+      }
       break;
+    } else {
+      continue;
     }
   }
   return [batches[0]];
