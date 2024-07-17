@@ -2,21 +2,21 @@ import { replaceAllHiddenCharacters } from "./replaceAllHiddenCharacters.js";
 
 export const createPrompt = (shopDomain, id, product, retry) => {
   let content = "";
-  let format = "Format:";
+  let format = "Output-Format:";
   let formatArr = [];
   if (product.nm) {
     content += `"nm":"${product.mnfctr} ${replaceAllHiddenCharacters(
       product.nm
     )}",`;
-    formatArr.push(`"nm":<Anzahl>`);
+    formatArr.push(`"nm":<Stückzahl>`);
   }
   if (product.e_nm) {
     content += `"e_nm":"${replaceAllHiddenCharacters(product.e_nm)}" `;
-    formatArr.push(`"e_nm":<Anzahl>`);
+    formatArr.push(`"e_nm":<Stückzahl>`);
   }
   if (product.a_nm) {
     content += `"a_nm":"${replaceAllHiddenCharacters(product.a_nm)}"`;
-    formatArr.push(`"a_nm":<Anzahl>`);
+    formatArr.push(`"a_nm":<Stückzahl>`);
   }
   format += "{" + formatArr.join(",") + "}";
   let custom_id = `${shopDomain}-${id}`;
@@ -32,7 +32,7 @@ export const createPrompt = (shopDomain, id, product, retry) => {
       messages: [
         {
           role: "system",
-          content: `Du bist ein Warenhaus. Ermittle Produktanzahl jedes Titels! Antworte mit der Anzahl pro jedem Titel. Keine ungerechtfertige Annahmen. ${format}`,
+          content: `Du bist ein Warenlager. Ermittle die Stückzahl jedes Produkt-Bundles basierend auf den Produktnamen. Antworte mit der Stückzahl pro jedem Titel. ${format}`,
         },
         {
           role: "user",
