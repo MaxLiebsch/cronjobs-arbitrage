@@ -32,7 +32,7 @@ export const createPrompt = (shopDomain, id, product, retry) => {
       messages: [
         {
           role: "system",
-          content: `Du bist ein Warenlager. Ermittle die Stückzahl jedes Produkt-Bundles basierend auf den Produktnamen. Antworte mit der Stückzahl pro jedem Titel. ${format}`,
+          content: `Du bist ein Warenlager. Ermittle die Stückzahl jedes Produkt-Bundles oder Packung basierend auf den Produktnamen. Achte besonders auf Teilzeichenfolgen, die Anzahl der Artikel im Bundle anzeigen. Antworte mit der Stückzahl. ${format}`,
         },
         {
           role: "user",
