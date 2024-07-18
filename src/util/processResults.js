@@ -39,6 +39,14 @@ export const processResults = async (fileContents, batchData) => {
 
     if (!product) continue;
 
+    const {
+      e_prc: eSellPrice,
+      prc: buyPrice,
+      a_prc: aSellPrice,
+      ebyCategories,
+      costs,
+    } = product;
+
     const content = result.response.body?.choices[0].message.content;
     if (!content) continue;
 
@@ -61,29 +69,28 @@ export const processResults = async (fileContents, batchData) => {
       }
     });
 
-    if (
-      "qty" in set &&
-      set.qty > 0 &&
-      (isRetry || set.qty < MAX_PACKAGE_SIZE)
-    ) {
-      spotterSet["uprc"] = roundToTwoDecimals(product.prc / set["qty"]);
+    const { a_qty: aSellQty, e_qty: eSellQty, qty: buyQty } = set;
+
+    if (buyQty && buyQty > 0 && (isRetry || buyQty < MAX_PACKAGE_SIZE)) {
+      spotterSet["uprc"] = roundToTwoDecimals(product.prc / buyQty);
     } else {
       spotterSet["uprc"] = product.prc;
       set["qty"] = 1;
     }
 
     if (
-      "a_qty" in set &&
-      "a_prc" in product &&
-      "costs" in product &&
-      set.a_qty > 0 &&
-      (isRetry || set.a_qty < MAX_PACKAGE_SIZE)
+      aSellQty &&
+      aSellPrice &&
+      costs &&
+      aSellQty > 0 &&
+      (isRetry || aSellQty < MAX_PACKAGE_SIZE)
     ) {
-      spotterSet["a_uprc"] = roundToTwoDecimals(product.a_prc / set["a_qty"]);
-      const factor = set.a_qty / set.qty;
+      spotterSet["a_uprc"] = roundToTwoDecimals(aSellPrice / aSellQty);
+
+      const factor = aSellQty / buyQty;
       const arbitrage = calculateAznArbitrage(
-        p.prc * factor, // prc * (a_qty / qty), // EK
-        p.a_prc, // a_prc, // VK
+        buyPrice * factor, // prc * (a_qty / qty), // EK
+        aSellPrice, // a_prc, // VK
         product.costs,
         product?.tax
       );
@@ -91,26 +98,27 @@ export const processResults = async (fileContents, batchData) => {
         spotterSet[key] = value;
       });
     }
+
     if (
-      "e_qty" in set &&
-      "e_prc" in product &&
-      "ebyCategories" in product &&
-      product.ebyCategories.length > 0 &&
-      set.e_qty > 0 &&
-      (isRetry || set.e_qty < MAX_PACKAGE_SIZE)
+      eSellQty &&
+      eSellPrice &&
+      ebyCategories?.length > 0 &&
+      eSellQty > 0 &&
+      (isRetry || eSellQty < MAX_PACKAGE_SIZE)
     ) {
-      spotterSet["e_uprc"] = roundToTwoDecimals(product.e_prc / set["e_qty"]);
+      spotterSet["e_uprc"] = roundToTwoDecimals(product.e_prc / eSellQty);
       const mappedCategories = findMappedCategory(
         product.ebyCategories.reduce((acc, curr) => {
           acc.push(curr.id);
           return acc;
         }, [])
       );
-      const factor = set.e_qty / set.qty;
+      const factor = eSellQty / buyQty;
+
       const arbitrage = calculateEbyArbitrage(
         mappedCategories,
-        p.e_prc, //VK
-        p.prc * factor // prc * (e_qty / qty) //EK  //QTY Zielshop/QTY Herkunftsshop
+        eSellPrice, //VK
+        buyPrice * factor // prc * (e_qty / qty) //EK  //QTY Zielshop/QTY Herkunftsshop
       );
       Object.entries(arbitrage).forEach(([key, value]) => {
         spotterSet[key] = value;
@@ -120,9 +128,9 @@ export const processResults = async (fileContents, batchData) => {
     let qty_prop = "complete";
 
     if (
-      (set?.qty > MAX_PACKAGE_SIZE ||
-        set?.e_qty > MAX_PACKAGE_SIZE ||
-        set?.a_qty > MAX_PACKAGE_SIZE) &&
+      (buyQty > MAX_PACKAGE_SIZE ||
+        eSellQty > MAX_PACKAGE_SIZE ||
+        aSellQty > MAX_PACKAGE_SIZE) &&
       !isRetry
     ) {
       qty_prop = "retry";
