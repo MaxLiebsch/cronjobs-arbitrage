@@ -28,6 +28,7 @@ export const checkAndProcessBatches = async (batchesData) => {
       }
       if (batch.status === status) continue;
       if (batch.status === "completed") {
+        console.log('Processing completed batch', batchId, "...");
         const fileContents = await retrieveOutputFile(batch.output_file_id);
         await processResults(fileContents, batchData);
         // clean up
