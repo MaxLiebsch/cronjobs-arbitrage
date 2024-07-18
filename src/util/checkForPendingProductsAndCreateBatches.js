@@ -61,7 +61,7 @@ export const checkForPendingProductsAndCreateBatches = async () => {
             .collection(shopDomain)
             .updateMany(
               { s_hash: { $in: hashes } },
-              { $set: { qty_prop: "in_progress", qty_batchId: batch.id } }
+              { $set: { qty_prop: "in_progress", qty_batchId: batch.id, p_v: 'v01'  } }
             );
           await tasksCol.updateOne(
             { type: "DETECT_QUANTITY" },
