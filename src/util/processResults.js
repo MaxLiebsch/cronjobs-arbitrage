@@ -80,9 +80,10 @@ export const processResults = async (fileContents, batchData) => {
       (isRetry || set.a_qty < MAX_PACKAGE_SIZE)
     ) {
       spotterSet["a_uprc"] = roundToTwoDecimals(product.a_prc / set["a_qty"]);
+      const factor = set.a_qty / set.qty;
       const arbitrage = calculateAznArbitrage(
-        spotterSet["uprc"],
-        spotterSet["a_uprc"],
+        p.prc * factor, // prc * (a_qty / qty), // EK
+        p.a_prc, // a_prc, // VK
         product.costs,
         product?.tax
       );
@@ -105,10 +106,11 @@ export const processResults = async (fileContents, batchData) => {
           return acc;
         }, [])
       );
+      const factor = set.e_qty / set.qty;
       const arbitrage = calculateEbyArbitrage(
         mappedCategories,
-        spotterSet["e_uprc"],
-        spotterSet["uprc"]
+        p.e_prc, //VK
+        p.prc * factor // prc * (e_qty / qty) //EK  //QTY Zielshop/QTY Herkunftsshop
       );
       Object.entries(arbitrage).forEach(([key, value]) => {
         spotterSet[key] = value;
