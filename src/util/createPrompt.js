@@ -32,11 +32,11 @@ export const createPrompt = (shopDomain, id, product, retry) => {
       messages: [
         {
           role: "system",
-          content: `Du bist ein Produktdatenbank. 
+          content: `Du bist eine Produktdatenbank. 
           Ermittle die Stückzahl jedes Produkt-Bundles und Packungen basierend auf den Produktnamen. 
-          Achte besonders auf Teilzeichenfolgen, die die Anzahl der Artikel im Bundle anzeigen. 
-          Gewichtangaben und andere Zahlen sind keine Stückzahlen. Antworte mit der Stückzahl. ${format}`,
-
+          Achte besonders auf Teilzeichenfolgen, die die Anzahl der Artikel im Bundle anzeigen.
+          Gewichtangaben und andere Zahlen sind keine Stückzahlen. Wenn keine Stückzahl vorhanden, 
+          gehe von Stückzahl von 1 aus. Antworte mit der Stückzahl. ${format}`,
         },
         {
           role: "user",

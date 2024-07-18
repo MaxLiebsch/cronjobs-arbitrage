@@ -46,15 +46,17 @@ export const processResults = async (fileContents, batchData) => {
     if (!update) continue;
 
     Object.entries(update).forEach(([key, value]) => {
-      if (Number(value)) {
+      let qty = Number(value);
+      if (qty) {
+        if (qty === 0) qty = 1;
         if (key === "a_nm") {
-          set["a_qty"] = value;
+          set["a_qty"] = qty;
         }
         if (key === "e_nm") {
-          set["e_qty"] = value;
+          set["e_qty"] = qty;
         }
         if (key === "nm") {
-          set["qty"] = value;
+          set["qty"] = qty;
         }
       }
     });
