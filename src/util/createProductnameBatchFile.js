@@ -25,7 +25,7 @@ export const createProductnameBatchFile = async () => {
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ eanList: "3221320084946" }, { limit: 1 })
+    .find({ eanList: "4051902170007" }, { limit: 1 })
     .toArray();
   const prompt = createPrompt(shopDomain, products[0].s_hash, products[0],true);
   console.log("prompts:", JSON.stringify(prompt.body.messages, null, 2));

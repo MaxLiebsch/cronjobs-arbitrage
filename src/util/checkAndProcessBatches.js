@@ -48,7 +48,7 @@ export const checkAndProcessBatches = async (batchesData) => {
           },
         }
       );
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       if (error instanceof NotFoundError) {
         console.error("Batch not found: ", batchId, "deleting batch");
