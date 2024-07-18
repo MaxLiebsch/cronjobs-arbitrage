@@ -13,7 +13,7 @@ const { remove } = fsjetpack;
 export const checkAndProcessBatches = async (batchesData) => {
   if (!batchesData.length) {
     console.info("No batches to process");
-    return 'processed';
+    return "processed";
   }
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
@@ -23,20 +23,17 @@ export const checkAndProcessBatches = async (batchesData) => {
     const { filepath, batchId, status } = batchData;
     try {
       const batch = await retrieveBatch(batchId);
-      if( batch.status === 'in_progress') {
+      if (batch.status === "in_progress") {
         inProgress = true;
       }
-      if (batch.status === status || batchData.status === "done") continue;
+      if (batch.status === status) continue;
       if (batch.status === "completed") {
         const fileContents = await retrieveOutputFile(batch.output_file_id);
-
         await processResults(fileContents, batchData);
-
         // clean up
         await deleteFile(batch.input_file_id);
         await deleteFile(batch.output_file_id);
         remove(filepath);
-        return "processed";
       }
       if (batch.status === "failed") {
         await deleteFile(batch.input_file_id);
@@ -50,12 +47,20 @@ export const checkAndProcessBatches = async (batchesData) => {
           },
         }
       );
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
     } catch (error) {
       if (error instanceof NotFoundError) {
-        console.error("Batch not found: ", batchId);
+        console.error("Batch not found: ", batchId, "deleting batch");
+        await tasksCol.updateOne(
+          { type: "DETECT_QUANTITY" },
+          {
+            $pull: {
+              batches: { batchId },
+            },
+          }
+        );
       }
     }
   }
-  if(!inProgress) return 'processed';
+  if (!inProgress) return "processed";
 };

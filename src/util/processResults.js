@@ -154,11 +154,11 @@ export const processResults = async (fileContents, batchData) => {
     });
   }
   const tasksCol = crawlDataDb.collection("tasks");
-  const result = await tasksCol.updateOne(
+  await tasksCol.updateOne(
     { type: "DETECT_QUANTITY", "batches.batchId": batchId },
     {
-      $set: {
-        "batches.$.status": "done",
+      $pull: {
+        batches: { batchId },
       },
     }
   );
