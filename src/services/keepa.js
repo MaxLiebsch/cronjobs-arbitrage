@@ -6,6 +6,7 @@ import { KEEPA_MINUTES, KEEPA_RATE_LIMIT } from "../constants.js";
 import { getActiveShops } from "./db/util/shops.js";
 import { getKeepaProgress } from "./db/util/getKeepaProgress.js";
 import {
+  findArbispotterProduct,
   lockProductsForKeepa,
   updateProductWithQuery,
 } from "./db/util/crudArbispotterProduct.js";
@@ -13,6 +14,7 @@ import "dotenv/config";
 import { config } from "dotenv";
 import { scheduleJob } from "node-schedule";
 import { upsertAsin } from "./db/util/asinTable.js";
+import { calculateMonthlySales } from "@dipmaxtech/clr-pkg";
 
 config({
   path: [`.env`],
@@ -34,6 +36,10 @@ const properties = [
   { key: "products[0].stats.current[1]", name: "curr_ansprcs" },
   { key: "products[0].stats.current[2]", name: "curr_ausprcs" },
   { key: "products[0].stats.current[3]", name: "curr_salesRank" },
+  { key: "products[0].stats.avg30[0]", name: "avg30_ahsprcs" }, // Average of the Amazon history prices of the last 30 days
+  { key: "products[0].stats.avg30[1]", name: "avg30_ansprcs" }, // Average of the Amazon history prices of the last 30 days
+  { key: "products[0].stats.avg30[2]", name: "avg30_ausprcs" }, // Average of the Amazon history prices of the last 30 days
+  { key: "products[0].stats.avg30[3]", name: "avg30_salesRank" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.avg90[0]", name: "avg90_ahsprcs" }, // Average of the Amazon history prices of the last 90 days
   { key: "products[0].stats.avg90[1]", name: "avg90_ansprcs" }, // Average of the Amazon history prices of the last 90 days
   { key: "products[0].stats.avg90[2]", name: "avg90_ausprcs" }, // Average of the Amazon history prices of the last 90 days
@@ -56,6 +62,17 @@ const keepa = async ({ shopDomain, asin, _id, analysis }) => {
 
   if (asin) {
     await upsertAsin(asin, result["k_eanList"] ?? []);
+  }
+
+  if (result["monthlySold"] === null) {
+    const product = await findArbispotterProduct(shopDomain, { _id });
+    const { salesRanks, categories } = result;
+    if (product && salesRanks && categories) {
+      const monthlySold = calculateMonthlySales(categories, salesRanks);
+      if (monthlySold) {
+        result["monthlySold"] = monthlySold;
+      }
+    }
   }
 
   await updateProductWithQuery(
