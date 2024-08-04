@@ -1,6 +1,6 @@
 {
   "name": "cronjobs-arbitrage",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Cronjobs for arbispotter",
   "main": "./src/index.js",
   "type": "module",
@@ -27,16 +27,25 @@
   },
   "homepage": "https://github.com/MaxLiebsch/cronjobs-arbitrage#readme",
   "devDependencies": {
+    "@babel/core": "^7.24.9",
+    "@babel/preset-env": "^7.24.8",
+    "@babel/preset-typescript": "^7.24.7",
+    "@types/jest": "^29.5.12",
+    "@types/jest-cli": "^24.3.0",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "axios": "^1.7.2",
+    "cronjobs-arbitrage": "file:",
     "fs-jetpack": "^5.1.0",
     "gpt-tokenizer": "^2.1.2",
+    "jest": "^29.7.0",
     "lodash": "^4.17.21",
     "mongodb": "^6.7.0",
     "node-schedule": "^2.1.1",
-    "openai": "^4.52.7"
+    "openai": "^4.52.7",
+    "ts-jest": "^29.2.2"
   }
 }
