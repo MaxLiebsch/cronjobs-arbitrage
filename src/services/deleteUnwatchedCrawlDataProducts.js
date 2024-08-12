@@ -8,6 +8,7 @@ import { getActiveShops } from "./db/util/shops.js";
 
 export const deleteUnwatchedCrawlDataProducts = async () => {
   const activeShops = await getActiveShops();
+  activeShops.push({ d: "sales" });
 
   for (const shop of Object.values(activeShops)) {
     let hasMoreProducts = true;

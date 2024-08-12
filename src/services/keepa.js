@@ -186,6 +186,7 @@ export function addToQueue(newAsins) {
 
 export async function lookForPendingKeepaLookups() {
   const activeShops = await getActiveShops();
+  activeShops.push({ d: "sales" });
 
   const keepaProgressPerShop = await Promise.all(
     Object.values(
@@ -200,9 +201,7 @@ export async function lookForPendingKeepaLookups() {
 
   const numberOfPendingShops = pendingShops.length;
   const totalProducts = KEEPA_MINUTES * KEEPA_RATE_LIMIT;
-  const productsPerShop = parseInt(
-    Math.floor(totalProducts / numberOfPendingShops)
-  );
+  const productsPerShop = Math.floor(totalProducts / numberOfPendingShops);
 
   const products = await Promise.all(
     pendingShops.map(async (shop) => {

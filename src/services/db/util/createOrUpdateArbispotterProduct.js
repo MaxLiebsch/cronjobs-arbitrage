@@ -5,6 +5,7 @@ import {
   updateProduct,
   upsertProduct,
 } from "./crudArbispotterProduct.js";
+import { MongoServerError } from "mongodb";
 
 //ARBISPOTTER DB UTILS
 export const createOrUpdateArbispotterProduct = async (domain, procProd) => {
