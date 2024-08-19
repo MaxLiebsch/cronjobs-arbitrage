@@ -66,9 +66,13 @@ const keepa = async ({ shopDomain, asin, _id, analysis }) => {
 
   if (result["monthlySold"] === null) {
     const product = await findArbispotterProduct(shopDomain, { _id });
-    const { salesRanks, categories } = result;
-    if (product && salesRanks && categories) {
-      const monthlySold = calculateMonthlySales(categories, salesRanks);
+    const { salesRanks, categories, categoryTree } = result;
+    if (product && salesRanks && categories && categoryTree) {
+      const monthlySold = calculateMonthlySales(
+        categories,
+        salesRanks,
+        categoryTree
+      );
       if (monthlySold) {
         result["monthlySold"] = monthlySold;
       }
