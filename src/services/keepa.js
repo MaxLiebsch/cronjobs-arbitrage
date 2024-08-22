@@ -51,25 +51,10 @@ export async function processQueue(keepaJob) {
         if (product?.asin) {
           promises.push(makeRequestsForId(product));
         } else {
-          console.log('asin: product:', product)
-          if (!product?.ean) {
-            await updateProductWithQuery(
-              product.shopDomain,
-              { _id: product._id },
-              {
-                $unset: {
-                  keepa_lckd: "",
-                  keepaEan_lckd: ""
-                },
-              }
-            );
-          }
-        }
-        if (product?.ean) {
-          promises.push(makeRequestsForEan(product));
-        } else {
-          console.log('ean product:', product)
-          if (!product?.asin) {
+          if (product?.ean) {
+            promises.push(makeRequestsForEan(product));
+          } else {
+            console.log("complete product:", product);
             await updateProductWithQuery(
               product.shopDomain,
               { _id: product._id },
@@ -81,6 +66,7 @@ export async function processQueue(keepaJob) {
               }
             );
           }
+
         }
       } else {
         break; // Break the loop if the queue is empty
