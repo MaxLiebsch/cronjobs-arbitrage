@@ -27,15 +27,26 @@ export const createProductnameBatchFile = async () => {
   const products = await col
     .find({ eanList: "8719018025630" }, { limit: 1 })
     .toArray();
-  const prompt = createPrompt(shopDomain, products[0].s_hash, products[0],true);
-  console.log("prompts:", JSON.stringify(prompt.body.messages, null, 2));
+  const prompt = createPrompt(
+    shopDomain,
+    products[0].s_hash,
+    {
+      nm: 'Vitakraft 25226 Kräcker Meerschweinchen Trio-Mix, 3Stk',
+      mnfctr: ""
+    },
+    true
+  );
+  console.log("prompts:", JSON.stringify(prompt.body.messages[1], null, 2));
   const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo-0125",
+    model: "gpt-4o-mini",
     messages: prompt.body.messages,
     max_tokens: 1000,
     temperature: 0.1,
   });
-  console.log("response:", JSON.stringify(response, null, 2));
+  console.log(
+    "response:",
+    JSON.stringify(response.choices[0].message.content, null, 2)
+  );
 
   // console.log(products.length);
   // const prompts = [];

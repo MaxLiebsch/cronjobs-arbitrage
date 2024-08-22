@@ -1,6 +1,8 @@
 import { MAX_EARNING_MARGIN } from "../../../constants.js";
 import { getArbispotterDb } from "../mongo.js";
-import { pendingKeepaProductsQuery } from "../queries.js";
+import {
+  pendingFallbackKeepaProductsQuery,
+} from "../queries.js";
 
 // arbispotter amazon
 export const getAmazonProductCount = async (shopProductCollectionName) => {
@@ -15,17 +17,17 @@ export const getAmazonProductCount = async (shopProductCollectionName) => {
   });
 };
 
-export const getAmazonProductsToUpdateKeepaCount = async (
+export const getAmazonFallbackProductsToUpdateKeepaCount = async (
   shopProductCollectionName
 ) => {
   const db = await getArbispotterDb();
   const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.count(pendingKeepaProductsQuery);
+  return shopProductCollection.count(pendingFallbackKeepaProductsQuery);
 };
 
-export const getKeepaProgress = async (shopDomain) => {
+export const getFallbackKeepaProgress = async (shopDomain) => {
   const shopProductCollectionName = shopDomain;
-  const pending = await getAmazonProductsToUpdateKeepaCount(
+  const pending = await getAmazonFallbackProductsToUpdateKeepaCount(
     shopProductCollectionName
   );
   const total = await getAmazonProductCount(shopProductCollectionName);
@@ -37,11 +39,12 @@ export const getKeepaProgress = async (shopDomain) => {
   };
 };
 
-export async function getKeepaProgressPerShop(activeShops) {
+
+export async function getKeepaEanProgressPerShop(activeShops) {
   return await Promise.all(
     Object.values(
       activeShops.map(async (shop) => {
-        const progress = await getKeepaProgress(shop.d);
+        const progress = await getFallbackKeepaProgress(shop.d);
         return { pending: progress.pending, d: shop.d };
       })
     )

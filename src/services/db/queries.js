@@ -25,3 +25,34 @@ export const pendingKeepaProductsQuery = {
     },
   ],
 };
+
+export const recoverKeepaProductsQuery = {
+  keepa_lckd: true,
+};
+
+export const pendingFallbackKeepaProductsQuery = {
+  $and: [
+    { keepaEan_lckd: { $exists: false } },
+    {
+      $or: [
+        { info_prop: { $in: ["missing"] } },
+        { "costs.azn": { $lte: 0.3 } },
+      ],
+    },
+    { eanList: { $exists: true, $ne: [] } },
+    {
+      $or: [
+        { keepaEanUpdatedAt: { $exists: false } },
+        {
+          keepaEanUpdatedAt: {
+            $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
+          },
+        },
+      ],
+    },
+  ],
+};
+
+export const recoverFallbackKeepaProductsQuery = {
+  keepaEan_lckd: true,
+};

@@ -1,7 +1,8 @@
 import { scheduleJob } from "node-schedule";
-import { lookForPendingKeepaLookups, processQueue } from "./services/keepa.js";
+import {  processQueue } from "./services/keepa.js";
 import { deleteUnwatchedProduts } from "./services/deleteUnwatchedProducts.js";
 import { controlProcessProps } from "./services/controlProcessProps.js";
+import { lookForPendingKeepaLookups } from "./util/lookForPendingKeepaLookups.js";
 
 const main = async () => {
   // Look for old products
@@ -14,8 +15,9 @@ const main = async () => {
   });
   job2.once("scheduled", () => console.log("Job scheduled"));
   // Look for pending keepa lookups
-  await lookForPendingKeepaLookups();
-  await processQueue();
+  let keepaJob = null;
+  await lookForPendingKeepaLookups(keepaJob);
+  await processQueue(keepaJob);
 };
 
 main()

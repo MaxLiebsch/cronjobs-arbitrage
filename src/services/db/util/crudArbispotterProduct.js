@@ -1,5 +1,10 @@
 import { getArbispotterDb } from "../mongo.js";
-import { pendingKeepaProductsQuery } from "../queries.js";
+import {
+  pendingFallbackKeepaProductsQuery,
+  pendingKeepaProductsQuery,
+  recoverFallbackKeepaProductsQuery,
+  recoverKeepaProductsQuery,
+} from "../queries.js";
 
 export const countProducts = async (domain, query = {}) => {
   const collectionName = domain;
@@ -13,7 +18,7 @@ export const findArbispotterProduct = async (domain, query) => {
   const db = await getArbispotterDb();
   const collection = db.collection(collectionName);
   return collection.findOne({ ...query });
-}
+};
 
 export const findArbispotterProducts = async (
   domain,
@@ -45,31 +50,52 @@ export const findProductByLink = async (domain, link) => {
   return collection.findOne({ lnk: link });
 };
 
-export const lockProductsForKeepa = async (domain, limit = 0) => {
+export const lockProductsForKeepa = async (
+  domain,
+  limit = 0,
+  fallback,
+  recovery
+) => {
   const collectionName = domain;
   const db = await getArbispotterDb();
 
   const options = {};
-  let query = pendingKeepaProductsQuery;
 
-  if (limit) {
-    options["limit"] = limit;
+  if (recovery) {
+    let query = fallback
+      ? recoverFallbackKeepaProductsQuery
+      : recoverKeepaProductsQuery;
+
+    const documents = await db
+      .collection(collectionName)
+      .find(query, options)
+      .toArray();
+    return documents;
+  } else {
+    // Determine the query based on the fallback condition
+    let query = fallback
+      ? pendingFallbackKeepaProductsQuery
+      : pendingKeepaProductsQuery;
+
+    if (limit) {
+      options["limit"] = limit;
+    }
+
+    const documents = await db
+      .collection(collectionName)
+      .find(query, options)
+      .toArray();
+
+    // Update documents to mark them as locked
+    await db
+      .collection(collectionName)
+      .updateMany(
+        { _id: { $in: documents.map((doc) => doc._id) } },
+        { $set: { keepa_lckd: true } }
+      );
+
+    return documents;
   }
-
-  const documents = await db
-    .collection(collectionName)
-    .find(query, options)
-    .toArray();
-
-  // Update documents to mark them as locked
-  await db
-    .collection(collectionName)
-    .updateMany(
-      { _id: { $in: documents.map((doc) => doc._id) } },
-      { $set: { keepa_lckd: true } }
-    );
-
-  return documents;
 };
 
 export const upsertProduct = async (domain, product) => {
@@ -121,14 +147,7 @@ export const updateProductWithQuery = async (domain, query, update) => {
   const collectionName = domain;
   const db = await getArbispotterDb();
   const collection = db.collection(collectionName);
-  return collection.updateOne(
-    { ...query },
-    {
-      $set: {
-        ...update,
-      },
-    }
-  );
+  return collection.updateOne({ ...query }, update);
 };
 
 export const deleteArbispotterProducts = async (domain, query = {}) => {

@@ -33,7 +33,7 @@ export const controlProcessProps = async () => {
         {
           $or: [
             {
-              "costs.azn": { $eq: 0 },
+              "costs.azn": { $lte: 0.3 },
               infoUpdatedAt: { $lt: lt },
             },
             {
@@ -69,7 +69,7 @@ export const controlProcessProps = async () => {
               update: { $unset: {} },
             },
           };
-          if (infoPropInvalids.includes(info_prop) || costs?.azn === 0) {
+          if (infoPropInvalids.includes(info_prop) || costs?.azn <= 0.3) {
             spotterBulk.updateOne.update.$unset.info_prop = "";
             spotterBulk.updateOne.update.$unset.infoUpdatedAt = "";
           }
