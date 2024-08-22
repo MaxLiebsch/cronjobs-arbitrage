@@ -13,6 +13,14 @@ config({
 // Mock queue with Asins (initially empty)
 const asinQueue = [];
 
+let totalTotal = 0;
+
+export const getTotalTotal = () => totalTotal;
+
+export const setTotalTotal = (value) => {
+  totalTotal = value;
+};
+
 // Event mechanism
 let queueResolve;
 // Job, when all products have been sourced
@@ -55,7 +63,7 @@ export async function processQueue(keepaJob) {
             promises.push(makeRequestsForEan(product));
           } else {
             console.log("complete product:", product);
-            await updateProductWithQuery(
+            const result = await updateProductWithQuery(
               product.shopDomain,
               { _id: product._id },
               {
@@ -65,8 +73,8 @@ export async function processQueue(keepaJob) {
                 },
               }
             );
+            console.log('result:', result)
           }
-
         }
       } else {
         break; // Break the loop if the queue is empty
