@@ -51,7 +51,8 @@ export async function processQueue(keepaJob) {
         if (product?.asin) {
           promises.push(makeRequestsForId(product));
         } else {
-          if (!product.ean) {
+          console.log('product:', product)
+          if (!product?.ean) {
             await updateProductWithQuery(
               product.shopDomain,
               { _id: product._id },
@@ -67,7 +68,8 @@ export async function processQueue(keepaJob) {
         if (product?.ean) {
           promises.push(makeRequestsForEan(product));
         } else {
-          if (!product.asin) {
+          console.log('product:', product)
+          if (!product?.asin) {
             await updateProductWithQuery(
               product.shopDomain,
               { _id: product._id },
