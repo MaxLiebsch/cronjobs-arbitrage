@@ -28,6 +28,7 @@ export const pendingKeepaProductsQuery = {
 
 export const recoverKeepaProductsQuery = {
   keepa_lckd: true,
+  asin: { $exists: true, $ne: "" },
 };
 
 export const pendingFallbackKeepaProductsQuery = {
@@ -55,4 +56,5 @@ export const pendingFallbackKeepaProductsQuery = {
 
 export const recoverFallbackKeepaProductsQuery = {
   keepaEan_lckd: true,
+  eanList: { $exists: true, $ne: [] } 
 };
