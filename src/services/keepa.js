@@ -5,6 +5,7 @@ import { makeRequestsForEan, makeRequestsForId } from "../util/keepaHelper.js";
 import { lookForPendingKeepaLookups } from "../util/lookForPendingKeepaLookups.js";
 import { KEEPA_RATE_LIMIT } from "../constants.js";
 import { updateProductWithQuery } from "./db/util/crudArbispotterProduct.js";
+import { updateTaskWithQuery } from "./db/util/updateTask.js";
 
 config({
   path: [`.env`],
@@ -13,12 +14,14 @@ config({
 // Mock queue with Asins (initially empty)
 const asinQueue = [];
 
-let totalTotal = 0;
+let total = 0;
 
-export const getTotalTotal = () => totalTotal;
-
-export const setTotalTotal = (value) => {
-  totalTotal = value;
+export const getTotal = () => total;
+export const setTotal = (value) => {
+  total = value;
+};
+export const incrementTotal = () => {
+  total++;
 };
 
 // Event mechanism
@@ -37,6 +40,7 @@ export async function processQueue(keepaJob) {
   running = true;
   while (true) {
     console.log("Remaining Asins in batch:", asinQueue.length);
+    await updateTaskWithQuery({ type: "KEEPA_NORMAL" }, { total });
     if (asinQueue.length === 0) {
       console.log(
         "Queue is empty after processing all pending products. Starting job to look for pending keepa lookups..."
@@ -57,9 +61,11 @@ export async function processQueue(keepaJob) {
       if (asinQueue.length > 0) {
         const product = asinQueue.shift();
         if (product?.asin) {
+          incrementTotal();
           promises.push(makeRequestsForId(product));
         } else {
           if (product?.ean) {
+            incrementTotal();
             promises.push(makeRequestsForEan(product));
           } else {
             console.log("complete product:", product);
@@ -73,7 +79,7 @@ export async function processQueue(keepaJob) {
                 },
               }
             );
-            console.log('result:', result)
+            console.log("result:", result);
           }
         }
       } else {
@@ -105,3 +111,11 @@ export function addToQueue(newAsins) {
     queueResolve = null;
   }
 }
+
+scheduleJob("0 0 * * *", async () => {
+  await updateTaskWithQuery(
+    { type: "KEEPA_NORMAL" },
+    { total: 0, yesterday: total }
+  );
+  setTotal(0);
+});
