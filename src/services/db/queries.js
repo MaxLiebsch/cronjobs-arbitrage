@@ -12,7 +12,7 @@ export const pendingKeepaProductsQuery = {
     {
       $or: [{ keepa_lckd: { $exists: false } }, { keepa_lckd: { $eq: false } }],
     },
-    { asin: { $exists: true, $ne: "" } },
+    { asin: { $exists: true, $nin: ["", null]  } },
     {
       $or: [
         { keepaUpdatedAt: { $exists: false } },
@@ -28,7 +28,7 @@ export const pendingKeepaProductsQuery = {
 
 export const recoverKeepaProductsQuery = {
   keepa_lckd: true,
-  asin: { $exists: true, $ne: "" },
+  asin: { $exists: true, $nin: ["", null]  },
 };
 
 export const pendingFallbackKeepaProductsQuery = {
