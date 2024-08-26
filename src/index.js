@@ -30,9 +30,9 @@ const main = async () => {
       setTotal(keepaTask.total);
     }
   }
+  nameBatchProcessing().then();
   await lookForPendingKeepaLookups(keepaJob);
   await processQueue(keepaJob);
-  await nameBatchProcessing()
 };
 
 main()
