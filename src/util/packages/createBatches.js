@@ -1,6 +1,6 @@
-import { TOKEN_LIMIT } from "../constants.js";
-import { getArbispotterDb, getCrawlDataDb } from "../services/db/mongo.js";
-import { getAllShops } from "../services/db/util/shops.js";
+import { TOKEN_LIMIT } from "../../constants.js";
+import { getArbispotterDb, getCrawlDataDb } from "../../services/db/mongo.js";
+import { getAllShops } from "../../services/db/util/shops.js";
 import { createPrompt } from "./createPrompt.js";
 import { encodeChat } from "gpt-tokenizer";
 

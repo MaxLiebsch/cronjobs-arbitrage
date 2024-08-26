@@ -93,12 +93,13 @@ async function prepareProducts(keepaProgressPerShop, fallback, recovery) {
             shopDomain: shop.d,
             _id: product._id,
           };
+        } else {
+          return {
+            asin: product.asin,
+            shopDomain: shop.d,
+            _id: product._id,
+          };
         }
-        return {
-          asin: product.asin,
-          shopDomain: shop.d,
-          _id: product._id,
-        };
       });
       return asins;
     })

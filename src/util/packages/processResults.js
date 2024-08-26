@@ -1,6 +1,6 @@
-import { MAX_PACKAGE_SIZE } from "../constants.js";
-import { getArbispotterDb, getCrawlDataDb } from "../services/db/mongo.js";
-import { safeJSONParse } from "./safeParseJson.js";
+import { MAX_PACKAGE_SIZE } from "../../constants.js";
+import { getArbispotterDb, getCrawlDataDb } from "../../services/db/mongo.js";
+import { safeJSONParse } from "../safeParseJson.js";
 import {
   calculateAznArbitrage,
   calculateEbyArbitrage,
@@ -26,7 +26,7 @@ export const processResults = async (fileContents, batchData) => {
     .find({ s_hash: { $in: hashes } })
     .toArray();
   if (!products.length)
-    throw new Error("No products found for batch ", batchId);
+    throw new Error("No products found for batch " + batchId);
 
   for (let index = 0; index < results.length; index++) {
     const set = {};
@@ -114,15 +114,17 @@ export const processResults = async (fileContents, batchData) => {
         }, [])
       );
       const factor = eSellQty / buyQty;
-
-      const arbitrage = calculateEbyArbitrage(
-        mappedCategories,
-        eSellPrice, //VK
-        buyPrice * factor // prc * (e_qty / qty) //EK  //QTY Zielshop/QTY Herkunftsshop
-      );
-      Object.entries(arbitrage).forEach(([key, value]) => {
-        spotterSet[key] = value;
-      });
+      if (mappedCategories) {
+        const arbitrage = calculateEbyArbitrage(
+          mappedCategories,
+          eSellPrice, //VK
+          buyPrice * factor // prc * (e_qty / qty) //EK  //QTY Zielshop/QTY Herkunftsshop
+        );
+        if (arbitrage)
+          Object.entries(arbitrage).forEach(([key, value]) => {
+            spotterSet[key] = value;
+          });
+      }
     }
 
     let qty_prop = "complete";

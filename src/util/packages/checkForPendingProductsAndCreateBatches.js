@@ -1,11 +1,11 @@
-import { getCrawlDataDb } from "../services/db/mongo.js";
+import { getCrawlDataDb } from "../../services/db/mongo.js";
 import {
   createBatch,
   retrieveBatch,
   uploadFile,
-} from "../services/openai/index.js";
-import { retrieveProductsForBatches } from "./createBatches.js";
-import { createJsonlFile } from "./createJsonlFile.js";
+} from "../../services/openai/index.js";
+import { createJsonlFile } from "../createJsonlFile.js";
+import {retrieveProductsForBatches} from "./createBatches.js";
 
 export const checkForPendingProductsAndCreateBatches = async () => {
   const crawlDataDb = await getCrawlDataDb();

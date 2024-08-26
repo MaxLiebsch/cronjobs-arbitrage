@@ -1,14 +1,10 @@
-import { getArbispotterDb, getCrawlDataDb } from "../services/db/mongo.js";
 import OpenAI from "openai";
-
 import "dotenv/config";
 import { config } from "dotenv";
-import fsjetpack from "fs-jetpack";
-import { join } from "path";
-const { createWriteStream, cwd, createReadStream, path } = fsjetpack;
 import { encodeChat } from "gpt-tokenizer";
-import { createPrompt } from "./createPrompt.js";
-import { createJsonlFile } from "./createJsonlFile.js";
+import { createPrompt } from "../src/util/createPrompt.js";
+import { getArbispotterDb } from "../src/services/db/mongo.js";
+import { createNameMatchingPrompt } from "../src/util/createNamingPrompt.js";
 config({
   path: [`.env`],
 });
@@ -19,41 +15,40 @@ const openai = new OpenAI({
   apiKey, // This is the default and can be omitted
 });
 
-export const createProductnameBatchFile = async () => {
-  const db = await getArbispotterDb();
-  const shopDomain = "idealo.de";
+export const testNamingPrompt = async () => {
+  const db = await getArbispotterDb()
+  const shopDomain = "sales";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ eanList: "8719018025630" }, { limit: 1 })
+    .find({ asin: 'B008M4X5VC' }, { limit: 1 })
     .toArray();
-  const prompt = createPrompt(
+  const prompt = createNameMatchingPrompt(
     shopDomain,
     products[0].s_hash,
-    {
-      nm: 'Vitakraft 25226 Kräcker Meerschweinchen Trio-Mix, 3Stk',
-      mnfctr: ""
-    },
+    products[0],
     true
   );
+  console.log("prompts:", JSON.stringify(prompt.body.messages[0], null, 2));
   console.log("prompts:", JSON.stringify(prompt.body.messages[1], null, 2));
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: prompt.body.messages,
     max_tokens: 1000,
-    temperature: 0.1,
+    temperature: 0.3,
   });
   console.log(
     "response:",
     JSON.stringify(response.choices[0].message.content, null, 2)
   );
+    const tokenCnt = encodeChat(prompt.body.messages, "gpt-3.5-turbo").length;
+    console.log('tokenCnt:', tokenCnt)
 
   // console.log(products.length);
   // const prompts = [];
   // let tokens = 0;
   // let cnt = 0;
   // for (const product of products) {
-  //   const tokenCnt = encodeChat(prompt.body.messages, "gpt-3.5-turbo").length;
 
   //   if (tokens + tokenCnt < 3000) {
   //     tokens += tokenCnt;
@@ -98,6 +93,6 @@ export const createProductnameBatchFile = async () => {
   }
 };
 
-createProductnameBatchFile().then(() => {
+testNamingPrompt().then(() => {
   process.exit(0);
 });

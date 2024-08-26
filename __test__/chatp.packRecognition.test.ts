@@ -44,10 +44,11 @@ const runTest = async (
   await new Promise((resolve) => setTimeout(resolve, 50));
   cnt++;
   const id = crypto.randomUUID().toString();
-  const prompt = createPrompt("all", id, { nm: example.input }, true);
+  const prompt = createPrompt("all", id, { nm: example.input, mnftcr: "" }, true);
   const response = await chatP(prompt.body.messages);
   if (response?.choices[0]?.message?.content) {
     const json = safeJSONParse(response?.choices[0]?.message?.content);
+    if(example.package !== json?.nm)
     console.log(
       "Packung: ",
       cnt,
@@ -56,7 +57,7 @@ const runTest = async (
       " ",
       example.input,
       "\nErklärung: ",
-      json?.explain,
+      json?.nm_explain,
       "\nErwartet: ",example.package,"\nErgebnis: ",
       json?.nm
     );

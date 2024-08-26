@@ -4,6 +4,8 @@ import { deleteUnwatchedProduts } from "./services/deleteUnwatchedProducts.js";
 import { controlProcessProps } from "./services/controlProcessProps.js";
 import { lookForPendingKeepaLookups } from "./util/lookForPendingKeepaLookups.js";
 import { getCrawlDataDb } from "./services/db/mongo.js";
+import nameBatchProcessing from "./services/namingBatch.js";
+
 
 const main = async () => {
   // Look for old products
@@ -30,6 +32,7 @@ const main = async () => {
   }
   await lookForPendingKeepaLookups(keepaJob);
   await processQueue(keepaJob);
+  await nameBatchProcessing()
 };
 
 main()

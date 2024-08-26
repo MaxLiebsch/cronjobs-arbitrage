@@ -1,5 +1,5 @@
-import { getCrawlDataDb } from "../services/db/mongo.js";
-import { safeJSONParse } from "./safeParseJson.js";
+import { getCrawlDataDb } from "../../services/db/mongo.js";
+import { safeJSONParse } from "../safeParseJson.js";
 
 import "dotenv/config";
 import { config } from "dotenv";
