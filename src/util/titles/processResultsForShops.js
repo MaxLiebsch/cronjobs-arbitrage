@@ -5,6 +5,15 @@ import { resetAznProductQuery } from "../../services/aznQueries.js";
 import { resetEbyProductQuery } from "../../services/ebyQueries.js";
 import { MINIMAL_SCORE } from "../../constants.js";
 
+const cleanScore = (score) => {
+  if (typeof score === "string") {
+    // Remove extra double quotes
+    score = score.replace(/^"+|"+$/g, "");
+    return parseFloat(score);
+  }
+  return score;
+};
+
 export const processResultsForShops = async (fileContents, batchData) => {
   const { batchId } = batchData;
   const results = fileContents
@@ -60,7 +69,7 @@ export const processResultsForShops = async (fileContents, batchData) => {
         let nm_prop = "complete";
 
         if ("a_score" && "a_isMatch" in update) {
-          const aScore = Number(update.a_score);
+          const aScore = cleanScore(update.a_score);
           if (aScore < MINIMAL_SCORE) {
             deleteAzn = true;
           } else if (!isNaN(aScore)) {
@@ -74,7 +83,7 @@ export const processResultsForShops = async (fileContents, batchData) => {
         }
 
         if ("e_score" && "e_isMatch" in update) {
-          const eScore = Number(update.e_score);
+          const eScore = cleanScore(update.e_score);
           if (eScore < MINIMAL_SCORE) {
             deleteEby = true;
           } else if (!isNaN(eScore)) {
