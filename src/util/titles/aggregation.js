@@ -1,3 +1,4 @@
+import { MAX_BATCH_SIZE } from "../../constants.js";
 import {
   ebayMarginCalculationAggregationStep,
   totalPositivAmazon,
@@ -61,5 +62,5 @@ export const aggregation = [
       ],
     },
   },
-  { $limit: 6000 },
+  { $limit: MAX_BATCH_SIZE },
 ];

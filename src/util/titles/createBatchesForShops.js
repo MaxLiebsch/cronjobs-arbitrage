@@ -23,8 +23,7 @@ export const retrieveProductsForBatchesForShops = async () => {
     try {
       const rawProducts = await spotterDb
         .collection(shop.d)
-        .aggregate(aggregation)
-        .limit(250)
+        .aggregate(aggregation) 
         .toArray();
       if (rawProducts.length === 0) continue;
       const productsWithShop = rawProducts.map((product) => {
