@@ -1,887 +1,4167 @@
 yarn run v1.22.19
-$ node ./src/index.js
+$ C:\Users\love\mx\cronjobs-arbitrage\node_modules\.bin\cross-env NODE_ENV=development node .\__test__\namingBatchPerShop.test.js
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 106
+shopBatches: 1
+newBatchFileContents:
+ [
+  {
+    prompts: 106,
+    batchShops: [ 'idealo.de', 'alternate.de', 'cyberport.de' ]
+  }
+]
+batch_iBPqGfU8VwyRKWqzZYy2yttY  started successfully!
+Step: Checking for pending products and creating batches is done!
+Interval started...
+Processing completed batch batch_iBPqGfU8VwyRKWqzZYy2yttY ...
+Processing batchMap:  3
 {
-  "categories": [
-    1478865031,
-    26317046031
-  ],
-  "eanList": [
-    "4020628615635"
-  ],
-  "brand": "PLAION",
-  "numberOfItems": 1,
-  "availabilityAmazon": 0,
-  "categoryTree": [
-    {
-      "catId": 300992,
-      "name": "Games"
-    },
-    {
-      "catId": 541708,
-      "name": "Plattformen"
-    },
-    {
-      "catId": 301129,
-      "name": "PC"
-    },
-    {
-      "catId": 1478865031,
-      "name": "Spiele"
-    }
-  ],
-  "salesRanks": {
-    "300992": [
-      6832928,
-      -1,
-      6995358,
-      18004,
-      6996098,
-      18284,
-      6996920,
-      18707,
-      6997864,
-      18794,
-      6998428,
-      19541,
-      6998648,
-      19872,
-      6999016,
-      19541,
-      6999384,
-      19759,
-      7000140,
-      20280,
-      7001074,
-      20287,
-      7001696,
-      20550,
-      7002564,
-      20658,
-      7003368,
-      20825,
-      7004052,
-      21054,
-      7005020,
-      20974,
-      7005772,
-      21254,
-      7006484,
-      21195,
-      7007592,
-      21304,
-      7007844,
-      21413,
-      7008040,
-      3624,
-      7008970,
-      8038,
-      7009966,
-      9347,
-      7010154,
-      12276,
-      7010776,
-      12853,
-      7011176,
-      14052,
-      7014572,
-      18870,
-      7014760,
-      18856,
-      7014948,
-      18983,
-      7015736,
-      19590,
-      7016130,
-      20059,
-      7016322,
-      20036,
-      7016578,
-      20120,
-      7016820,
-      20411,
-      7017094,
-      20669,
-      7017344,
-      20858,
-      7017714,
-      20835,
-      7018180,
-      21188,
-      7018408,
-      21361,
-      7018724,
-      21660,
-      7018992,
-      21685,
-      7019188,
-      21620,
-      7019548,
-      21741,
-      7019918,
-      22112,
-      7020348,
-      22225,
-      7020600,
-      22114,
-      7020970,
-      22178,
-      7021428,
-      22354,
-      7021860,
-      22640,
-      7022112,
-      22487,
-      7022420,
-      3532,
-      7022792,
-      5090,
-      7023224,
-      7813,
-      7023476,
-      8188,
-      7023784,
-      8741,
-      7024092,
-      9773,
-      7024460,
-      11430,
-      7024772,
-      11820,
-      7025022,
-      12038,
-      7025276,
-      12669,
-      7025532,
-      13232,
-      7025948,
-      13857,
-      7026200,
-      14313,
-      7026452,
-      14437,
-      7026760,
-      15164,
-      7027132,
-      15657,
-      7027326,
-      16099,
-      7027584,
-      16318,
-      7028014,
-      16506,
-      7028206,
-      16969,
-      7028684,
-      17960,
-      7028996,
-      18177,
-      7029244,
-      18141,
-      7029554,
-      18357,
-      7029712,
-      18686,
-      7030114,
-      19042,
-      7030362,
-      19370,
-      7030844,
-      19475,
-      7031262,
-      19886,
-      7031692,
-      20104,
-      7031880,
-      20247,
-      7032132,
-      20217,
-      7032500,
-      20355,
-      7032754,
-      20493,
-      7032944,
-      20698,
-      7033132,
-      20903,
-      7033508,
-      20821,
-      7033884,
-      20992,
-      7034174,
-      21289,
-      7034770,
-      3755,
-      7035068,
-      4316,
-      7035256,
-      5396,
-      7035664,
-      6645,
-      7035876,
-      7720,
-      7036244,
-      8722,
-      7036496,
-      9080,
-      7036842,
-      10319,
-      7037164,
-      11119,
-      7037552,
-      11865,
-      7037932,
-      12499,
-      7038188,
-      13029,
-      7038612,
-      13701,
-      7038828,
-      14283,
-      7039048,
-      14659,
-      7039416,
-      14744,
-      7039722,
-      15128,
-      7039912,
-      15730,
-      7040280,
-      16869,
-      7040840,
-      16940,
-      7041154,
-      17443,
-      7041350,
-      17910,
-      7041576,
-      18477,
-      7042010,
-      18698,
-      7042260,
-      18707,
-      7042600,
-      19092,
-      7043000,
-      19470,
-      7043360,
-      19773,
-      7043816,
-      19889,
-      7044012,
-      20022,
-      7044176,
-      20209,
-      7044508,
-      20481,
-      7044696,
-      20569,
-      7045200,
-      20828,
-      7045512,
-      21005,
-      7045702,
-      21176,
-      7046078,
-      21327,
-      7046268,
-      3787,
-      7046652,
-      4318,
-      7046876,
-      5510,
-      7047008,
-      6798,
-      7047416,
-      8016,
-      7047676,
-      8818,
-      7047960,
-      9119,
-      7048188,
-      9603,
-      7048492,
-      10438,
-      7048864,
-      11493,
-      7048956,
-      12321,
-      7049144,
-      12693,
-      7049376,
-      12931,
-      7049668,
-      13417,
-      7049984,
-      14033,
-      7050288,
-      14685,
-      7050460,
-      15175,
-      7050834,
-      15290,
-      7051032,
-      15547,
-      7051400,
-      16059,
-      7051668,
-      16606,
-      7051854,
-      17110,
-      7052088,
-      17249,
-      7052352,
-      17354,
-      7052936,
-      18386,
-      7053188,
-      18956,
-      7053480,
-      19246,
-      7053702,
-      19280,
-      7054160,
-      19609,
-      7054328,
-      19954,
-      7054540,
-      20379,
-      7054878,
-      20657,
-      7055348,
-      20854,
-      7055672,
-      21159,
-      7055858,
-      21449,
-      7056142,
-      21717,
-      7056332,
-      21785,
-      7056760,
-      21727,
-      7056868,
-      21979,
-      7057348,
-      22272,
-      7057580,
-      22597,
-      7057976,
-      22547,
-      7058256,
-      22556,
-      7058512,
-      22781,
-      7058796,
-      23079,
-      7059064,
-      23405,
-      7059264,
-      23361,
-      7059630,
-      23176,
-      7059980,
-      23470,
-      7060356,
-      23836,
-      7060544,
-      23897,
-      7060964,
-      23734,
-      7061272,
-      23649,
-      7061516,
-      23718,
-      7061852,
-      23945,
-      7062162,
-      23974,
-      7062930,
-      24030,
-      7063380,
-      24249,
-      7063484,
-      24255,
-      7063860,
-      24076,
-      7064048,
-      24057,
-      7064236,
-      23996,
-      7064636,
-      24164,
-      7064866,
-      24247,
-      7065204,
-      24122,
-      7065580,
-      23951,
-      7065954,
-      4064,
-      7066072,
-      5695,
-      7066330,
-      6960,
-      7066706,
-      7477,
-      7066896,
-      8166
-    ],
-    "1478865031": [
-      6832928,
-      -1,
-      6994894,
-      1307,
-      6995136,
-      1338,
-      6996098,
-      1375,
-      6996920,
-      1420,
-      6997864,
-      1430,
-      6998428,
-      1501,
-      6998648,
-      1555,
-      6999016,
-      1501,
-      6999384,
-      1541,
-      7000140,
-      1602,
-      7001074,
-      1605,
-      7001194,
-      1604,
-      7001446,
-      1605,
-      7001696,
-      1585,
-      7002564,
-      1573,
-      7003368,
-      1561,
-      7004052,
-      1584,
-      7005020,
-      1549,
-      7005772,
-      1573,
-      7005920,
-      1564,
-      7006108,
-      1573,
-      7006484,
-      1568,
-      7007356,
-      1601,
-      7007592,
-      1580,
-      7007844,
-      1602,
-      7008040,
-      136,
-      7008970,
-      411,
-      7009966,
-      509,
-      7010154,
-      773,
-      7010776,
-      814,
-      7011176,
-      958,
-      7014572,
-      1382,
-      7014760,
-      1364,
-      7014948,
-      1365,
-      7015736,
-      1440,
-      7016130,
-      1499,
-      7016322,
-      1489,
-      7016578,
-      1492,
-      7016820,
-      1521,
-      7017094,
-      1551,
-      7017344,
-      1564,
-      7017714,
-      1548,
-      7018180,
-      1594,
-      7018408,
-      1604,
-      7018724,
-      1642,
-      7018992,
-      1639,
-      7019188,
-      1638,
-      7019548,
-      1656,
-      7019918,
-      1705,
-      7020348,
-      1724,
-      7020600,
-      1725,
-      7020970,
-      1735,
-      7021428,
-      1769,
-      7021860,
-      1801,
-      7022112,
-      1779,
-      7022420,
-      124,
-      7022792,
-      224,
-      7023224,
-      422,
-      7023476,
-      442,
-      7023784,
-      484,
-      7024092,
-      582,
-      7024460,
-      750,
-      7024772,
-      779,
-      7025022,
-      787,
-      7025276,
-      864,
-      7025532,
-      916,
-      7025948,
-      964,
-      7026200,
-      1007,
-      7026452,
-      1021,
-      7026760,
-      1072,
-      7027132,
-      1124,
-      7027326,
-      1186,
-      7027584,
-      1200,
-      7028014,
-      1224,
-      7028206,
-      1280,
-      7028684,
-      1357,
-      7028996,
-      1370,
-      7029244,
-      1349,
-      7029554,
-      1361,
-      7029712,
-      1387,
-      7030114,
-      1423,
-      7030362,
-      1452,
-      7030844,
-      1471,
-      7031262,
-      1501,
-      7031692,
-      1519,
-      7031880,
-      1524,
-      7032132,
-      1512,
-      7032500,
-      1535,
-      7032754,
-      1537,
-      7032944,
-      1545,
-      7033132,
-      1547,
-      7033508,
-      1528,
-      7033884,
-      1551,
-      7034174,
-      1592,
-      7034770,
-      121,
-      7035068,
-      143,
-      7035256,
-      211,
-      7035664,
-      301,
-      7035876,
-      379,
-      7036244,
-      458,
-      7036496,
-      488,
-      7036842,
-      609,
-      7037164,
-      690,
-      7037552,
-      766,
-      7037932,
-      812,
-      7038188,
-      892,
-      7038612,
-      954,
-      7038828,
-      1000,
-      7039048,
-      1031,
-      7039416,
-      1036,
-      7039722,
-      1079,
-      7039912,
-      1137,
-      7040280,
-      1226,
-      7040840,
-      1225,
-      7041154,
-      1286,
-      7041350,
-      1337,
-      7041576,
-      1388,
-      7042010,
-      1404,
-      7042260,
-      1394,
-      7042600,
-      1424,
-      7043000,
-      1466,
-      7043360,
-      1495,
-      7043816,
-      1487,
-      7044012,
-      1491,
-      7044176,
-      1506,
-      7044508,
-      1534,
-      7044696,
-      1525,
-      7045200,
-      1553,
-      7045512,
-      1576,
-      7045702,
-      1588,
-      7046078,
-      1603,
-      7046268,
-      117,
-      7046652,
-      153,
-      7046876,
-      240,
-      7047008,
-      332,
-      7047416,
-      422,
-      7047676,
-      479,
-      7047960,
-      499,
-      7048188,
-      545,
-      7048492,
-      623,
-      7048864,
-      730,
-      7048956,
-      814,
-      7049144,
-      829,
-      7049376,
-      847,
-      7049668,
-      894,
-      7049984,
-      961,
-      7050288,
-      1030,
-      7050460,
-      1067,
-      7050834,
-      1074,
-      7051032,
-      1084,
-      7051400,
-      1144,
-      7051668,
-      1192,
-      7051854,
-      1224,
-      7052088,
-      1235,
-      7052352,
-      1246,
-      7052936,
-      1334,
-      7053188,
-      1395,
-      7053480,
-      1418,
-      7053702,
-      1394,
-      7054160,
-      1436,
-      7054328,
-      1473,
-      7054540,
-      1511,
-      7054878,
-      1539,
-      7055098,
-      1531,
-      7055348,
-      1547,
-      7055672,
-      1585,
-      7055858,
-      1599,
-      7056142,
-      1644,
-      7056332,
-      1638,
-      7056760,
-      1633,
-      7056868,
-      1667,
-      7057348,
-      1705,
-      7057580,
-      1745,
-      7057976,
-      1727,
-      7058256,
-      1729,
-      7058512,
-      1766,
-      7058796,
-      1816,
-      7059064,
-      1850,
-      7059264,
-      1839,
-      7059630,
-      1810,
-      7059980,
-      1849,
-      7060356,
-      1904,
-      7060544,
-      1892,
-      7060964,
-      1858,
-      7061272,
-      1837,
-      7061516,
-      1854,
-      7061852,
-      1879,
-      7062162,
-      1877,
-      7062930,
-      1854,
-      7063380,
-      1892,
-      7063484,
-      1884,
-      7063860,
-      1858,
-      7064048,
-      1852,
-      7064236,
-      1845,
-      7064636,
-      1857,
-      7065204,
-      1840,
-      7065580,
-      1805,
-      7065954,
-      149,
-      7066072,
-      259,
-      7066330,
-      353,
-      7066706,
-      378,
-      7066896,
-      438
-    ]
-  },
-  "monthlySold": null,
-  "ahstprcs": [
-    6934620,
-    5982,
-    6937572,
-    5639,
-    6954844,
-    5699,
-    6962808,
-    5639,
-    6963500,
-    5699,
-    6979372,
-    5639,
-    6986198,
-    5499,
-    7031262,
-    5299
-  ],
-  "anhstprcs": [
-    6934620,
-    5982,
-    6937572,
-    5639,
-    6986198,
-    5499,
-    7031262,
-    5299,
-    7035256,
-    5199
-  ],
-  "auhstprcs": [
-    6727684,
-    -1
-  ],
-  "bb": null,
-  "curr_ahsprcs": 5299,
-  "curr_ansprcs": 5199,
-  "curr_ausprcs": -1,
-  "curr_salesRank": 8166,
-  "avg90_ahsprcs": 5507,
-  "avg90_ansprcs": 5472,
-  "avg90_ausprcs": -1,
-  "avg90_salesRank": 17387,
-  "buyBoxIsAmazon": true,
-  "stockAmount": null,
-  "stockBuyBox": null,
-  "totalOfferCount": 2
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb4518650c2b2e95d8bbe5"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.218Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
 }
-Done in 0.30s.
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb4522650c2b2e95d8bc05"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.218Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb453a650c2b2e95d8bc51"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.218Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb4547650c2b2e95d8bc7a"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.219Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb4700650c2b2e95d8c366"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.219Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb4717650c2b2e95d8c39b"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.219Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e611ed63905fe52378ecf"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.220Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bb662d63905fe521b9cc8"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.220Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bb226d63905fe521b5646"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e2ad9d63905fe5233afff"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.221Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66b23a0cd63905fe529b8c1f"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6694be23d63905fe52a01020"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.224Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668a4d5dd63905fe5203c7cd"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.224Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66a20425d63905fe528323c2"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66c34ffdd63905fe52ae7aa1"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669ec60fd63905fe523e514d"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.226Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668babd9d63905fe521ae936"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.226Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668b8cd0d63905fe52191a93"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.227Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6694bdfed63905fe52a00dce"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "e_pblsh": "",\n' +
+    '        "e_nm": "",\n' +
+    '        "e_lnk": "",\n' +
+    '        "e_img": "",\n' +
+    '        "esin": "",\n' +
+    '        "e_prc": "",\n' +
+    '        "e_uprc": "",\n' +
+    '        "e_qty": "",\n' +
+    '        "e_orgn": "",\n' +
+    '        "e_hash": "",\n' +
+    '        "e_mrgn": "",\n' +
+    '        "e_mrgn_pct": "",\n' +
+    '        "e_ns_costs": "",\n' +
+    '        "e_ns_mrgn": "",\n' +
+    '        "e_ns_mrgn_pct": "",\n' +
+    '        "e_tax": "",\n' +
+    '        "ebyCategories": "",\n' +
+    '        "e_vrfd": "",\n' +
+    '        "cat_taskId": "",\n' +
+    '        "ebyUpdatedAt": "",\n' +
+    '        "eby_taskId": "",\n' +
+    '        "dealEbyUpdatedAt": "",\n' +
+    '        "dealEbyTaskId": "",\n' +
+    '        "eby_prop": "",\n' +
+    '        "qEbyUpdatedAt": "",\n' +
+    '        "cat_prop": "",\n' +
+    '        "catUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.9",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.227Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6695f475d63905fe52b209a4"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.228Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bc25bd63905fe521c7297"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "e_pblsh": "",\n' +
+    '        "e_nm": "",\n' +
+    '        "e_lnk": "",\n' +
+    '        "e_img": "",\n' +
+    '        "esin": "",\n' +
+    '        "e_prc": "",\n' +
+    '        "e_uprc": "",\n' +
+    '        "e_qty": "",\n' +
+    '        "e_orgn": "",\n' +
+    '        "e_hash": "",\n' +
+    '        "e_mrgn": "",\n' +
+    '        "e_mrgn_pct": "",\n' +
+    '        "e_ns_costs": "",\n' +
+    '        "e_ns_mrgn": "",\n' +
+    '        "e_ns_mrgn_pct": "",\n' +
+    '        "e_tax": "",\n' +
+    '        "ebyCategories": "",\n' +
+    '        "e_vrfd": "",\n' +
+    '        "cat_taskId": "",\n' +
+    '        "ebyUpdatedAt": "",\n' +
+    '        "eby_taskId": "",\n' +
+    '        "dealEbyUpdatedAt": "",\n' +
+    '        "dealEbyTaskId": "",\n' +
+    '        "eby_prop": "",\n' +
+    '        "qEbyUpdatedAt": "",\n' +
+    '        "cat_prop": "",\n' +
+    '        "catUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.9",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.228Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669ede80d63905fe523febdc"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.229Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e3626d63905fe52346fbb"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e856cd63905fe523a1755"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.230Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66a9b857d63905fe5213cd36"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.231Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669edc7ed63905fe523fc7a2"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66c34e2fd63905fe52ae647c"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669f4497d63905fe52486291"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.233Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668c25f3d63905fe5224b9cc"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.80",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.233Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bc95ed63905fe521cf5cb"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.234Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66a75be4d63905fe52ed1d9b"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66a1f4dad63905fe528077f5"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.254Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66934b49d63905fe528d41fc"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.255Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e82e5d63905fe5239e9d3"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.255Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e9ed8d63905fe523bc209"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.255Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669efe1dd63905fe524313ae"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.255Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bb836d63905fe521bbc45"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.80",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.256Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669497e3d63905fe529ddaa3"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.256Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bbeaad63905fe521c3064"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "e_pblsh": "",\n' +
+    '        "e_nm": "",\n' +
+    '        "e_lnk": "",\n' +
+    '        "e_img": "",\n' +
+    '        "esin": "",\n' +
+    '        "e_prc": "",\n' +
+    '        "e_uprc": "",\n' +
+    '        "e_qty": "",\n' +
+    '        "e_orgn": "",\n' +
+    '        "e_hash": "",\n' +
+    '        "e_mrgn": "",\n' +
+    '        "e_mrgn_pct": "",\n' +
+    '        "e_ns_costs": "",\n' +
+    '        "e_ns_mrgn": "",\n' +
+    '        "e_ns_mrgn_pct": "",\n' +
+    '        "e_tax": "",\n' +
+    '        "ebyCategories": "",\n' +
+    '        "e_vrfd": "",\n' +
+    '        "cat_taskId": "",\n' +
+    '        "ebyUpdatedAt": "",\n' +
+    '        "eby_taskId": "",\n' +
+    '        "dealEbyUpdatedAt": "",\n' +
+    '        "dealEbyTaskId": "",\n' +
+    '        "eby_prop": "",\n' +
+    '        "qEbyUpdatedAt": "",\n' +
+    '        "cat_prop": "",\n' +
+    '        "catUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.8",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.256Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e5600d63905fe5236c207"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.256Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668a3eb9d63905fe5202d7e5"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.80",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.257Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668b4addd63905fe5215325b"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.257Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668f8d5dd63905fe525b5055"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.80",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.257Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e35b6d63905fe52346823"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.257Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668a5155d63905fe52040e07"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.257Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669ef73cd63905fe5241aef3"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.258Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e669ad63905fe5237f8d5"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.258Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669d702ad63905fe52260399"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.258Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6694bfcdd63905fe52a02a05"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.258Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e5032d63905fe52365378"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.258Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669f8dafd63905fe52502735"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.258Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668baa6ed63905fe521ad000"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.259Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e5d5cd63905fe5237484a"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.259Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6693428ad63905fe528ccae2"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.259Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e74e8d63905fe5238f07a"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.259Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668a7e0bd63905fe5206f5fe"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.259Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66aae753d63905fe522c5fee"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668b72a5d63905fe5217a4f3"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "e_pblsh": "",\n' +
+    '        "e_nm": "",\n' +
+    '        "e_lnk": "",\n' +
+    '        "e_img": "",\n' +
+    '        "esin": "",\n' +
+    '        "e_prc": "",\n' +
+    '        "e_uprc": "",\n' +
+    '        "e_qty": "",\n' +
+    '        "e_orgn": "",\n' +
+    '        "e_hash": "",\n' +
+    '        "e_mrgn": "",\n' +
+    '        "e_mrgn_pct": "",\n' +
+    '        "e_ns_costs": "",\n' +
+    '        "e_ns_mrgn": "",\n' +
+    '        "e_ns_mrgn_pct": "",\n' +
+    '        "e_tax": "",\n' +
+    '        "ebyCategories": "",\n' +
+    '        "e_vrfd": "",\n' +
+    '        "cat_taskId": "",\n' +
+    '        "ebyUpdatedAt": "",\n' +
+    '        "eby_taskId": "",\n' +
+    '        "dealEbyUpdatedAt": "",\n' +
+    '        "dealEbyTaskId": "",\n' +
+    '        "eby_prop": "",\n' +
+    '        "qEbyUpdatedAt": "",\n' +
+    '        "cat_prop": "",\n' +
+    '        "catUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.9",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.260Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e2639d63905fe52336593"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.261Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6695cfecd63905fe52afe701"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.80",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668f5734d63905fe5257d984"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668f48ffd63905fe5256ef47"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669f5613d63905fe524a4feb"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bc0c7d63905fe521c56d5"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669dfa11d63905fe5230c833"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668f8c8dd63905fe525b4120"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "e_pblsh": "",\n' +
+    '        "e_nm": "",\n' +
+    '        "e_lnk": "",\n' +
+    '        "e_img": "",\n' +
+    '        "esin": "",\n' +
+    '        "e_prc": "",\n' +
+    '        "e_uprc": "",\n' +
+    '        "e_qty": "",\n' +
+    '        "e_orgn": "",\n' +
+    '        "e_hash": "",\n' +
+    '        "e_mrgn": "",\n' +
+    '        "e_mrgn_pct": "",\n' +
+    '        "e_ns_costs": "",\n' +
+    '        "e_ns_mrgn": "",\n' +
+    '        "e_ns_mrgn_pct": "",\n' +
+    '        "e_tax": "",\n' +
+    '        "ebyCategories": "",\n' +
+    '        "e_vrfd": "",\n' +
+    '        "cat_taskId": "",\n' +
+    '        "ebyUpdatedAt": "",\n' +
+    '        "eby_taskId": "",\n' +
+    '        "dealEbyUpdatedAt": "",\n' +
+    '        "dealEbyTaskId": "",\n' +
+    '        "eby_prop": "",\n' +
+    '        "qEbyUpdatedAt": "",\n' +
+    '        "cat_prop": "",\n' +
+    '        "catUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.9",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bb8c3d63905fe521bc65f"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.262Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669ee3d8d63905fe52404451"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.263Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668cf710d63905fe5234f3b7"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.263Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66b24efdd63905fe529ca160"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.263Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bdeb0d63905fe521e9df7"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.264Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e53d5d63905fe5236988d"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.264Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66a21941d63905fe5286bbbc"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bd2c7d63905fe521dadb2"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.264Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668f8748d63905fe525ad8e6"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.265Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669ddf43d63905fe522f237e"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.265Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66ba39f4d63905fe5220b463"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.265Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e8a77d63905fe523a73c3"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": "",\n' +
+    '        "e_pblsh": "",\n' +
+    '        "e_nm": "",\n' +
+    '        "e_lnk": "",\n' +
+    '        "e_img": "",\n' +
+    '        "esin": "",\n' +
+    '        "e_prc": "",\n' +
+    '        "e_uprc": "",\n' +
+    '        "e_qty": "",\n' +
+    '        "e_orgn": "",\n' +
+    '        "e_hash": "",\n' +
+    '        "e_mrgn": "",\n' +
+    '        "e_mrgn_pct": "",\n' +
+    '        "e_ns_costs": "",\n' +
+    '        "e_ns_mrgn": "",\n' +
+    '        "e_ns_mrgn_pct": "",\n' +
+    '        "e_tax": "",\n' +
+    '        "ebyCategories": "",\n' +
+    '        "e_vrfd": "",\n' +
+    '        "cat_taskId": "",\n' +
+    '        "ebyUpdatedAt": "",\n' +
+    '        "eby_taskId": "",\n' +
+    '        "dealEbyUpdatedAt": "",\n' +
+    '        "dealEbyTaskId": "",\n' +
+    '        "eby_prop": "",\n' +
+    '        "qEbyUpdatedAt": "",\n' +
+    '        "cat_prop": "",\n' +
+    '        "catUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668ce291d63905fe523375f7"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.266Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668b775ad63905fe5217e904"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.268Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668badc3d63905fe521b0a53"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.268Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668b536cd63905fe5215bb6b"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.268Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bb5fbd63905fe521b957d"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.9,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.268Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66ab0aced63905fe522e775c"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.268Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66a1c9fcd63905fe527bdfee"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bab09d63905fe521adac4"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.269Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66b0c680d63905fe52862f0c"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e6a0dd63905fe52383bff"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668ba7d8d63905fe521aa16f"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.80",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.270Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668bd107d63905fe521d874a"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.270Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669f4184d63905fe52482cd1"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.271Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669f47ded63905fe524899a9"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.271Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668f8e23d63905fe525b5eb7"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.271Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669e78add63905fe52392ed1"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.271Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668ca95cd63905fe522ff1d2"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669eb574d63905fe523d39c8"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.273Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669d8adad63905fe5227db51"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": "",\n' +
+    '        "a_pblsh": "",\n' +
+    '        "a_nm": "",\n' +
+    '        "a_lnk": "",\n' +
+    '        "a_img": "",\n' +
+    '        "asin": "",\n' +
+    '        "a_prc": "",\n' +
+    '        "bsr": "",\n' +
+    '        "costs": "",\n' +
+    '        "a_uprc": "",\n' +
+    '        "a_qty": "",\n' +
+    '        "a_orgn": "",\n' +
+    '        "a_hash": "",\n' +
+    '        "tax": "",\n' +
+    '        "a_mrgn": "",\n' +
+    '        "a_mrgn_pct": "",\n' +
+    '        "a_w_mrgn": "",\n' +
+    '        "a_w_mrgn_pct": "",\n' +
+    '        "a_p_w_mrgn": "",\n' +
+    '        "a_p_w_mrgn_pct": "",\n' +
+    '        "a_p_mrgn": "",\n' +
+    '        "a_vrfd": "",\n' +
+    '        "a_p_mrgn_pct": "",\n' +
+    '        "info_taskId": "",\n' +
+    '        "keepaEanUpdatedAt": "",\n' +
+    '        "keepaEan_lckd": "",\n' +
+    '        "keepaUpdatedAt": "",\n' +
+    '        "keepa_lckd": "",\n' +
+    '        "aznUpdatedAt": "",\n' +
+    '        "azn_taskId": "",\n' +
+    '        "dealAznUpdatedAt": "",\n' +
+    '        "dealAznTaskId": "",\n' +
+    '        "categories": "",\n' +
+    '        "k_eanList": "",\n' +
+    '        "brand": "",\n' +
+    '        "numberOfItems": "",\n' +
+    '        "availabilityAmazon": "",\n' +
+    '        "categoryTree": "",\n' +
+    '        "salesRanks": "",\n' +
+    '        "monthlySold": "",\n' +
+    '        "ahstprcs": "",\n' +
+    '        "anhstprcs": "",\n' +
+    '        "auhstprcs": "",\n' +
+    '        "curr_ahsprcs": "",\n' +
+    '        "curr_ansprcs": "",\n' +
+    '        "curr_ausprcs": "",\n' +
+    '        "curr_salesRank": "",\n' +
+    '        "avg30_ahsprcs": "",\n' +
+    '        "avg30_ansprcs": "",\n' +
+    '        "avg30_ausprcs": "",\n' +
+    '        "avg30_salesRank": "",\n' +
+    '        "avg90_ahsprcs": "",\n' +
+    '        "avg90_ansprcs": "",\n' +
+    '        "avg90_ausprcs": "",\n' +
+    '        "avg90_salesRank": "",\n' +
+    '        "buyBoxIsAmazon": "",\n' +
+    '        "stockAmount": "",\n' +
+    '        "stockBuyBox": "",\n' +
+    '        "totalOfferCount": "",\n' +
+    '        "info_prop": "",\n' +
+    '        "infoUpdatedAt": ""\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6694d401d63905fe52a15c75"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.274Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66baf589d63905fe522d4ea7"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.274Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66989671d63905fe52dc86cf"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.274Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "668b662dd63905fe5216efec"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.95,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.274Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "669480b5d63905fe529c73d3"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.275Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'idealo.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "6694d138d63905fe52a131d2"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.95",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.275Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'alternate.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb452f650c2b2e95d8bc2e"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.292Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'alternate.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb46fb650c2b2e95d8c357"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": 0.85,\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.292Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+{
+  shopDomain: 'cyberport.de',
+  bulkUpdate: '{\n' +
+    '  "updateOne": {\n' +
+    '    "filter": {\n' +
+    '      "_id": "66bb4009650c2b2e95d8ac84"\n' +
+    '    },\n' +
+    '    "update": {\n' +
+    '      "$unset": {\n' +
+    '        "nm_batchId": "",\n' +
+    '        "nm_prop": ""\n' +
+    '      },\n' +
+    '      "$set": {\n' +
+    '        "a_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.90",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "e_vrfd": {\n' +
+    '          "nm_prop": "complete",\n' +
+    '          "score": "0.85",\n' +
+    '          "isMatch": true\n' +
+    '        },\n' +
+    '        "nm_updatedAt": "2024-08-29T06:31:29.303Z"\n' +
+    '      }\n' +
+    '    }\n' +
+    '  }\n' +
+    '}'
+}
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!
+Interval started...
+No batches to process
+Checking for pending products and creating batches...
+activeShops:  idealo.de alternate.de bergfreunde.de cyberport.de dm.de fressnapf.de gamestop.de mueller.de reichelt.de saturn.de voelkner.de alza.de sales
+products: 0
+No new batches found
+Step: Checking for pending products and creating batches is done!

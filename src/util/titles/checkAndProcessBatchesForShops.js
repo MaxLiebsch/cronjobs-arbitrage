@@ -1,0 +1,68 @@
+import {
+  deleteFile,
+  retrieveBatch,
+  retrieveOutputFile,
+} from "../../services/openai/index.js";
+import { processFailedBatch } from "./processFailedBatch.js";
+import { getCrawlDataDb } from "../../services/db/mongo.js";
+import fsjetpack from "fs-jetpack";
+import { NotFoundError } from "openai";
+import { processResults } from "./processResults.js";
+import { processResultsForShops } from "./processResultsForShops.js";
+const { remove } = fsjetpack;
+
+export const checkAndProcessBatchesForShops = async (batchesData) => {
+  if (!batchesData.length) {
+    console.info("No batches to process");
+    return "processed";
+  }
+  const crawlDataDb = await getCrawlDataDb();
+  const tasksCol = crawlDataDb.collection("tasks");
+  let inProgress = false;
+  for (let index = 0; index < batchesData.length; index++) {
+    const batchData = batchesData[index];
+    const { filepath, batchId, status, processed } = batchData;
+    try {
+      const batch = await retrieveBatch(batchId);
+      if (batch.status === "in_progress") {
+        inProgress = true;
+      }
+      if (batch.status === "completed" && !processed) {
+        console.log('Processing completed batch', batchId, "...");
+        const fileContents = await retrieveOutputFile(batch.output_file_id);
+        await processResultsForShops(fileContents, batchData);
+        // clean up
+        await deleteFile(batch.input_file_id);
+        await deleteFile(batch.output_file_id);
+        remove(filepath);
+      }
+      if (batch.status === status) continue;
+      if (batch.status === "failed") {
+        await deleteFile(batch.input_file_id);
+        await processFailedBatch(batchData);
+      }
+      await tasksCol.updateOne(
+        { type: "MATCH_TITLES", "batches.batchId": batchId },
+        {
+          $set: {
+            "batches.$.status": batch.status,
+          },
+        }
+      );
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        console.error("Batch not found: ", batchId, "deleting batch");
+        await tasksCol.updateOne(
+          { type: "MATCH_TITLES" },
+          {
+            $pull: {
+              batches: { batchId },
+            },
+          }
+        );
+      }
+    }
+  }
+  if (!inProgress) return "processed";
+};

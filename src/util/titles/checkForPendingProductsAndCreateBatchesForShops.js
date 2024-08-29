@@ -6,33 +6,32 @@ import {
   uploadFile,
 } from "../../services/openai/index.js";
 import { createJsonlFile } from "../createJsonlFile.js";
-import { retrieveProductsForBatches } from "./createBatches.js";
+import { retrieveProductsForBatchesForShops } from "./createBatchesForShops.js";
 
-export const checkForPendingProductsAndCreateBatches = async () => {
+export const checkForPendingProductsAndCreateBatchesForShops = async () => {
   const crawlDataDb = await getCrawlDataDb();
   const spotterDb = await getArbispotterDb();
   const tasksCol = crawlDataDb.collection("tasks");
-  const newBatchFileContents = await retrieveProductsForBatches();
+  const newBatchFileContents = await retrieveProductsForBatchesForShops();
 
-  if(!newBatchFileContents) return 'No new batches found';
+  if (!newBatchFileContents) return "No new batches found";
 
   newBatchFileContents.length &&
     console.log(
       "newBatchFileContents:\n",
       newBatchFileContents.map((newBatch) => {
         if (!newBatch) return;
-        const { shopDomain, prompts, hashes } = newBatch;
+        const { prompts, batchShops } = newBatch;
         return {
-          shopDomain,
           prompts: prompts.length,
-          hashes: hashes.length,
+          batchShops,
         };
       })
     );
   try {
     for (let index = 0; index < newBatchFileContents.length; index++) {
       const newBatchFileContent = newBatchFileContents[index];
-      const { hashes, shopDomain, prompts } = newBatchFileContent;
+      const { hashes, batchShops, prompts, batchSize } = newBatchFileContent;
       const filepath = await createJsonlFile(prompts);
       const file = await uploadFile(filepath);
       if (file.id) {
@@ -64,24 +63,29 @@ export const checkForPendingProductsAndCreateBatches = async () => {
         if (success) {
           console.log(batch.id, " started successfully!");
 
-          await spotterDb.collection(shopDomain).updateMany(
-            { _id: { $in: hashes.map((id) => new ObjectId(id)) } },
-            {
-              $set: {
-                nm_prop: "in_progress",
-                nm_batchId: batch.id,
-                nm_v: "v01",
-              },
-            }
-          );
+          for (let index = 0; index < batchShops.length; index++) {
+            const batchShop = batchShops[index];
+            const hashesForShop = hashes.get(batchShop);
+            await spotterDb.collection(batchShop).updateMany(
+              { _id: { $in: hashesForShop.map((id) => new ObjectId(id)) } },
+              {
+                $set: {
+                  nm_prop: "in_progress",
+                  nm_batchId: batch.id,
+                  nm_v: "v01",
+                },
+              }
+            );
+          }
+
           await tasksCol.updateOne(
             { type: "MATCH_TITLES" },
             {
               $push: {
                 batches: {
                   batchId: batch.id,
-                  shopDomain,
-                  count: hashes.length,
+                  shopDomains: batchShops,
+                  count: batchSize,
                   filepath,
                   processed: false,
                   status: batchStatus,

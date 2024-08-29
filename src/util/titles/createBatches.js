@@ -1,4 +1,4 @@
-import { TOKEN_LIMIT } from "../../constants.js";
+import { BATCH_SIZE, TOKEN_LIMIT } from "../../constants.js";
 import { getArbispotterDb } from "../../services/db/mongo.js";
 import { getActiveShops } from "../../services/db/util/shops.js";
 import { encodeChat } from "gpt-tokenizer";
@@ -22,7 +22,7 @@ export const retrieveProductsForBatches = async () => {
       .aggregate(aggregation)
       .toArray();
 
-    if (rawProducts.length >= 1000) {
+    if (rawProducts.length >= BATCH_SIZE) {
       const shopBatches = createBatches(shop.d, rawProducts);
       if (shopBatches) {
         batches.push(...shopBatches);
@@ -52,6 +52,7 @@ const createBatches = (shopDomain, products) => {
     }
     const id = product._id.toString();
     const prompt = createNameMatchingPrompt(shopDomain, id, product, retry);
+    // @ts-ignore
     const tokenCnt = encodeChat(prompt.body.messages, "gpt-4").length;
     if (tokens + tokenCnt < TOKEN_LIMIT) {
       tokens += tokenCnt;

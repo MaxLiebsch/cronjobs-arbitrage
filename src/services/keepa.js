@@ -68,8 +68,7 @@ export async function processQueue(keepaJob) {
             incrementTotal();
             promises.push(makeRequestsForEan(product));
           } else {
-            console.log("complete product:", product);
-            const result = await updateProductWithQuery(
+            await updateProductWithQuery(
               product.shopDomain,
               { _id: product._id },
               {
@@ -79,7 +78,6 @@ export async function processQueue(keepaJob) {
                 },
               }
             );
-            console.log("result:", result);
           }
         }
       } else {

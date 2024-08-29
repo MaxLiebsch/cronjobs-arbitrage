@@ -6,11 +6,12 @@ export const MAX_RETRIES = 3;
 export const MAX_AGE_PRODUCTS = 21;
 export const MAX_AGE_PROPS = 7;
 export const PENDING_KEEPA_LOOKUPS_INTERVAL = 1000 * 60 * KEEPA_MINUTES;
-export const CHECK_PACKAGE_BATCH_INTERVAL = 1000 * 60 * 1.5;
+export const CHECK_PACKAGE_BATCH_INTERVAL =
+  process.env.NODE_ENV === "production" ? 1000 * 60 * 1.5 : 1000 * 60 * 0.5;
 export const TOKEN_LIMIT = 160000;
 export const MAX_PACKAGE_SIZE = 11;
-
-
+export const BATCH_SIZE = process.env.NODE_ENV === "development" ? 50 : 500;
+export const MINIMAL_SCORE = 0.6;
 export const keepaProperties = [
   { key: "products[0].asin", name: "" },
   { key: "products[0].categories", name: "" },

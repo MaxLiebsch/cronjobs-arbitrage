@@ -4,7 +4,7 @@ import { deleteUnwatchedProduts } from "./services/deleteUnwatchedProducts.js";
 import { controlProcessProps } from "./services/controlProcessProps.js";
 import { lookForPendingKeepaLookups } from "./util/lookForPendingKeepaLookups.js";
 import { getCrawlDataDb } from "./services/db/mongo.js";
-import nameBatchProcessing from "./services/namingBatch.js";
+import nameBatchProcessingPerShops from "./services/namingBatchForShops.js";
 
 
 const main = async () => {
@@ -30,7 +30,7 @@ const main = async () => {
       setTotal(keepaTask.total);
     }
   }
-  nameBatchProcessing().then();
+  nameBatchProcessingPerShops().then();
   await lookForPendingKeepaLookups(keepaJob);
   await processQueue(keepaJob);
 };
