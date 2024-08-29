@@ -7,7 +7,6 @@ import { processFailedBatch } from "./processFailedBatch.js";
 import { getCrawlDataDb } from "../../services/db/mongo.js";
 import fsjetpack from "fs-jetpack";
 import { NotFoundError } from "openai";
-import { processResults } from "./processResults.js";
 import { processResultsForShops } from "./processResultsForShops.js";
 const { remove } = fsjetpack;
 

@@ -16,13 +16,15 @@ export const retrieveProductsForBatchesForShops = async () => {
   );
   const products = [];
   const batchShops = [];
-  let hasMore = true;
-  while (products.length < BATCH_SIZE && hasMore) {
-    for (let index = 0; index < activeShops.length; index++) {
-      const shop = activeShops[index];
+  for (let index = 0; index < activeShops.length; index++) {
+    if (products.length >= BATCH_SIZE) break;
+
+    const shop = activeShops[index];
+    try {
       const rawProducts = await spotterDb
         .collection(shop.d)
         .aggregate(aggregation)
+        .limit(250)
         .toArray();
       if (rawProducts.length === 0) continue;
       const productsWithShop = rawProducts.map((product) => {
@@ -30,9 +32,12 @@ export const retrieveProductsForBatchesForShops = async () => {
       });
       batchShops.push(shop.d);
       products.push(...productsWithShop);
+    } catch (error) {
+      console.error(`Error fetching products for shop ${shop.d}:`, error);
+      continue;
     }
-    hasMore = false;
   }
+
   console.log("products:", products.length);
 
   if (products.length === 0) return null;
