@@ -82,7 +82,8 @@ const createBatches = (products, batchShops) => {
       addToMap(hashes, shopDomain, id);
     } else {
       batches.push({
-        shopDomain,
+        batchShops,
+        batchSize: prompts.length,
         hashes,
         prompts: [...prompts],
         tokens,
