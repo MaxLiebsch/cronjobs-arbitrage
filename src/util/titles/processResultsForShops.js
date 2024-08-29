@@ -60,44 +60,30 @@ export const processResultsForShops = async (fileContents, batchData) => {
         let nm_prop = "complete";
 
         if ("a_score" && "a_isMatch" in update) {
-          if (Number(update.a_score) < MINIMAL_SCORE) {
+          const aScore = Number(update.a_score);
+          if (aScore < MINIMAL_SCORE) {
             deleteAzn = true;
-          } else {
-            if (a_vrfd) {
-              spotterSet["a_vrfd"] = {
-                ...a_vrfd,
-                nm_prop,
-                score: update.a_score,
-                isMatch: update.a_isMatch,
-              };
-            } else {
-              spotterSet["a_vrfd"] = {
-                nm_prop,
-                score: update.a_score,
-                isMatch: update.a_isMatch,
-              };
-            }
+          } else if (!isNaN(aScore)) {
+            spotterSet["a_vrfd"] = {
+              ...a_vrfd,
+              nm_prop,
+              score: aScore,
+              isMatch: update.a_isMatch,
+            };
           }
         }
 
         if ("e_score" && "e_isMatch" in update) {
-          if (Number(update.e_score) < MINIMAL_SCORE) {
+          const eScore = Number(update.e_score);
+          if (eScore < MINIMAL_SCORE) {
             deleteEby = true;
-          } else {
-            if (e_vrfd) {
-              spotterSet["e_vrfd"] = {
-                ...e_vrfd,
-                nm_prop,
-                score: update.e_score,
-                isMatch: update.e_isMatch,
-              };
-            } else {
-              spotterSet["e_vrfd"] = {
-                nm_prop,
-                score: update.e_score,
-                isMatch: update.e_isMatch,
-              };
-            }
+          } else if (!isNaN(eScore)) {
+            spotterSet["e_vrfd"] = {
+              ...e_vrfd,
+              nm_prop,
+              score: eScore,
+              isMatch: update.e_isMatch,
+            };
           }
         }
 
