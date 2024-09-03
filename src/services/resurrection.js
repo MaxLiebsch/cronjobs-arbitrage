@@ -196,6 +196,5 @@ export async function resurrectionFromGrave() {
       }
     }
   }
-  await db.close();
   console.log('Resurrection finished');
 }
