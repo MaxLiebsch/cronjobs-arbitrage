@@ -14,7 +14,7 @@ export const createNameMatchingPrompt = (shopDomain, id, product, retry) => {
     content += `"e_nm":"${replaceAllHiddenCharacters(product.e_nm)}" `;
     targetTitle = "e_nm";
     let formatStr = `"e_isMatch":<Boolean>, "e_score":<Wahrscheinlichkeit>"`;
-    if (process.env.DEBUG === 'explain') {
+    if (process.env.DEBUG === "explain") {
       formatStr += `,"e_explain":"<Erklärung>"`;
     }
     formatArr.push(formatStr);
@@ -23,7 +23,7 @@ export const createNameMatchingPrompt = (shopDomain, id, product, retry) => {
     content += `"a_nm":"${replaceAllHiddenCharacters(product.a_nm)}"`;
     targetTitle += ` und a_nm`;
     let formatStr = `"a_isMatch":<Boolean>, "a_score":<Wahrscheinlichkeit>"`;
-    if (process.env.DEBUG === 'explain') {
+    if (process.env.DEBUG === "explain") {
       formatStr += `,"a_explain":"<Erklärung>"`;
     }
     formatArr.push(formatStr);
@@ -43,7 +43,8 @@ export const createNameMatchingPrompt = (shopDomain, id, product, retry) => {
         {
           role: "system",
           content: `Du bist ein Onlineshop-Verkäufer für Konsumgüter. Du analysierst die Titel der Inserate anderer Onlineshops 
-und bewertest anhand der Titel, ob es sich um das gleiche Produkt handelt.
+und bewertest anhand der Titel, ob es sich um das gleiche Produkt handelt. Gleicheit bedeutet, dass auch das Zubehör gleich ist.
+Wichtig: Zubehör, Ersatzteile oder ähnliche Produkte sind nicht identisch. Produkeigenschaften müssen berücksichtigt werden.
 Das Hauptprodukt ist "nm". Vergleich "nm" jeweils mit ${targetTitle} und bewerte, 
 ob es sich um das gleiche Produkt handeln könnte, auch wenn die Anzahl 
 bzw. die Menge der Artikel unterschiedlich ist. ${format}`,

@@ -2,9 +2,8 @@ import OpenAI from "openai";
 import "dotenv/config";
 import { config } from "dotenv";
 import { encodeChat } from "gpt-tokenizer";
-import { createPrompt } from "../src/util/createPrompt.js";
 import { getArbispotterDb } from "../src/services/db/mongo.js";
-import { createNameMatchingPrompt } from "../src/util/createNamingPrompt.js";
+import { createNameMatchingPrompt } from "../src/util/titles/createNamingPrompt.js";
 config({
   path: [`.env`],
 });
@@ -17,11 +16,11 @@ const openai = new OpenAI({
 
 export const testNamingPrompt = async () => {
   const db = await getArbispotterDb()
-  const shopDomain = "sales";
+  const shopDomain = "cyberport.de";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ asin: 'B008M4X5VC' }, { limit: 1 })
+    .find({ esin: '334367255035' }, { limit: 1 })
     .toArray();
   const prompt = createNameMatchingPrompt(
     shopDomain,
