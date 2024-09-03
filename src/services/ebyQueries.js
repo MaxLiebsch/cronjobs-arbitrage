@@ -1,39 +1,44 @@
 import { UTCDate } from "@date-fns/utc";
 
+export const ebyUnsetProperties = {
+  //standard properties
+  e_pblsh: "",
+  e_nm: "",
+  e_lnk: "",
+  e_img: "",
+  esin: "",
+  e_prc: "",
+  e_uprc: "",
+  e_qty: "",
+  e_orgn: "",
+  e_hash: "",
+  e_mrgn: "",
+  e_mrgn_prc: "",
+  e_mrgn_pct: "",
+  e_ns_costs: "",
+  e_ns_mrgn: "",
+  e_ns_mrgn_prc: "",
+  e_ns_mrgn_pct: "",
+  e_tax: "",
+  e_costs: "",
+  ebyCategories: "",
+  e_vrfd: "",
+  // lookup category
+  cat_taskId: "",
+  // scrape listing
+  ebyUpdatedAt: "",
+  eby_taskId: "",
+  // dealeby properties
+  dealEbyUpdatedAt: "",
+  dealEbyTaskId: "",
+};
+
 export const resetEbyProductQuery = (
   props = { eby_prop: "", cat_prop: "" }
 ) => {
   const { eby_prop, cat_prop } = props;
   const query = {
-    $unset: {
-      //standard properties
-      e_pblsh: "",
-      e_nm: "",
-      e_lnk: "",
-      e_img: "",
-      esin: "",
-      e_prc: "",
-      e_uprc: "",
-      e_qty: "",
-      e_orgn: "",
-      e_hash: "",
-      e_mrgn: "",
-      e_mrgn_pct: "",
-      e_ns_costs: "",
-      e_ns_mrgn: "",
-      e_ns_mrgn_pct: "",
-      e_tax: "",
-      ebyCategories: "",
-      e_vrfd: "",
-      // lookup category
-      cat_taskId: "",
-      // scrape listing
-      ebyUpdatedAt: "",
-      eby_taskId: "",
-      // dealeby properties
-      dealEbyUpdatedAt: "",
-      dealEbyTaskId: "",
-    },
+    $unset: ebyUnsetProperties,
   };
 
   if (!query["$set"] && (eby_prop || cat_prop)) {

@@ -5,6 +5,7 @@ import { controlProcessProps } from "./services/controlProcessProps.js";
 import { lookForPendingKeepaLookups } from "./util/lookForPendingKeepaLookups.js";
 import { getCrawlDataDb } from "./services/db/mongo.js";
 import nameBatchProcessingPerShops from "./services/namingBatchForShops.js";
+import { resurrectionFromGrave } from "./services/resurrection.js";
 
 
 const main = async () => {
@@ -17,6 +18,13 @@ const main = async () => {
     await controlProcessProps();
   });
   job2.once("scheduled", () => console.log("Job scheduled"));
+
+  const job3 = scheduleJob("0 */18 * * *", async () => {
+    await resurrectionFromGrave();
+  });
+
+  job3.once("scheduled", () => console.log("Job scheduled"));
+
   // Look for pending keepa lookups
   let keepaJob = null;
   const db = await getCrawlDataDb();
