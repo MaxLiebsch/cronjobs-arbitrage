@@ -16,6 +16,7 @@ export const checkAndProcessBatchesForShops = async (batchesData) => {
     console.info("No batches to process for " + TASK_TYPES.DETECT_QUANTITY);
     return "processed";
   }
+  
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
   let inProgress = false;

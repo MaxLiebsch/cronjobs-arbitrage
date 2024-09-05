@@ -11,7 +11,7 @@ config({
 
 let intervalId = 0;
 
-export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = 'v02';
+export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = "v02";
 
 export const detectQuantityBatchInteration = async () => {
   clearInterval(intervalId);
@@ -29,10 +29,16 @@ export const detectQuantityBatchInteration = async () => {
     throw new Error("No task found for type " + TASK_TYPES.DETECT_QUANTITY);
 
   const { batches: batchesData } = task;
-  
+
   if (batchesData.length === 0) {
     return await checkForPendingProductsAndCreateBatchesForShops();
   } else {
-    await checkAndProcessBatchesForShops(batchesData);
+    const result = await checkAndProcessBatchesForShops(batchesData);
+    if (result === "processed") {
+      await tasksCol.updateOne(
+        { type: TASK_TYPES.BATCHES },
+        { $set: { currentTask: TASK_TYPES.MATCH_TITLES } }
+      );
+    }
   }
 };
