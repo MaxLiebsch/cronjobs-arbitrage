@@ -28,37 +28,41 @@ export const aggregation = [
           ],
         },
         {
-          $and: [
-            { a_nm: { $exists: true, $nin: ["", null] } },
+          $or: [
             {
-              $or: [
-                { a_vrfd: { $exists: false } },
-                { "a_vrfd.nm_prop": { $exists: false } },
+              $and: [
+                { a_nm: { $exists: true, $nin: ["", null] } },
                 {
-                  "a_vrfd.nm_prop": {
-                    $exists: true,
-                    $nin: ["complete", "in_progress", "backlog"],
-                  },
+                  $or: [
+                    { a_vrfd: { $exists: false } },
+                    { "a_vrfd.nm_prop": { $exists: false } },
+                    {
+                      "a_vrfd.nm_prop": {
+                        $exists: true,
+                        $nin: ["complete", "in_progress", "backlog"],
+                      },
+                    },
+                    { "a_vrfd.nm_prop": { $exists: true, $eq: "retry" } },
+                  ],
                 },
-                { "a_vrfd.nm_prop": { $exists: true, $eq: "retry" } },
               ],
             },
-          ],
-        },
-        {
-          $and: [
-            { e_nm: { $exists: true, $nin: ["", null] } },
             {
-              $or: [
-                { e_vrfd: { $exists: false } },
-                { "e_vrfd.nm_prop": { $exists: false } },
+              $and: [
+                { e_nm: { $exists: true, $nin: ["", null] } },
                 {
-                  "e_vrfd.nm_prop": {
-                    $exists: true,
-                    $nin: ["complete", "in_progress", "backlog"],
-                  },
+                  $or: [
+                    { e_vrfd: { $exists: false } },
+                    { "e_vrfd.nm_prop": { $exists: false } },
+                    {
+                      "e_vrfd.nm_prop": {
+                        $exists: true,
+                        $nin: ["complete", "in_progress", "backlog"],
+                      },
+                    },
+                    { "e_vrfd.nm_prop": { $exists: true, $eq: "retry" } },
+                  ],
                 },
-                { "e_vrfd.nm_prop": { $exists: true, $eq: "retry" } },
               ],
             },
           ],
