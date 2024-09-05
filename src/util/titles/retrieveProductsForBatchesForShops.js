@@ -1,4 +1,4 @@
-import { BATCH_SIZE } from "../../constants.js";
+import { BATCH_SIZE, MIN_BATCH_SIZE } from "../../constants.js";
 import { getArbispotterDb } from "../../services/db/mongo.js";
 import { getActiveShops } from "../../services/db/util/shops.js";
 import { shopFilter } from "../shopFilter.js";
@@ -32,7 +32,7 @@ export const retrieveProductsForBatchesForShops = async () => {
     }
   }
 
-  if (products.length === 0) return null;
+  if (products.length < MIN_BATCH_SIZE) return null;
 
   const shopBatches = createBatches(products, batchShops);
 

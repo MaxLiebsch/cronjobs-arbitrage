@@ -12,6 +12,7 @@ export const TOKEN_LIMIT = 160000;
 export const MAX_PACKAGE_SIZE = 11;
 export const BATCH_SIZE = process.env.NODE_ENV === "development" ? 50 : 900;
 export const MAX_BATCH_SIZE = 300;
+export const MIN_BATCH_SIZE = 100;
 export const MINIMAL_SCORE = 0.6;
 export const RECOVER_LIMIT_PER_DAY=15000;
 
