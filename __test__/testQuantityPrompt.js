@@ -2,8 +2,8 @@ import OpenAI from "openai";
 import "dotenv/config";
 import { config } from "dotenv";
 import { encodeChat } from "gpt-tokenizer";
-import { createPrompt } from "../src/util/createPrompt.js";
 import { getArbispotterDb } from "../src/services/db/mongo.js";
+import { createPrompt } from "../src/util/packages/createPrompt.js";
 config({
   path: [`.env`],
 });
@@ -16,11 +16,11 @@ const openai = new OpenAI({
 
 export const testQtyPrompt = async () => {
   const db = await getArbispotterDb()
-  const shopDomain = "dm.de";
+  const shopDomain = "idealo.de";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ eanList: '7340001803600' }, { limit: 1 })
+    .find({ eanList: '4008705072601' }, { limit: 1 })
     .toArray();
   const prompt = createPrompt(
     shopDomain,
@@ -33,7 +33,7 @@ export const testQtyPrompt = async () => {
     model: "gpt-4o-mini",
     messages: prompt.body.messages,
     max_tokens: 1000,
-    temperature: 0.3,
+    temperature: 0.1,
   });
   console.log(
     "response:",

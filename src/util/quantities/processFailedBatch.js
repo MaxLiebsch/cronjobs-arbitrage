@@ -8,6 +8,7 @@ config({
 });
 
 import fsjetpack from "fs-jetpack";
+import { ObjectId } from "mongodb";
 const { readAsync } = fsjetpack;
 
 export const processFailedBatch = async (batchData) => {
@@ -20,7 +21,7 @@ export const processFailedBatch = async (batchData) => {
   const hashes = results.map((r) => r.custom_id.split("-")[1]);
   const crawlDataDb = await getCrawlDataDb();
   await crawlDataDb.collection(batchData.shopDomain).updateMany(
-    { s_hash: { $in: hashes } },
+    { _id: { $in: hashes.map((id) => new ObjectId(id)) } },
     {
       $set: { qty_prop: "", qty_batchId: "" },
     }

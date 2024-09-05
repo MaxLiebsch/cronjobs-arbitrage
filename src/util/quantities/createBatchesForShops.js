@@ -1,7 +1,6 @@
-import {  TOKEN_LIMIT } from "../../constants.js";
+import { TOKEN_LIMIT } from "../../constants.js";
 import { encodeChat } from "gpt-tokenizer";
-import { createNameMatchingPrompt } from "./createNamingPrompt.js";
-
+import { createPrompt } from "./createPrompt.js";
 const addToMap = (hashes, shopDomain, id) => {
   const shopHashes = hashes.get(shopDomain) || [];
   shopHashes.push(id);
@@ -18,13 +17,10 @@ export const createBatches = (products, batchShops) => {
 
   for (let index = 0; index < products.length; index++) {
     const product = products[index];
-    const { shop: shopDomain, nm_prop } = product;
+    const { shop: shopDomain} = product;
     let retry = false;
-    if (nm_prop === "retry") {
-      retry = true;
-    }
     const id = product._id.toString();
-    const prompt = createNameMatchingPrompt(shopDomain, id, product, retry);
+    const prompt = createPrompt(shopDomain, id, product, retry);
     // @ts-ignore
     const tokenCnt = encodeChat(prompt.body.messages, "gpt-4").length;
     if (tokens + tokenCnt < TOKEN_LIMIT) {

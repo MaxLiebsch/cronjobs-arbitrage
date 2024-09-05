@@ -4,8 +4,9 @@ import { safeJSONParse } from "../safeParseJson.js";
 import { resetAznProductQuery } from "../../services/aznQueries.js";
 import { resetEbyProductQuery } from "../../services/ebyQueries.js";
 import { MINIMAL_SCORE } from "../../constants.js";
+import { TASK_TYPES } from "../../services/productBatchProcessing.js";
 
-const cleanScore = (score) => {
+export const cleanScore = (score) => {
   if (typeof score === "string") {
     // Remove extra double quotes
     score = score.replace(/^"+|"+$/g, "");
@@ -66,7 +67,7 @@ export const processResultsForShops = async (fileContents, batchData) => {
 
           let nm_prop = "complete";
 
-          if ("a_score" && "a_isMatch" in update) {
+          if ("a_score" in update && "a_isMatch" in update) {
             const aScore = cleanScore(update.a_score);
             if (aScore < MINIMAL_SCORE) {
               deleteAzn = true;
@@ -80,7 +81,7 @@ export const processResultsForShops = async (fileContents, batchData) => {
             }
           }
 
-          if ("e_score" && "e_isMatch" in update) {
+          if ("e_score" in update && "e_isMatch" in update) {
             const eScore = cleanScore(update.e_score);
             if (eScore < MINIMAL_SCORE) {
               deleteEby = true;
@@ -148,7 +149,7 @@ export const processResultsForShops = async (fileContents, batchData) => {
 
   const tasksCol = crawlDataDb.collection("tasks");
   await tasksCol.updateOne(
-    { type: "MATCH_TITLES", "batches.batchId": batchId },
+    { type: TASK_TYPES.MATCH_TITLES, "batches.batchId": batchId },
     {
       $pull: {
         batches: { batchId },

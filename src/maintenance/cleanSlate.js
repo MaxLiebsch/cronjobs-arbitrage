@@ -51,7 +51,7 @@ const cleanSlate = async () => {
           shop.d + ".tmp",
           p
         );
-        if (creation.acknowledged) {
+        if (creation?.acknowledged) {
           const deletion = await spotterDb
             .collection(shop.d)
             .deleteOne({ _id: p._id });

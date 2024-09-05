@@ -10,7 +10,7 @@ const resetNameBatch = async () => {
     {
       $set: {
         batches: [],
-      }
+      },
     }
   );
   const shops = await getAllShops();
@@ -22,7 +22,16 @@ const resetNameBatch = async () => {
       .collection(shop.d)
       .updateMany(
         {},
-        { $unset: { a_vrfd: "", e_vrfd: "", nm_batchId: "", nm_prop: "" } }
+        {
+          $unset: {
+            a_vrfd: "",
+            e_vrfd: "",
+            nm_batchId: "",
+            nm_prop: "",
+            qty_prop: "",
+            qty_batchId: "",
+          },
+        }
       );
   }
 };

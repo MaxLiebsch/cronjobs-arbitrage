@@ -44,22 +44,18 @@ export const createPrompt = (shopDomain, id, product, retry) => {
       messages: [
         {
           role: "system",
-          content: `Du bist ein Onlineshop-Verkäufer für Konsumgüter. 
-          Du analysierst die Titel der Inserate anderer Onlineshops, um 
-          die Zusammenstellung mehrerer Einzelprodukte (Hauptprodukt) zu einer größeren Einheit 
-          zu bestimmen. Solch eine Einheit bezeichet man als "Multipack", "Mehrfachpackung" oder "Vorteilspack".
-          1. Die Herstellerkonfiguration und Anzahl der Produktkomponente ist nicht die Menge.
-          2. Zubehörteile (wie Ladegeräte oder Taschen) zählen nicht zur Menge des Hauptprodukts. Beispiel: "inkl. Ladegerät", "Set mit" bedeutet nicht, dass die Menge 2 ist.
-          3. Zusatzprodukte des Hauptproduktes sind nicht die Menge. Worte wie "inkl.", "mit", "Set" sind Hinweise auf Zusatzprodukte.
-          4. Die Menge ist nicht die Anzahl der Teile und Bestandteile des Produktes.
-          5. Die Formulierung "(Packung mit <x>)" mehreren Produkten ist die Menge.
-          6. Lebensmittel, Tierfutter und Drogerieartikel: Achte auf die Angabe der Anzahl der Einzelprodukte in der Verpackung.
-          7. Sammlungen, Compilationen oder Boxen zählen als Menge 1, unabhängig von der Anzahl der enthaltenen Artikel.
-          
-          Wichtig: Achte darauf, dass Kommas Sinnzusammenhänge darstellen. (z.B. "<Produkt>, <Menge>, <Beschreibung>")
-          Wichtig: Eine Zahl in der Produktbeschreibung kann auch die Kapazität oder den maximalen Fassungsraum eines Produkts darstellen.
-          Bei Unklarheiten oder wenn du die Anzahl nicht eindeutig bestimmen kannst, gehe von Menge von 1 aus.
-          Antworte mit der Menge. ${format}`,
+          content: `Du bist ein Onlinehändler für Konsumgüter und analysierst die Titel anderer Inserate, um die Menge des Hauptprodukts in einem Angebot zu bestimmen. Beachte dabei folgende Regeln:
+1. **Herstellerkonfiguration**: Die Anzahl der Produktkomponenten ist nicht die Menge.
+2. **Zubehör**: Ladegeräte, Taschen usw. zählen nicht zur Menge des Hauptprodukts.
+3. **Zusatzprodukte**: Begriffe wie "inkl.", "mit", "Set" weisen auf Zusatzprodukte hin und beeinflussen nicht die Menge des Hauptprodukts.
+4. **Teile und Bestandteile**: Die Anzahl der Einzelteile eines Produkts ist nicht die Menge.
+5. **Packungen**: Wenn "Packung mit <x>" angegeben ist, ist <x> die Menge.
+6. **Verpackungseinheiten** (Lebensmittel, Tierfutter, Drogerieartikel): Achte auf die Anzahl der Einzelprodukte in der Verpackung.
+7. **Sammlungen/Boxen**: Zählen als Menge 1, unabhängig von der Anzahl der Artikel darin.
+
+**Wichtig**: Achte auf die Bedeutung von Kommas und Zahlen im Titel. Wenn die Menge unklar ist, gehe von 1 aus.
+
+Antworte mit der Menge. ${format}`,
         },
         {
           role: "user",
@@ -109,7 +105,6 @@ Bei Unklarheiten oder wenn du die Menge nicht eindeutig bestimmen kannst, gehe v
 
 */
 
-
 /*
 CURRENT
 Du bist ein Onlineshop-Verkäufer für Konsumgüter. 
@@ -131,5 +126,3 @@ Beispiel: "Set aus 4 Tassen" hat eine Menge von 1.
           Antworte mit der Menge.
 
 */
-
-

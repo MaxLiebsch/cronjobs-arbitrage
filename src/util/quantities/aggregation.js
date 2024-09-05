@@ -20,11 +20,11 @@ export const aggregation = [
   {
     $match: {
       $and: [
-        { nm_batchId: { $exists: false } },
+        { qty_batchId: { $exists: false } },
         {
           $or: [
-            { nm_prop: { $exists: false } },
-            { nm_prop: { $exists: true, $nin: ["in_progress", "backlog"] } },
+            { qty_prop: { $exists: false } },
+            { qty_prop: { $exists: true, $nin: ["in_progress", "backlog"] } },
           ],
         },
         {
@@ -33,14 +33,14 @@ export const aggregation = [
             {
               $or: [
                 { a_vrfd: { $exists: false } },
-                { "a_vrfd.nm_prop": { $exists: false } },
+                { "a_vrfd.qty_prop": { $exists: false } },
                 {
-                  "a_vrfd.nm_prop": {
+                  "a_vrfd.qty_prop": {
                     $exists: true,
                     $nin: ["complete", "in_progress", "backlog"],
                   },
                 },
-                { "a_vrfd.nm_prop": { $exists: true, $eq: "retry" } },
+                { "a_vrfd.qty_prop": { $exists: true, $eq: "retry" } },
               ],
             },
           ],
@@ -51,14 +51,14 @@ export const aggregation = [
             {
               $or: [
                 { e_vrfd: { $exists: false } },
-                { "e_vrfd.nm_prop": { $exists: false } },
+                { "e_vrfd.qty_prop": { $exists: false } },
                 {
-                  "e_vrfd.nm_prop": {
+                  "e_vrfd.qty_prop": {
                     $exists: true,
                     $nin: ["complete", "in_progress", "backlog"],
                   },
                 },
-                { "e_vrfd.nm_prop": { $exists: true, $eq: "retry" } },
+                { "e_vrfd.qty_prop": { $exists: true, $eq: "retry" } },
               ],
             },
           ],

@@ -6,7 +6,9 @@ import {
   uploadFile,
 } from "../../services/openai/index.js";
 import { createJsonlFile } from "../createJsonlFile.js";
-import { retrieveProductsForBatchesForShops } from "./createBatchesForShops.js";
+import { TASK_TYPES } from "../../services/productBatchProcessing.js";
+import { retrieveProductsForBatchesForShops } from "./retrieveProductsForBatchesForShops.js";
+import { CURRENT_MATCH_TITLES_PROMPT_VERSION } from "../../services/matchTitelsBatchForShops.js";
 
 export const checkForPendingProductsAndCreateBatchesForShops = async () => {
   const crawlDataDb = await getCrawlDataDb();
@@ -18,7 +20,7 @@ export const checkForPendingProductsAndCreateBatchesForShops = async () => {
 
   newBatchFileContents.length &&
     console.log(
-      "newBatchFileContents:\n",
+      "Match-Titles-Batch:\n",
       newBatchFileContents.map((newBatch) => {
         if (!newBatch) return;
         const { prompts, batchShops } = newBatch;
@@ -72,14 +74,14 @@ export const checkForPendingProductsAndCreateBatchesForShops = async () => {
                 $set: {
                   nm_prop: "in_progress",
                   nm_batchId: batch.id,
-                  nm_v: "v01",
+                  nm_v: CURRENT_MATCH_TITLES_PROMPT_VERSION,
                 },
               }
             );
           }
 
           await tasksCol.updateOne(
-            { type: "MATCH_TITLES" },
+            { type: TASK_TYPES.MATCH_TITLES },
             {
               $push: {
                 batches: {

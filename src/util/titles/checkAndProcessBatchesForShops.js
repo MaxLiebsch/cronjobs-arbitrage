@@ -8,11 +8,12 @@ import { getCrawlDataDb } from "../../services/db/mongo.js";
 import fsjetpack from "fs-jetpack";
 import { NotFoundError } from "openai";
 import { processResultsForShops } from "./processResultsForShops.js";
+import { TASK_TYPES } from "../../services/productBatchProcessing.js";
 const { remove } = fsjetpack;
 
 export const checkAndProcessBatchesForShops = async (batchesData) => {
   if (!batchesData.length) {
-    console.info("No batches to process");
+    console.info("No batches to process for " + TASK_TYPES.MATCH_TITLES); 
     return "processed";
   }
   const crawlDataDb = await getCrawlDataDb();
@@ -27,7 +28,12 @@ export const checkAndProcessBatchesForShops = async (batchesData) => {
         inProgress = true;
       }
       if (batch.status === "completed" && !processed) {
-        console.log('Processing completed batch', batchId, "...");
+        console.log(
+          "Processing completed batch ",
+          batchId,
+          " for " + TASK_TYPES.MATCH_TITLES,
+          "..."
+        );
         const fileContents = await retrieveOutputFile(batch.output_file_id);
         await processResultsForShops(fileContents, batchData);
         // clean up
@@ -41,7 +47,7 @@ export const checkAndProcessBatchesForShops = async (batchesData) => {
         await processFailedBatch(batchData);
       }
       await tasksCol.updateOne(
-        { type: "MATCH_TITLES", "batches.batchId": batchId },
+        { type: TASK_TYPES.MATCH_TITLES, "batches.batchId": batchId },
         {
           $set: {
             "batches.$.status": batch.status,
@@ -53,7 +59,7 @@ export const checkAndProcessBatchesForShops = async (batchesData) => {
       if (error instanceof NotFoundError) {
         console.error("Batch not found: ", batchId, "deleting batch");
         await tasksCol.updateOne(
-          { type: "MATCH_TITLES" },
+          { type: TASK_TYPES.MATCH_TITLES },
           {
             $pull: {
               batches: { batchId },

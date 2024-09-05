@@ -1,33 +1,40 @@
-import { getCrawlDataDb } from "../../services/db/mongo.js";
+import { ObjectId } from "mongodb";
+import { getArbispotterDb, getCrawlDataDb } from "../../services/db/mongo.js";
 import {
   createBatch,
   retrieveBatch,
   uploadFile,
 } from "../../services/openai/index.js";
 import { createJsonlFile } from "../createJsonlFile.js";
-import {retrieveProductsForBatches} from "./createBatches.js";
+import { TASK_TYPES } from "../../services/productBatchProcessing.js";
+import { retrieveProductsForBatchesForShops } from "./retrieveProductsForBatchesForShops.js";
+import { CURRENT_DETECT_QUANTITY_PROMPT_VERSION } from "../../services/detectQuantityBatchForShops.js";
 
-export const checkForPendingProductsAndCreateBatches = async () => {
+export const checkForPendingProductsAndCreateBatchesForShops = async () => {
   const crawlDataDb = await getCrawlDataDb();
+  const spotterDb = await getArbispotterDb();
   const tasksCol = crawlDataDb.collection("tasks");
-  const newBatchFileContents = await retrieveProductsForBatches();
+  const newBatchFileContents = await retrieveProductsForBatchesForShops();
+
+  if (!newBatchFileContents) return "No new batches found";
+
   newBatchFileContents.length &&
     console.log(
-      "newBatchFileContents:\n",
+      "Detect-Quantity-Batch:\n",
       newBatchFileContents.map((newBatch) => {
-        const { shopDomain, prompts, hashes } = newBatch;
+        if (!newBatch) return;
+        const { prompts, batchShops } = newBatch;
         return {
-          shopDomain,
           prompts: prompts.length,
-          hashes: hashes.length,
+          batchShops,
         };
       })
     );
   try {
     for (let index = 0; index < newBatchFileContents.length; index++) {
       const newBatchFileContent = newBatchFileContents[index];
-      const { hashes, shopDomain, prompts } = newBatchFileContent;
-      const filepath = await createJsonlFile(shopDomain, prompts);
+      const { hashes, batchShops, prompts, batchSize } = newBatchFileContent;
+      const filepath = await createJsonlFile(prompts);
       const file = await uploadFile(filepath);
       if (file.id) {
         const batch = await createBatch(file.id);
@@ -56,22 +63,33 @@ export const checkForPendingProductsAndCreateBatches = async () => {
           }
         }
         if (success) {
-          console.log(shopDomain, " - ", batch.id, " started successfully!");
-          await crawlDataDb
-            .collection(shopDomain)
-            .updateMany(
-              { s_hash: { $in: hashes } },
-              { $set: { qty_prop: "in_progress", qty_batchId: batch.id, p_v: 'v02'  } }
+          console.log(batch.id, " started successfully!");
+
+          for (let index = 0; index < batchShops.length; index++) {
+            const batchShop = batchShops[index];
+            const hashesForShop = hashes.get(batchShop);
+            await spotterDb.collection(batchShop).updateMany(
+              { _id: { $in: hashesForShop.map((id) => new ObjectId(id)) } },
+              {
+                $set: {
+                  qty_prop: "in_progress",
+                  qty_batchId: batch.id,
+                  qty_v: CURRENT_DETECT_QUANTITY_PROMPT_VERSION,
+                },
+              }
             );
+          }
+
           await tasksCol.updateOne(
-            { type: "DETECT_QUANTITY" },
+            { type: TASK_TYPES.DETECT_QUANTITY },
             {
               $push: {
                 batches: {
                   batchId: batch.id,
-                  shopDomain,
-                  count: hashes.length,
+                  shopDomains: batchShops,
+                  count: batchSize,
                   filepath,
+                  processed: false,
                   status: batchStatus,
                 },
               },

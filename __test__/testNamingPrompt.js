@@ -16,11 +16,11 @@ const openai = new OpenAI({
 
 export const testNamingPrompt = async () => {
   const db = await getArbispotterDb()
-  const shopDomain = "cyberport.de";
+  const shopDomain = "idealo.de";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ esin: '334367255035' }, { limit: 1 })
+    .find({ eanList: '5397184217436' }, { limit: 1 })
     .toArray();
   const prompt = createNameMatchingPrompt(
     shopDomain,
