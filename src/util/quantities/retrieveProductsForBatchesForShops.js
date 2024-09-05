@@ -1,4 +1,4 @@
-import { BATCH_SIZE} from "../../constants.js";
+import { BATCH_SIZE } from "../../constants.js";
 import { getArbispotterDb } from "../../services/db/mongo.js";
 import { getActiveShops } from "../../services/db/util/shops.js";
 import { includeFilter, shopFilter } from "../shopFilter.js";
@@ -18,7 +18,7 @@ export const retrieveProductsForBatchesForShops = async () => {
     try {
       const rawProducts = await spotterDb
         .collection(shop.d)
-        .aggregate(aggregation) 
+        .aggregate(aggregation)
         .toArray();
       if (rawProducts.length === 0) continue;
       const productsWithShop = rawProducts.map((product) => {
@@ -31,12 +31,11 @@ export const retrieveProductsForBatchesForShops = async () => {
       continue;
     }
   }
-
   if (products.length === 0) return null;
 
   const shopBatches = createBatches(products, batchShops);
 
-  if (!shopBatches || shopBatches.length === 0) return null; 
+  if (!shopBatches || shopBatches.length === 0) return null;
 
   return [shopBatches[0]];
 };

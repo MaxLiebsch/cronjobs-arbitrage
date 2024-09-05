@@ -1,14 +1,14 @@
 import { getArbispotterDb } from "../src/services/db/mongo.js";
-import { aggregation } from "../src/util/titles/aggregation.js";
+import { aggregation } from "../src/util/quantities/aggregation.js";
 
 export const main = async () => {
   const spotterDb = await getArbispotterDb();
   const rawProducts = await spotterDb
-    .collection("idealo.de")
+    .collection("dm.de")
     .aggregate(aggregation)
     .toArray();
     
-  console.log("rawProducts:", rawProducts);
+  console.log("rawProducts:", rawProducts.length);
 };
 
 main().then((r) => {
