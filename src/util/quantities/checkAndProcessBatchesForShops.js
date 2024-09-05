@@ -13,14 +13,14 @@ const { remove } = fsjetpack;
 
 export const checkAndProcessBatchesForShops = async (batchesData) => {
   if (!batchesData.length) {
-    console.info("No batches to process for " + TASK_TYPES.DETECT_QUANTITY); 
+    console.info("No batches to process for " + TASK_TYPES.DETECT_QUANTITY);
     return "processed";
   }
   const crawlDataDb = await getCrawlDataDb();
   const tasksCol = crawlDataDb.collection("tasks");
   let inProgress = false;
-  for (let index = 0; index < batchesData.length; index++) {
-    const batchData = batchesData[index];
+  while (batchesData.length > 0) {
+    const batchData = batchesData.pop();
     const { filepath, batchId, status, processed } = batchData;
     try {
       const batch = await retrieveBatch(batchId);
@@ -58,6 +58,7 @@ export const checkAndProcessBatchesForShops = async (batchesData) => {
     } catch (error) {
       if (error instanceof NotFoundError) {
         console.error("Batch not found: ", batchId, "deleting batch");
+
         await tasksCol.updateOne(
           { type: TASK_TYPES.DETECT_QUANTITY },
           {
