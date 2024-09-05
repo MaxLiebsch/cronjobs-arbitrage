@@ -10,7 +10,7 @@ config({
 
 let intervalId = 0;
 
-export const CURRENT_MATCH_TITLES_PROMPT_VERSION = 'v01';
+export const CURRENT_MATCH_TITLES_PROMPT_VERSION = "v01";
 
 export const matchTitlesBatchInteration = async () => {
   clearInterval(intervalId);
@@ -29,13 +29,9 @@ export const matchTitlesBatchInteration = async () => {
 
   const { batches: batchesData } = task;
 
-  const batch = await checkAndProcessBatchesForShops(batchesData);
-
-  if (batch === "processed") {
-    console.log(
-      "Checking for pending products and creating ", TASK_TYPES.MATCH_TITLES ," batch..."
-    );
-    const check = await checkForPendingProductsAndCreateBatchesForShops();
-    return check;
+  if (batchesData.length === 0) {
+    return await checkForPendingProductsAndCreateBatchesForShops();
+  } else {
+    await checkAndProcessBatchesForShops(batchesData);
   }
 };

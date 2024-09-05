@@ -29,15 +29,10 @@ export const detectQuantityBatchInteration = async () => {
     throw new Error("No task found for type " + TASK_TYPES.DETECT_QUANTITY);
 
   const { batches: batchesData } = task;
-
-  const batch = await checkAndProcessBatchesForShops(batchesData);
-
-  if (batch === "processed") {
-    console.log(
-      "Checking for pending products and creating ",
-      TASK_TYPES.DETECT_QUANTITY,
-      " batch..."
-    );
+  
+  if (batchesData.length === 0) {
     return await checkForPendingProductsAndCreateBatchesForShops();
+  } else {
+    await checkAndProcessBatchesForShops(batchesData);
   }
 };
