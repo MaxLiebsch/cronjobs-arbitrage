@@ -3,7 +3,7 @@ import "dotenv/config";
 import { config } from "dotenv";
 import { encodeChat } from "gpt-tokenizer";
 import { getArbispotterDb } from "../src/services/db/mongo.js";
-import { createPrompt } from "../src/util/packages/createPrompt.js";
+import { createPrompt } from "../src/util/quantities/createPrompt.js";
 config({
   path: [`.env`],
 });
@@ -15,12 +15,12 @@ const openai = new OpenAI({
 });
 
 export const testQtyPrompt = async () => {
-  const db = await getArbispotterDb()
-  const shopDomain = "idealo.de";
+  const db = await getArbispotterDb();
+  const shopDomain = "dm.de";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ eanList: '4008705072601' }, { limit: 1 })
+    .find({ eanList: "4009900519991" }, { limit: 1 })
     .toArray();
   const prompt = createPrompt(
     shopDomain,
@@ -39,8 +39,8 @@ export const testQtyPrompt = async () => {
     "response:",
     JSON.stringify(response.choices[0].message.content, null, 2)
   );
-    const tokenCnt = encodeChat(prompt.body.messages, "gpt-3.5-turbo").length;
-    console.log('tokenCnt:', tokenCnt)
+  const tokenCnt = encodeChat(prompt.body.messages, "gpt-3.5-turbo").length;
+  console.log("tokenCnt:", tokenCnt);
 };
 
 testQtyPrompt().then(() => {

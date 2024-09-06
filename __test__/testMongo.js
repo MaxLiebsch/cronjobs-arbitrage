@@ -6,9 +6,9 @@ export const main = async () => {
   const rawProducts = await spotterDb
     .collection("dm.de")
     .aggregate(aggregation)
-    .toArray();
+
     
-  console.log("rawProducts:", rawProducts.length);
+  console.log("rawProducts:", rawProducts);
 };
 
 main().then((r) => {
