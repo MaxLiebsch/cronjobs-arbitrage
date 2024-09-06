@@ -1,8 +1,13 @@
 import { MongoBulkWriteError, ObjectId } from "mongodb";
-import { MINIMAL_SCORE } from "../../constants.js";
+import { MINIMAL_QUANTITY_SCORE } from "../../constants.js";
 import { getArbispotterDb, getCrawlDataDb } from "../../services/db/mongo.js";
 import { safeJSONParse } from "../safeParseJson.js";
-import { roundToTwoDecimals } from "@dipmaxtech/clr-pkg";
+import {
+  calculateAznArbitrage,
+  calculateEbyArbitrage,
+  findMappedCategory,
+  roundToTwoDecimals,
+} from "@dipmaxtech/clr-pkg";
 import { cleanScore } from "../titles/processResultsForShops.js";
 import { TASK_TYPES } from "../../services/productBatchProcessing.js";
 
@@ -60,7 +65,7 @@ export const processResultsForShops = async (fileContents, batchData) => {
 
           if (!content) continue;
 
-          const update = safeJSONParse(content); 
+          const update = safeJSONParse(content);
           if (!update) continue;
 
           Object.entries(update).forEach(([key, value]) => {
@@ -90,12 +95,11 @@ export const processResultsForShops = async (fileContents, batchData) => {
           let qty_prop = "complete";
           if ("nm_score" in update) {
             const nmScore = cleanScore(update.nm_score);
-            if (nmScore < MINIMAL_SCORE) {
+            if (nmScore < MINIMAL_QUANTITY_SCORE) {
               //to low score
             } else if (!isNaN(nmScore)) {
               spotterSet["nm_vrfd"] = {
                 qty_prop,
-                qty: buyQty,
                 qty_score: nmScore,
               };
             }
@@ -103,30 +107,28 @@ export const processResultsForShops = async (fileContents, batchData) => {
 
           if ("a_score" in update) {
             const aScore = cleanScore(update.a_score);
-            // if (aScore < MINIMAL_SCORE) {
-            //   // score too bad
-            // } else
-            if (!isNaN(aScore)) {
-              // if (aSellQty && aSellPrice && costs && aSellQty > 0) {
-              //   spotterSet["a_uprc"] = roundToTwoDecimals(
-              //     aSellPrice / aSellQty
-              //   );
+            if (aScore < MINIMAL_QUANTITY_SCORE) {
+              // score too bad
+            } else if (!isNaN(aScore)) {
+              if (aSellQty && aSellPrice && costs && aSellQty > 0) {
+                spotterSet["a_uprc"] = roundToTwoDecimals(
+                  aSellPrice / aSellQty
+                );
 
-              //   const factor = aSellQty / buyQty;
-              //   const arbitrage = calculateAznArbitrage(
-              //     buyPrice * factor, // prc * (a_qty / qty), // EK
-              //     aSellPrice, // a_prc, // VK
-              //     product.costs,
-              //     product?.tax
-              //   );
-              //   Object.entries(arbitrage).forEach(([key, value]) => {
-              //     spotterSet[key] = value;
-              //   });
-              // }
+                const factor = aSellQty / buyQty;
+                const arbitrage = calculateAznArbitrage(
+                  buyPrice * factor, // prc * (a_qty / qty), // EK
+                  aSellPrice, // a_prc, // VK
+                  product.costs,
+                  product?.tax
+                );
+                Object.entries(arbitrage).forEach(([key, value]) => {
+                  spotterSet[key] = value;
+                });
+              }
               spotterSet["a_vrfd"] = {
                 ...a_vrfd,
                 qty_prop,
-                qty: aSellQty,
                 qty_score: aScore,
               };
             }
@@ -134,61 +136,50 @@ export const processResultsForShops = async (fileContents, batchData) => {
 
           if ("e_score" in update) {
             const eScore = cleanScore(update.e_score);
-            // if (eScore < MINIMAL_SCORE) {
-            //   // score too bad
-            // } else
-            if (!isNaN(eScore)) {
-              // if (
-              //   eSellQty &&
-              //   eSellPrice &&
-              //   ebyCategories?.length > 0 &&
-              //   eSellQty > 0
-              // ) {
-              //   spotterSet["e_uprc"] = roundToTwoDecimals(
-              //     product.e_prc / eSellQty
-              //   );
-              //   const mappedCategories = findMappedCategory(
-              //     product.ebyCategories.reduce((acc, curr) => {
-              //       acc.push(curr.id);
-              //       return acc;
-              //     }, [])
-              //   );
-              //   const factor = eSellQty / buyQty;
-              //   if (mappedCategories) {
-              //     const arbitrage = calculateEbyArbitrage(
-              //       mappedCategories,
-              //       eSellPrice, //VK
-              //       buyPrice * factor // prc * (e_qty / qty) //EK  //QTY Zielshop/QTY Herkunftsshop
-              //     );
-              //     if (arbitrage)
-              //       Object.entries(arbitrage).forEach(([key, value]) => {
-              //         spotterSet[key] = value;
-              //       });
-              //   }
-              // }
+            if (eScore < MINIMAL_QUANTITY_SCORE) {
+              // score too bad
+            } else if (!isNaN(eScore)) {
+              if (
+                eSellQty &&
+                eSellPrice &&
+                ebyCategories?.length > 0 &&
+                eSellQty > 0
+              ) {
+                spotterSet["e_uprc"] = roundToTwoDecimals(
+                  product.e_prc / eSellQty
+                );
+                const mappedCategories = findMappedCategory(
+                  product.ebyCategories.reduce((acc, curr) => {
+                    acc.push(curr.id);
+                    return acc;
+                  }, [])
+                );
+                const factor = eSellQty / buyQty;
+                if (mappedCategories) {
+                  const arbitrage = calculateEbyArbitrage(
+                    mappedCategories,
+                    eSellPrice, //VK
+                    buyPrice * factor // prc * (e_qty / qty) //EK  //QTY Zielshop/QTY Herkunftsshop
+                  );
+                  if (arbitrage)
+                    Object.entries(arbitrage).forEach(([key, value]) => {
+                      spotterSet[key] = value;
+                    });
+                }
+              }
               spotterSet["e_vrfd"] = {
                 ...e_vrfd,
-                qty: eSellQty,
                 qty_prop,
                 qty_score: eScore,
               };
             }
           }
-
-          // if (
-          //   (buyQty > MAX_PACKAGE_SIZE ||
-          //     eSellQty > MAX_PACKAGE_SIZE ||
-          //     aSellQty > MAX_PACKAGE_SIZE) &&
-          //   !isRetry
-          // ) {
-          //   qty_prop = "retry";
-          // }
-
           bulkSpotterUpdates.push({
             updateOne: {
               filter: { _id: new ObjectId(id) },
               update: {
                 $set: {
+                  ...set,
                   ...spotterSet,
                   qty_updatedAt: new Date().toISOString(),
                 },
