@@ -11,7 +11,7 @@ config({
 
 let intervalId = 0;
 
-export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = "v02";
+export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = "v03";
 
 export const detectQuantityBatchInteration = async () => {
   clearInterval(intervalId);

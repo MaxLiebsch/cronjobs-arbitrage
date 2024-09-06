@@ -16,11 +16,11 @@ const openai = new OpenAI({
 
 export const testQtyPrompt = async () => {
   const db = await getArbispotterDb();
-  const shopDomain = "dm.de";
+  const shopDomain = "mueller.de";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ eanList: "4009900519991" }, { limit: 1 })
+    .find({ eanList: "4000158745101" }, { limit: 1 })
     .toArray();
   const prompt = createPrompt(
     shopDomain,

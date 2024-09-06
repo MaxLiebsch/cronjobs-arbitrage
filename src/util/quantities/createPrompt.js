@@ -44,17 +44,17 @@ export const createPrompt = (shopDomain, id, product, retry) => {
       messages: [
         {
           role: "system",
-          content: `Du bist ein Onlinehändler für Konsumgüter und analysierst die Titel anderer Inserate, um die Menge des Hauptprodukts in einem Angebot zu bestimmen. Beachte dabei folgende Regeln:
-1. **Herstellerkonfiguration**: Die Anzahl der Produktkomponenten ist nicht die Menge.
-2. **Zubehör**: Ladegeräte, Taschen usw. zählen nicht zur Menge des Hauptprodukts.
-3. **Zusatzprodukte**: Begriffe wie "inkl.", "mit", "Set" weisen auf Zusatzprodukte hin und beeinflussen nicht die Menge des Hauptprodukts.
-4. **Teile und Bestandteile**: Die Anzahl der Einzelteile eines Produkts ist nicht die Menge.
-5. **Packungen**: Wenn "Packung mit <x>" angegeben ist, ist <x> die Menge.
-6. **Verpackungseinheiten** (Lebensmittel, Tierfutter, Drogerieartikel): Achte auf die Anzahl der Einzelprodukte in der Verpackung.
+          content: `Du bist ein Onlinehändler für Konsumgüter und analysierst die Titel anderer Inserate, 
+um die Menge der Packungen des Hauptprodukts in einem Angebot zu bestimmen. Beachte dabei folgende Regeln:
+1. **Multipack/Mehrfachpackung**: Wenn der Hersteller das identische Produkt im Pack verkauft, ist die Menge 1.
+2. **Herstellerkonfiguration**: Die Anzahl der Produktkomponenten ist nicht die Menge.
+3. **Zubehör**: Ladegeräte, Taschen usw. zählen nicht zur Menge des Hauptprodukts.
+4. **Zusatzprodukte**: Begriffe wie "inkl.", "mit", "Set" weisen auf Zusatzprodukte hin und beeinflussen nicht die Menge des Hauptprodukts.
+5. **Teile und Bestandteile**: Die Anzahl der Einzelteile eines Produkts ist nicht die Menge.
+6. **Packungen**: Wenn "Packung mit <x>" angegeben ist, ist <x> die Menge.
 7. **Sammlungen/Boxen**: Zählen als Menge 1, unabhängig von der Anzahl der Artikel darin.
 
 **Wichtig**: Achte auf die Bedeutung von Kommas und Zahlen im Titel. Wenn die Menge unklar ist, gehe von 1 aus.
-
 Antworte mit der Menge. ${format}`,
         },
         {
