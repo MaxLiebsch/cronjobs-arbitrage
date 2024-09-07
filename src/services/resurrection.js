@@ -84,7 +84,6 @@ export async function resurrectionFromGrave() {
     const products = await collection
       .find(
         {
-          updatedAt: { $lte: "2024-04-28T11:29:49.308Z" },
           recoveredAt: { $exists: false },
         },
         { limit: 500 }
