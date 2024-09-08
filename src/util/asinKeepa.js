@@ -1,22 +1,13 @@
-import pkg from "lodash";
-const { get } = pkg;
-import { keepaProperties } from "../constants.js";
 import { upsertAsin } from "../services/db/util/asinTable.js";
 import {
   findArbispotterProduct,
   updateProductWithQuery,
 } from "../services/db/util/crudArbispotterProduct.js";
 import { calculateMonthlySales } from "@dipmaxtech/clr-pkg";
+import { buildKeepaResult } from "./buildKeepaResult.js";
 
 export const asinKeepa = async ({ shopDomain, asin, _id, analysis }) => {
-  const result = {};
-  keepaProperties.forEach((property) => {
-    const key = property.name
-      ? property.name
-      : property.key.replace("products[0].", "");
-
-    result[key] = get(analysis, property.key, null);
-  });
+  const result = buildKeepaResult(analysis);
 
   if (asin) {
     await upsertAsin(asin, result["k_eanList"] ?? []);
