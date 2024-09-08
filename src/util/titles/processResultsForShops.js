@@ -67,7 +67,14 @@ export const processResultsForShops = async (fileContents, batchData) => {
             (product) => product._id.toString() === id
           );
 
-          if (!product) continue;
+          if (!product) {
+            console.error({
+              name: "Product not found in spotterDb",
+              id,
+              shopDomain,
+            });
+            continue;
+          }
 
           const { a_vrfd, e_vrfd } = product;
 
@@ -155,6 +162,11 @@ export const processResultsForShops = async (fileContents, batchData) => {
             });
           }
         }
+      }else{
+        console.error({
+          name: "No products found in spotterDb",
+          shopDomain,
+        });
       }
     }),
   ]);

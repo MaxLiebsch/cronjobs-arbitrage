@@ -57,6 +57,7 @@ export const checkAndProcessBatchesForShops = async (batchesData) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       if (error instanceof NotFoundError) {
+        
         console.error("Batch not found: ", batchId, "deleting batch");
         await tasksCol.updateOne(
           { type: TASK_TYPES.MATCH_TITLES },

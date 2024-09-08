@@ -23,7 +23,7 @@ export const processFailedBatch = async (batchData) => {
   await crawlDataDb.collection(batchData.shopDomain).updateMany(
     { _id: { $in: hashes.map((id) => new ObjectId(id)) } },
     {
-      $set: { nm_prop: "", nm_batchId: "" },
+      $unset: { nm_prop: "", nm_batchId: "" },
     }
   );
 };

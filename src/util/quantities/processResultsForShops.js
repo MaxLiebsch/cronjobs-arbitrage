@@ -39,6 +39,8 @@ export const processResultsForShops = async (fileContents, batchData) => {
         .find({ _id: { $in: ids.map((id) => new ObjectId(id)) } })
         .toArray();
 
+      
+
       if (products.length) {
         for (let index = 0; index < results.length; index++) {
           const set = {};
@@ -50,7 +52,14 @@ export const processResultsForShops = async (fileContents, batchData) => {
             (product) => product._id.toString() === id
           );
 
-          if (!product) continue;
+          if (!product) {
+            console.error({
+              name: "Product not found in spotterDb",
+              id,
+              shopDomain,
+            });
+            continue;
+          }
 
           const content = result.response.body?.choices[0].message.content;
           const {
@@ -205,6 +214,11 @@ export const processResultsForShops = async (fileContents, batchData) => {
             });
           }
         }
+      }else{
+        console.error({
+          name: "No products found in spotterDb",
+          shopDomain,
+        });
       }
     }),
   ]);
