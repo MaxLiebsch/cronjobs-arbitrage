@@ -8,7 +8,7 @@ import {
 export const getAmazonProductCount = async (shopProductCollectionName) => {
   const db = await getArbispotterDb();
   const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.count({
+  return shopProductCollection.countDocuments({
     $and: [
       { asin: { $exists: true, $ne: "" } },
       { a_prc: { $gt: 0 } },
@@ -22,7 +22,7 @@ export const getAmazonFallbackProductsToUpdateKeepaCount = async (
 ) => {
   const db = await getArbispotterDb();
   const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.count(pendingFallbackKeepaProductsQuery);
+  return shopProductCollection.countDocuments(pendingFallbackKeepaProductsQuery);
 };
 
 export const getFallbackKeepaProgress = async (shopDomain) => {

@@ -9,7 +9,7 @@ export async function keepaTaskRecovery(activeShops) {
       activeShops.map(async (shop) => {
         const progress = await db
           .collection(shop.d)
-          .count(recoverKeepaProductsQuery)
+          .countDocuments(recoverKeepaProductsQuery)
         return { pending: progress, d: shop.d };
       })
     )
@@ -25,7 +25,7 @@ export async function keepaEanTaskRecovery(activeShops) {
         activeShops.map(async (shop) => {
           const progress = await db
             .collection(shop.d)
-            .count(recoverFallbackKeepaProductsQuery)
+            .countDocuments(recoverFallbackKeepaProductsQuery)
           return { pending: progress, d: shop.d };
         })
       )

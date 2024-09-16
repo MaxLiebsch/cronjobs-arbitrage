@@ -54,11 +54,11 @@ export const updateShopStats = async (shopDomain) => {
   const shopCollection = db.collection(shopDomain);
   if (!shopCollection) return;
 
-  const total = await shopCollection.count();
-  const a_fat_total = await shopCollection.count({
+  const total = await shopCollection.countDocuments();
+  const a_fat_total = await shopCollection.countDocuments({
     a_mrgn_pct: { $gt: 0 },
   });
-  const e_fat_total = await shopCollection.count({
+  const e_fat_total = await shopCollection.countDocuments({
     e_mrgn_pct: { $gt: 0 },
   });
   const shopsCollection = db.collection(shopCollectionName);

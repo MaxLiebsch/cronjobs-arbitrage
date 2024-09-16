@@ -6,7 +6,7 @@ import { pendingKeepaProductsQuery } from "../queries.js";
 export const getAmazonProductCount = async (shopProductCollectionName) => {
   const db = await getArbispotterDb();
   const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.count({
+  return shopProductCollection.countDocuments({
     $and: [
       { asin: { $exists: true, $ne: "" } },
       { a_prc: { $gt: 0 } },
@@ -20,7 +20,7 @@ export const getAmazonProductsToUpdateKeepaCount = async (
 ) => {
   const db = await getArbispotterDb();
   const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.count(pendingKeepaProductsQuery);
+  return shopProductCollection.countDocuments(pendingKeepaProductsQuery);
 };
 
 export const getKeepaProgress = async (shopDomain) => {
