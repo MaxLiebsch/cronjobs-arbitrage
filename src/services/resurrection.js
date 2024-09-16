@@ -1,6 +1,6 @@
 import { keepaProperties, RECOVER_LIMIT_PER_DAY } from "../constants.js";
 import { getArbispotterDb } from "../services/db/mongo.js";
-import { transformProduct } from "@dipmaxtech/clr-pkg";
+import { createHash, removeSearchParams, transformProduct } from "@dipmaxtech/clr-pkg";
 import { aznUnsetProperties } from "./aznQueries.js";
 import { ebyUnsetProperties } from "./ebyQueries.js";
 import { UTCDate } from "@date-fns/utc";
@@ -111,7 +111,10 @@ export async function resurrectionFromGrave() {
           continue;
         }
       }
-      const transformedProduct = transformProduct(product, product.shop);
+      let transformedProduct = transformProduct(product, product.shop);
+      transformedProduct.lnk = removeSearchParams(transformedProduct.lnk);
+      transformedProduct.s_hash = createHash(transformedProduct.lnk);
+      
       const { a_lnk, e_lnk } = transformedProduct;
       if (
         !transformedProduct.ean &&
@@ -191,9 +194,14 @@ export async function resurrectionFromGrave() {
       for (let index = 0; index < array.length; index++) {
         const key = array[index];
         const result = await db.collection(key).bulkWrite(bulkWrites[key]);
-        console.log("Shop: ", key, "Inserted documents: ", result.insertedCount);
+        console.log(
+          "Shop: ",
+          key,
+          "Inserted documents: ",
+          result.insertedCount
+        );
       }
     }
   }
-  console.log('Resurrection finished');
+  console.log("Resurrection finished");
 }
