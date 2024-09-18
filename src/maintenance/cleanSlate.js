@@ -1,8 +1,8 @@
-import { getArbispotterDb, getCrawlDataDb } from "../services/db/mongo.js";
-import { findArbispotterProducts } from "../services/db/util/crudArbispotterProduct.js";
-import { createOrUpdateCrawlDataProduct } from "../services/db/util/createOrUpdateCrawlDataProduct.js";
-import { findCrawlDataProducts } from "../services/db/util/crudCrawlDataProduct.js";
-import { createOrUpdateArbispotterProduct } from "../services/db/util/createOrUpdateArbispotterProduct.js";
+import { getArbispotterDb, getCrawlDataDb } from "../db/mongo.js";
+import { findArbispotterProducts } from "../db/util/crudArbispotterProduct.js";
+import { createOrUpdateCrawlDataProduct } from "../db/util/createOrUpdateCrawlDataProduct.js";
+import { findCrawlDataProducts } from "../db/util/crudCrawlDataProduct.js";
+import { createOrUpdateArbispotterProduct } from "../db/util/createOrUpdateArbispotterProduct.js";
 
 const cleanSlate = async () => {
   const db = await getCrawlDataDb();

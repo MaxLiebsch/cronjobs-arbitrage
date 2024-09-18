@@ -3,8 +3,8 @@ import {
   findProducts,
   insertArbispotterProducts,
   updateProduct,
-} from "../services/db/util/crudArbispotterProduct.js";
-import { getActiveShops } from "../services/db/util/shops.js";
+} from "../db/util/crudArbispotterProduct.js";
+import { getActiveShops } from "../db/util/shops.js";
 
 const asinRegex = /dp%2F([A-Za-z0-9]{10})%2F|\/dp\/([A-Za-z0-9]{10})/g;
 

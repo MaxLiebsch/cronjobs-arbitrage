@@ -2,10 +2,10 @@ import {
   getActiveShops,
   getAllShops,
   getShops,
-} from "../services/db/util/shops.js";
+} from "../db/util/shops.js";
 import "dotenv/config";
 import { config } from "dotenv";
-import { updateCrawlDataProducts } from "../services/db/util/crudCrawlDataProduct.js";
+import { updateCrawlDataProducts } from "../db/util/crudCrawlDataProduct.js";
 
 config({
   path: [`.env`],

@@ -1,10 +1,10 @@
-import { updateProduct } from "../services/db/util/crudArbispotterProduct.js";
+import { updateProduct } from "../db/util/crudArbispotterProduct.js";
 import {
   findCrawlDataProducts,
   updateCrawlDataProduct,
-} from "../services/db/util/crudCrawlDataProduct.js";
-import { getProductCount } from "../services/db/util/getMatchingProgress.js";
-import { getActiveShops } from "../services/db/util/shops.js";
+} from "../db/util/crudCrawlDataProduct.js";
+import { getProductCount } from "../db/util/getMatchingProgress.js";
+import { getActiveShops } from "../db/util/shops.js";
 
 const correctEans = async () => {
   const activeShops = await getActiveShops();

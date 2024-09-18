@@ -1,9 +1,9 @@
 import {
   findCrawlDataProducts,
   updateCrawlDataProduct,
-} from "../services/db/util/crudCrawlDataProduct.js";
-import { getProductCount } from "../services/db/util/getMatchingProgress.js";
-import { getAllShops } from "../services/db/util/shops.js";
+} from "../db/util/crudCrawlDataProduct.js";
+import { getProductCount } from "../db/util/getMatchingProgress.js";
+import { getAllShops } from "../db/util/shops.js";
 
 const correctDm = async () => {
   const activeShops = await getAllShops();

@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import "dotenv/config";
 import { config } from "dotenv";
 import { encodeChat } from "gpt-tokenizer";
-import { getArbispotterDb } from "../src/services/db/mongo.js";
+import { getArbispotterDb } from "../src/db/mongo.js";
 import { createNameMatchingPrompt } from "../src/util/titles/createNamingPrompt.js";
 config({
   path: [`.env`],

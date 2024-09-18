@@ -1,7 +1,7 @@
-import { updateProduct } from "../services/db/util/crudArbispotterProduct.js";
-import { findCrawlDataProducts } from "../services/db/util/crudCrawlDataProduct.js";
-import { getProductCount } from "../services/db/util/getMatchingProgress.js";
-import { getActiveShops } from "../services/db/util/shops.js";
+import { updateProduct } from "../db/util/crudArbispotterProduct.js";
+import { findCrawlDataProducts } from "../db/util/crudCrawlDataProduct.js";
+import { getProductCount } from "../db/util/getMatchingProgress.js";
+import { getActiveShops } from "../db/util/shops.js";
 
 const recoverEans = async () => {
   const activeShops = await getActiveShops();

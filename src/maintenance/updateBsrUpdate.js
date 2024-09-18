@@ -1,8 +1,8 @@
 import {
   findProducts,
   updateProduct,
-} from "../services/db/util/crudArbispotterProduct.js";
-import { getActiveShops } from "../services/db/util/shops.js";
+} from "../db/util/crudArbispotterProduct.js";
+import { getActiveShops } from "../db/util/shops.js";
 
 const updateBsrUpdateAt = async () => {
   const activeShops = await getActiveShops();

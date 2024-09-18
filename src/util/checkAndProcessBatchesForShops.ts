@@ -1,0 +1,82 @@
+import {
+  deleteFile,
+  retrieveBatch,
+  retrieveOutputFile,
+} from "../services/openai/index.js";
+import { processFailedBatch } from "./processFailedBatch.js";
+import { getCrawlDataDb } from "../db/mongo.js";
+import fsjetpack from "fs-jetpack";
+import { NotFoundError } from "openai";
+import { processResultsForShops } from "./processResultsForShops.js";
+import { Batch, BatchTaskTypes } from "../types/tasks.js";
+const { remove } = fsjetpack;
+
+export const checkAndProcessBatchesForShops = async (
+  batchesData: Batch[],
+  batchTaskType: BatchTaskTypes
+) => {
+  if (!batchesData.length) {
+    console.info("No batches to process for " + batchTaskType);
+    return "processed";
+  }
+  const crawlDataDb = await getCrawlDataDb();
+  const tasksCol = crawlDataDb.collection("tasks");
+  let inProgress = false;
+  while (batchesData.length > 0) {
+    const batchData = batchesData.pop()!;
+
+    const { filepath, batchId, status, processed } = batchData;
+    try {
+      const batch = await retrieveBatch(batchId);
+      if (batch.status === "in_progress") {
+        inProgress = true;
+      }
+      if (batch.status === "completed" && !processed) {
+        console.log(
+          "Processing completed batch ",
+          batchId,
+          " for " + batchTaskType,
+          "..."
+        );
+        if (batch.output_file_id) {
+          const fileContents = await retrieveOutputFile(batch.output_file_id);
+          await processResultsForShops(fileContents, batchData, batchTaskType);
+        }
+        // clean up
+        if (batch.input_file_id && batch.output_file_id) {
+          await deleteFile(batch.input_file_id);
+          await deleteFile(batch.output_file_id);
+        }
+        remove(filepath);
+      }
+      if (batch.status === status) continue;
+      if (batch.status === "failed") {
+        await deleteFile(batch.input_file_id);
+        await processFailedBatch(batchData);
+      }
+      await tasksCol.updateOne(
+        { type: batchTaskType, "batches.batchId": batchId },
+        {
+          $set: {
+            "batches.$.status": batch.status,
+          },
+        }
+      );
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        console.error("Batch not found: ", batchId, "deleting batch");
+        await tasksCol.updateOne(
+          { type: batchTaskType },
+          {
+            $pull: {
+              batches: { batchId },
+            },
+          }
+        );
+      }
+    }
+  }
+
+  if (!inProgress) return "processed";
+};

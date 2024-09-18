@@ -1,4 +1,4 @@
-import { getArbispotterDb } from "../src/services/db/mongo.js";
+import { getArbispotterDb } from "../src/db/mongo.js";
 import { aggregation } from "../src/util/quantities/aggregation.js";
 
 export const main = async () => {

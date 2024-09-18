@@ -1,7 +1,7 @@
-import { getKeepaEanProgressPerShop } from "../src/services/db/util/getFallbackKeepaProgress.js";
-import { getKeepaProgress, getKeepaProgressPerShop } from "../src/services/db/util/getKeepaProgress.js";
-import { keepaTaskRecovery } from "../src/services/db/util/getKeepaRecovery.js";
-import { getActiveShops } from "../src/services/db/util/shops.js";
+import { getKeepaEanProgressPerShop } from "../src/db/util/getFallbackKeepaProgress.js";
+import { getKeepaProgress, getKeepaProgressPerShop } from "../src/db/util/getKeepaProgress.js";
+import { keepaTaskRecovery } from "../src/db/util/getKeepaRecovery.js";
+import { getActiveShops } from "../src/db/util/shops.js";
 
 async function main() {
   const activeShops = await getActiveShops();

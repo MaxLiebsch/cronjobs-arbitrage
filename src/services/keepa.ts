@@ -1,0 +1,121 @@
+import "dotenv/config";
+import { config } from "dotenv";
+import { Job, scheduleJob } from "node-schedule";
+import { makeRequestsForEan, makeRequestsForId } from "../util/keepaHelper.js";
+import { KEEPA_RATE_LIMIT } from "../constants.js";
+import { updateArbispotterProductQuery } from "../db/util/crudArbispotterProduct.js";
+import { updateTaskWithQuery } from "../db/util/updateTask.js";
+import { lookForPendingKeepaLookups } from "../util/lookForPendingKeepaLookups.js";
+import { ObjectId } from "@dipmaxtech/clr-pkg";
+import { KeepaPreProduct } from "../types/keepaPreProduct.js";
+
+config({
+  path: [`.env`],
+});
+
+// Mock queue with Asins (initially empty)
+const asinQueue: KeepaPreProduct[] = [];
+
+let total = 0;
+
+export const getTotal = () => total;
+export const setTotal = (value: number) => {
+  total = value;
+};
+export const incrementTotal = () => {
+  total++;
+};
+
+// Event mechanism
+let queueResolve: any = null;
+// Job, when all products have been sourced
+let job: Job | null = null;
+let running = false;
+
+export const queuePromise = () =>
+  new Promise<void>((resolve) => {
+    queueResolve = resolve;
+  });
+
+export async function processQueue(keepaJob: Job | null = null) {
+  job = keepaJob;
+  running = true;
+  while (true) {
+    console.log("Remaining Asins in batch:", asinQueue.length);
+    await updateTaskWithQuery({ type: "KEEPA_NORMAL" }, { total });
+    if (asinQueue.length === 0) {
+      console.log(
+        "Queue is empty after processing all pending products. Starting job to look for pending keepa lookups..."
+      );
+      if (!job) {
+        console.log("Queue is empty, starting job");
+        job = scheduleJob("*/10 * * * *", async () => {
+          console.log("Checking for pending products...");
+          await lookForPendingKeepaLookups(job);
+        });
+      }
+      queuePromise();
+    }
+
+    const promises = [];
+
+    for (let i = 0; i < KEEPA_RATE_LIMIT; i++) {
+      if (asinQueue.length > 0) {
+        const product = asinQueue.shift()!;
+        if (product?.asin) {
+          incrementTotal();
+          promises.push(makeRequestsForId(product));
+        } else {
+          if (product?.ean) {
+            incrementTotal();
+            promises.push(makeRequestsForEan(product));
+          } else {
+            await updateArbispotterProductQuery(
+              product.shopDomain,
+              product._id,
+              {
+                $unset: {
+                  keepa_lckd: "",
+                  keepaEan_lckd: "",
+                },
+              }
+            );
+          }
+        }
+      } else {
+        break; // Break the loop if the queue is empty
+      }
+    }
+
+    await Promise.all(promises);
+
+    if (asinQueue.length === 0) {
+      if (job) {
+        console.log("Batch is done, cancel job!");
+        job.cancel();
+        job = null;
+      }
+      console.log("Batch is done. Looking for pending keepa lookups...");
+      await lookForPendingKeepaLookups(job);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 70 * 1000)); // Wait for 1 minute
+  }
+}
+
+// Function to add new Asins to the queue
+export function addToQueue(newAsins: KeepaPreProduct[]) {
+  asinQueue.push(...newAsins);
+  if (queueResolve) {
+    queueResolve(undefined); // Resolve the promise to wake up processQueue
+    queueResolve = null;
+  }
+}
+
+scheduleJob("0 0 * * *", async () => {
+  await updateTaskWithQuery(
+    { type: "KEEPA_NORMAL" },
+    { total: 0, yesterday: total }
+  );
+  setTotal(0);
+});

@@ -1,5 +1,5 @@
-import { getArbispotterDb, getCrawlDataDb } from "../services/db/mongo.js";
-import { getAllShops } from "../services/db/util/shops.js";
+import { getArbispotterDb, getCrawlDataDb } from "../db/mongo.js";
+import { getAllShops } from "../db/util/shops.js";
 
 const resetNameBatch = async () => {
   const spotter = await getArbispotterDb();

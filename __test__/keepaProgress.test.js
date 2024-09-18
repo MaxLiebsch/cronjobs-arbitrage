@@ -1,5 +1,5 @@
-import { getKeepaProgress } from "../src/services/db/util/getKeepaProgress.js";
-import { getActiveShops } from "../src/services/db/util/shops.js";
+import { getKeepaProgress } from "../src/db/util/getKeepaProgress.js";
+import { getActiveShops } from "../src/db/util/shops.js";
 
 const main = async () => {
   const activeShops = await getActiveShops();
