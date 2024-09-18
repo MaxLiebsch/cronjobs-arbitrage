@@ -8,6 +8,7 @@ import {
   ebyUnsetProperties,
   KeepaNameProperties,
   keepaProperties,
+  reduceSalesRankArray,
   removeSearchParams,
   transformProduct,
 } from "@dipmaxtech/clr-pkg";
@@ -23,6 +24,11 @@ function deleteUnsetProperties(product: DbProductRecord, unsetProperties: any) {
   Object.keys(unsetProperties).forEach((prop) => {
     delete (product as any)[prop];
   });
+}
+
+function isArrayOfNumbers(arr: any) {
+  if (!Array.isArray(arr)) return false;
+  return arr.every((item) => typeof item === "number");
 }
 
 function handleAmazonLink(product: DbProductRecord) {
@@ -96,7 +102,7 @@ export async function resurrectionFromGrave() {
   const limit = RECOVER_LIMIT_PER_DAY;
   let cnt = 0;
   while (cnt <= limit) {
-    const products = await collection
+    let products = await collection
       .find(
         {
           recoveredAt: { $exists: false },
@@ -176,6 +182,50 @@ export async function resurrectionFromGrave() {
         transformedProduct["qEbyUpdatedAt"] = new UTCDate().toISOString();
         transformedProduct["eby_prop"] = "complete";
       }
+      const { salesRanks, ahstprcs, auhstprcs, anhstprcs } = transformedProduct;
+      if (salesRanks) {
+        const _salesRanks = salesRanks;
+        Object.entries(salesRanks).forEach(([key, value]) => {
+          if (value.length > 2 && isArrayOfNumbers(value)) {
+            (_salesRanks as any)[key] = reduceSalesRankArray(
+              value as unknown as number[]
+            );
+          }
+        });
+        if (Object.keys(_salesRanks).length > 0) {
+          transformedProduct.salesRanks = _salesRanks;
+        } else {
+          delete transformedProduct.salesRanks;
+        }
+      }
+
+      if (ahstprcs && isArrayOfNumbers(ahstprcs)) {
+        if (ahstprcs.length > 2) {
+          transformedProduct.ahstprcs = reduceSalesRankArray(
+            ahstprcs as unknown as number[]
+          );
+        } else {
+          delete transformedProduct.ahstprcs;
+        }
+      }
+      if (auhstprcs && isArrayOfNumbers(auhstprcs)) {
+        if (auhstprcs.length > 2) {
+          transformedProduct.auhstprcs = reduceSalesRankArray(
+            auhstprcs as unknown as number[]
+          );
+        } else {
+          delete transformedProduct.auhstprcs;
+        }
+      }
+      if (anhstprcs && isArrayOfNumbers(anhstprcs)) {
+        if (anhstprcs.length > 2) {
+          transformedProduct.anhstprcs = reduceSalesRankArray(
+            anhstprcs as unknown as number[]
+          );
+        } else {
+          delete transformedProduct.anhstprcs;
+        }
+      }
 
       const spotterProduct = await db.collection(product.shop).findOne({
         s_hash: transformedProduct.s_hash,
@@ -183,9 +233,10 @@ export async function resurrectionFromGrave() {
 
       if (spotterProduct) {
         await collection.deleteOne({ _id: product._id });
+        products = products.filter((p) => p._id !== product._id);
         continue;
       }
-      
+
       const bulkWrite = {
         insertOne: {
           document: {
