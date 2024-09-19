@@ -22,7 +22,7 @@ export async function makeRequestsForEan(product: KeepaPreProduct) {
       response.data.products.length > 0 &&
       response.data.products[0].asin
     ) {
-      console.log(`Request for ID ${ean} - ${product.shopDomain}`);
+      console.log(`Request for EAN: ${ean} - ${product.shopDomain}`);
       await eanKeepa({
         ...product,
         analysis: response.data,

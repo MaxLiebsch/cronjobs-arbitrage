@@ -101,9 +101,12 @@ export const controlProcessProps = async () => {
           }
           bulkWrites.push(spotterBulk);
         }
-        console.log("Updates: ", bulkWrites.length, " Shop: ", shop.d);
         try {
-          await spotter.collection(shop.d).bulkWrite(bulkWrites);
+          const result = await spotter.collection(shop.d).bulkWrite(bulkWrites);
+          logGlobal(
+            loggerName,
+            `Processed ${result.modifiedCount}/${products.length} products`
+          );
         } catch (error) {
           if (error instanceof MongoBulkWriteError)
             logGlobal(

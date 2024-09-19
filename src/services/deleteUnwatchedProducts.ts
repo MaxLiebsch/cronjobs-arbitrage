@@ -30,11 +30,7 @@ export const deleteUnwatchedProducts = async () => {
         batchSize
       );
       if (products.length) {
-        logGlobal(
-          loggerName,
-          `Deleting ${products.length} unwatched products for shop ${shop.d}`
-        );
-        await insertArbispotterProducts(
+        const result = await insertArbispotterProducts(
           "grave",
           products.map((product) => ({
             ...product,
@@ -42,9 +38,13 @@ export const deleteUnwatchedProducts = async () => {
             deletedAt: new Date().toISOString(),
           }))
         );
-        await deleteArbispotterProducts(shop.d, {
+        const deletedResult = await deleteArbispotterProducts(shop.d, {
           _id: { $in: products.map((product) => product._id) },
         });
+        logGlobal(
+          loggerName,
+          `Moved ${result.insertedCount} products to grave and deleted ${deletedResult.deletedCount} products`
+        );
       } else {
         logGlobal(loggerName, `No unwatched products found for shop ${shop.d}`);
       }
