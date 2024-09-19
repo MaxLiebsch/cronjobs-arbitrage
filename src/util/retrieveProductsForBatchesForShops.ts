@@ -28,7 +28,7 @@ export const retrieveProductsForBatchesForShops = async (
       ? BATCH_SIZE * 2
       : BATCH_SIZE;
 
-  let limitPerShop = limit / activeShops.length;
+  let limitPerShop = Math.floor(limit / activeShops.length);
   let remainingShops = activeShops.length;
 
   const aggregation =
