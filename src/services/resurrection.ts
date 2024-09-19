@@ -14,6 +14,7 @@ import {
 } from "@dipmaxtech/clr-pkg";
 import { UTCDate } from "@date-fns/utc";
 import { CJ_LOGGER, logGlobal } from "../util/logger.js";
+import { BulkWrite } from "../types/BulkTypes.js";
 
 function deleteProperties(product: any, properties: KeepaNameProperties) {
   Object.keys(properties).forEach((prop) => {
@@ -49,6 +50,22 @@ function handleEbayLink(product: DbProductRecord) {
     cat_prop: "",
     catUpdatedAt: "",
   });
+}
+
+function uniqueBulkWrite(bulkWriteArray: BulkWrite[]): BulkWrite[] {
+  const uniqueProducts = new Set();
+  const uniqueBulkWriteArray = [];
+
+  for (const item of bulkWriteArray) {
+    //@ts-ignore
+    const lnk = item.insertOne.document.lnk; // Assuming each item has a productId property
+    if (!uniqueProducts.has(lnk)) {
+      uniqueProducts.add(lnk);
+      uniqueBulkWriteArray.push(item);
+    }
+  }
+
+  return uniqueBulkWriteArray;
 }
 
 function handleProductWithoutEAN(
@@ -230,15 +247,15 @@ export async function resurrectionFromGrave() {
       }
 
       const spotterProduct = await db.collection(product.shop).findOne({
-        s_hash: transformedProduct.s_hash,
+        lnk: transformedProduct.lnk,
       });
 
       if (spotterProduct) {
-        await collection.deleteOne({ _id: product._id });
+        const result = await collection.deleteOne({ _id: product._id });
         products = products.filter((p) => p._id !== product._id);
         logGlobal(
           loggerName,
-          `Product with hash ${transformedProduct.s_hash} already exists in shop ${product.shop}`
+          `Product with hash ${transformedProduct.s_hash} already exists in shop ${product.shop}, Deleted: ${result.deletedCount}`
         );
         continue;
       }
@@ -274,7 +291,7 @@ export async function resurrectionFromGrave() {
         const shopDomain = shopDomains[index];
         const result = await db
           .collection(shopDomain)
-          .bulkWrite(bulkWrites[shopDomain]);
+          .bulkWrite(uniqueBulkWrite(bulkWrites[shopDomain] as BulkWrite[]));
 
         logGlobal(
           loggerName,
