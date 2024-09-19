@@ -1,4 +1,3 @@
-import { MAX_BATCH_SIZE } from "../../constants.js";
 import {
   ebayMarginCalculationAggregationStep,
   totalPositivAmazon,

@@ -45,7 +45,7 @@ const main = async () => {
       setTotal(keepaTask.total);
     }
   }
-  productBatchProcessingForShops().then();
+  // productBatchProcessingForShops().then();
   await lookForPendingKeepaLookups(keepaJob);
   await processQueue(keepaJob);
 };
