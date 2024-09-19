@@ -29,29 +29,39 @@ export const quantityAggregation = (limit: number) => [
         {
           $or: [
             {
-              $or: [
-                { a_vrfd: { $exists: false } },
-                { "a_vrfd.qty_prop": { $exists: false } },
+              $and: [
+                ...totalPositivAmazon.$and,
                 {
-                  "a_vrfd.qty_prop": {
-                    $exists: true,
-                    $nin: ["complete", "in_progress", "backlog"],
-                  },
+                  $or: [
+                    { a_vrfd: { $exists: false } },
+                    { "a_vrfd.qty_prop": { $exists: false } },
+                    {
+                      "a_vrfd.qty_prop": {
+                        $exists: true,
+                        $nin: ["complete", "in_progress", "backlog"],
+                      },
+                    },
+                    { "a_vrfd.qty_prop": { $exists: true, $eq: "retry" } },
+                  ],
                 },
-                { "a_vrfd.qty_prop": { $exists: true, $eq: "retry" } },
               ],
             },
             {
-              $or: [
-                { e_vrfd: { $exists: false } },
-                { "e_vrfd.qty_prop": { $exists: false } },
+              $and: [
+                ...totalPositivEbay.$and,
                 {
-                  "e_vrfd.qty_prop": {
-                    $exists: true,
-                    $nin: ["complete", "in_progress", "backlog"],
-                  },
+                  $or: [
+                    { e_vrfd: { $exists: false } },
+                    { "e_vrfd.qty_prop": { $exists: false } },
+                    {
+                      "e_vrfd.qty_prop": {
+                        $exists: true,
+                        $nin: ["complete", "in_progress", "backlog"],
+                      },
+                    },
+                    { "e_vrfd.qty_prop": { $exists: true, $eq: "retry" } },
+                  ],
                 },
-                { "e_vrfd.qty_prop": { $exists: true, $eq: "retry" } },
               ],
             },
           ],

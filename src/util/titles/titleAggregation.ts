@@ -30,6 +30,7 @@ export const titleAggregation = (limit: number) => [
           $or: [
             {
               $and: [
+                ...totalPositivAmazon.$and,
                 { a_nm: { $exists: true, $nin: ["", null] } },
                 {
                   $or: [
@@ -48,6 +49,7 @@ export const titleAggregation = (limit: number) => [
             },
             {
               $and: [
+                ...totalPositivEbay.$and,
                 { e_nm: { $exists: true, $nin: ["", null] } },
                 {
                   $or: [
