@@ -7,9 +7,9 @@ import {
   roundToTwoDecimals,
   safeJSONParse,
 } from "@dipmaxtech/clr-pkg";
-import { BulkWrite } from "../../types/BulkTypes";
-import { cleanScore } from "../cleanScore";
-import { MINIMAL_QUANTITY_SCORE } from "../../constants";
+import { BulkWrite } from "../../types/BulkTypes.js";
+import { cleanScore } from "../cleanScore.js";
+import { MINIMAL_QUANTITY_SCORE } from "../../constants.js";
 
 export function processDetectQuantityResult(
   spotterSet: Partial<DbProductRecord>,

@@ -5,9 +5,9 @@ import {
   resetEbyProductQuery,
   safeJSONParse,
 } from "@dipmaxtech/clr-pkg";
-import { BulkWrite } from "../../types/BulkTypes";
-import { cleanScore } from "../cleanScore";
-import { MINIMAL_SCORE } from "../../constants";
+import { BulkWrite } from "../../types/BulkTypes.js";
+import { cleanScore } from "../cleanScore.js";
+import { MINIMAL_SCORE } from "../../constants.js";
 
 export function processMatchTitleResult(
   set: Partial<DbProductRecord>,
