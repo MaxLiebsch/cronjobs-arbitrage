@@ -55,7 +55,7 @@ export const retrieveProductsForBatchesForShops = async (
         continue;
       } else {
         limit -= rawProducts.length;
-        logGlobal(loggerName, `Remaining limit: ${limit}`);
+        logGlobal(loggerName, `Products found for shop ${shop.d}: ${rawProducts.length} Remaining limit: ${limit}`);
       }
       const productsWithShop = rawProducts.map<ProductWithShop>((product) => {
         return { ...product, shop: shop.d };
