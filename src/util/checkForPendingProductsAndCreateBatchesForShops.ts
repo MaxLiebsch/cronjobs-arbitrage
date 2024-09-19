@@ -21,7 +21,7 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
   const tasksCol = crawlDataDb.collection("tasks");
   const newBatchFileContents = await retrieveProductsForBatchesForShops(
     batchTaskType
-  ); 
+  );
 
   if (!newBatchFileContents) return "No new batches found";
 
@@ -70,20 +70,21 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
             loggerName,
             batchTaskType + " " + batch.id + " started successfully!"
           );
+          const prefix = batchTaskType === "MATCH_TITLES" ? "nm" : "qty";
           for (let index = 0; index < batchShops.length; index++) {
             const batchShop = batchShops[index];
             const hashesForShop = productIds.get(batchShop);
+            const newLocal = batchTaskType === "MATCH_TITLES";
             await spotterDb.collection(batchShop).updateMany(
               { _id: { $in: hashesForShop! } },
               {
-                $set: {
-                  nm_prop: "in_progress",
-                  nm_batchId: batch.id,
-                  nm_v:
-                    batchTaskType === "MATCH_TITLES"
-                      ? CURRENT_MATCH_TITLES_PROMPT_VERSION
-                      : CURRENT_DETECT_QUANTITY_PROMPT_VERSION,
-                },
+              $set: {
+                [`${prefix}_prop`]: "in_progress",
+                [`${prefix}_batchId`]: batch.id,
+                [`${prefix}_v`]: newLocal
+                ? CURRENT_MATCH_TITLES_PROMPT_VERSION
+                : CURRENT_DETECT_QUANTITY_PROMPT_VERSION,
+              },
               }
             );
           }
@@ -115,7 +116,7 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
       }
     }
   } catch (error) {
-    console.log('error:', error)
+    console.log("error:", error);
     logGlobal(
       loggerName,
       "Error in checkForPendingProductsAndCreateBatches" +

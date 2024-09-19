@@ -51,21 +51,14 @@ export const processResultsForShops = async (
     if (products.length) {
       for (let index = 0; index < results.length; index++) {
         const spotterSet: Partial<DbProductRecord> = {};
-        if (batchTaskType === BATCH_TASK_TYPES.MATCH_TITLES) {
-          processMatchTitleResult(
-            spotterSet,
-            results[index],
-            products,
-            bulkSpotterUpdates
-          );
-        } else {
-          processDetectQuantityResult(
-            spotterSet,
-            results[index],
-            products,
-            bulkSpotterUpdates
-          );
-        }
+        processResults(
+          batchTaskType,
+          spotterSet,
+          results,
+          index,
+          products,
+          bulkSpotterUpdates
+        );
       }
       try {
         const result = await spotterDb
@@ -96,3 +89,28 @@ export const processResultsForShops = async (
     }
   );
 };
+
+function processResults(
+  batchTaskType: string,
+  spotterSet: Partial<DbProductRecord>,
+  results: BatchResults,
+  index: number,
+  products: DbProductRecord[],
+  bulkSpotterUpdates: BulkWrite[]
+) {
+  if (batchTaskType === BATCH_TASK_TYPES.MATCH_TITLES) {
+    processMatchTitleResult(
+      spotterSet,
+      results[index],
+      products,
+      bulkSpotterUpdates
+    );
+  } else {
+    processDetectQuantityResult(
+      spotterSet,
+      results[index],
+      products,
+      bulkSpotterUpdates
+    );
+  }
+}
