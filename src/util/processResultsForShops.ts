@@ -8,13 +8,16 @@ import { BulkWrite } from "../types/BulkTypes.js";
 import { processMatchTitleResult } from "./titles/processMatchTitleResult.js";
 import { BATCH_TASK_TYPES } from "../services/productBatchProcessing.js";
 import { processDetectQuantityResult } from "./quantities/processDetectQuantityResult.js";
+import { CJ_LOGGER, logGlobal } from "./logger.js";
+
+const loggerName = CJ_LOGGER.BATCHES;
 
 export const processResultsForShops = async (
   fileContents: string,
   batchData: Batch,
   batchTaskType: BatchTaskTypes
 ) => {
-  const { batchId } = batchData;
+  const { batchId, shopDomains } = batchData;
   const results = fileContents
     .split("\n")
     .filter(Boolean)
@@ -32,6 +35,8 @@ export const processResultsForShops = async (
     }
     batchMap.get(shopDomain)!.push(result);
   });
+
+  logGlobal(loggerName, `${results.length} Results in batch ${batchId}`);
 
   for (const [shopDomain, results] of batchMap.entries()) {
     const ids = results.map(
@@ -63,24 +68,21 @@ export const processResultsForShops = async (
         }
       }
       try {
-        await spotterDb.collection(shopDomain).bulkWrite(bulkSpotterUpdates);
+        const result = await spotterDb
+          .collection(shopDomain)
+          .bulkWrite(bulkSpotterUpdates);
+        logGlobal(
+          loggerName,
+          `BulkWrite result: ${result.modifiedCount}/${products.length} modified for ${shopDomain}`
+        );
       } catch (error) {
-        console.error({
-          name: "Error updating spotterDb: ",
-          stack: `${error}`,
-        });
-        if (error instanceof MongoBulkWriteError) {
-          console.error({
-            name: "Mongo",
-            error: JSON.stringify(error.writeErrors, null, 2),
-          });
-        }
+        logGlobal(
+          loggerName,
+          `Error updating spotterDb: ${(error as Error)?.message}`
+        );
       }
     } else {
-      console.error({
-        name: "No products found in spotterDb",
-        shopDomain,
-      });
+      logGlobal(loggerName, `No products found in spotterDb for ${shopDomain}`);
     }
   }
 

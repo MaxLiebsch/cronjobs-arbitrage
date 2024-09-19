@@ -5,8 +5,11 @@ import {
   insertArbispotterProducts,
 } from "../db/util/crudArbispotterProduct.js";
 import { getActiveShops } from "../db/util/shops.js";
+import { CJ_LOGGER, logGlobal } from "../util/logger.js";
 
-export const deleteUnwatchedProduts = async () => {
+export const deleteUnwatchedProducts = async () => {
+  const loggerName = CJ_LOGGER.UNWATCHED_PRODUCTS;
+  logGlobal(loggerName, "Deleting unwatched products");
   const activeShops = await getActiveShops();
   if (!activeShops) return;
 
@@ -27,7 +30,8 @@ export const deleteUnwatchedProduts = async () => {
         batchSize
       );
       if (products.length) {
-        console.log(
+        logGlobal(
+          loggerName,
           `Deleting ${products.length} unwatched products for shop ${shop.d}`
         );
         await insertArbispotterProducts(
@@ -42,9 +46,10 @@ export const deleteUnwatchedProduts = async () => {
           _id: { $in: products.map((product) => product._id) },
         });
       } else {
-        console.log(`No unwatched products found for shop ${shop.d}`);
+        logGlobal(loggerName, `No unwatched products found for shop ${shop.d}`);
       }
       hasMoreProducts = products.length === batchSize;
     }
   }
+  logGlobal(loggerName, "Finished deleting unwatched products");
 };

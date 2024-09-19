@@ -11,6 +11,9 @@ import {
 } from "../db/util/getKeepaRecovery.js";
 import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { KeepaPreProduct } from "../types/keepaPreProduct.js";
+import { CJ_LOGGER, logGlobal } from "./logger.js";
+
+const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
 export async function lookForPendingKeepaLookups(job: Job | null = null) {
   const activeShops = await getActiveShops();
@@ -19,7 +22,7 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   const keepaProgressPerShop = await getKeepaProgressPerShop(activeShops);
   const recoveryShops = await keepaTaskRecovery(activeShops!);
   const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
-  console.log("Recover keepa task: ", pleaseRecover);
+  logGlobal(loggerName, `Recover keepa task: ${pleaseRecover}`);
   const products = await prepareProducts(
     pleaseRecover ? recoveryShops : keepaProgressPerShop,
     false,
@@ -27,21 +30,18 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   );
 
   if (products.length) {
-    console.log("Keepa Products: ", products.length);
+    logGlobal(loggerName, `Keepa Products: ${products.length}`);
     if (job) {
-      console.log("Cancel Job");
       job.cancel();
       job = null;
     }
-    console.log("about to call queueresolve...");
     addToQueue(products.flatMap((ps) => ps));
   } else {
-    console.log("...checking for fallback work");
     const keepaProgressPerShop = await getKeepaEanProgressPerShop(activeShops);
 
     const recoveryShops = await keepaEanTaskRecovery(activeShops!);
     const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
-    console.log("Recover keepa ean task: ", pleaseRecover);
+    logGlobal(loggerName, `Recover keepa ean task: ${pleaseRecover}`);
 
     const products = await prepareProducts(
       pleaseRecover ? recoveryShops : keepaProgressPerShop,
@@ -49,19 +49,16 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
       pleaseRecover
     );
     if (products.length) {
-      console.log("working on fallback products");
       if (job) {
-        console.log("Cancel Job");
         job.cancel();
         job = null;
       }
       addToQueue(products.flatMap((ps) => ps));
     } else {
-      console.log("No pending products.");
       if (!job) {
-        console.log("Starting Job...");
+        logGlobal(loggerName, "Queue is empty, starting job");
         job = scheduleJob("*/10 * * * *", async () => {
-          console.log("Checking for pending products...");
+          logGlobal(loggerName, "Checking for pending products...");
           await lookForPendingKeepaLookups(job);
         });
       }
@@ -85,7 +82,10 @@ async function prepareProducts(
 
   return await Promise.all(
     pendingShops.map(async (shop) => {
-      console.log(`Shop ${shop.d} has ${shop.pending} pending keepa lookups`);
+      logGlobal(
+        loggerName,
+        `Shop ${shop.d} has ${shop.pending} pending keepa lookups`
+      );
       const products = await lockProductsForKeepa(
         shop.d,
         productsPerShop,

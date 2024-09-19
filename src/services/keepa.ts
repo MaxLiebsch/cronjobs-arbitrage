@@ -6,12 +6,17 @@ import { KEEPA_RATE_LIMIT } from "../constants.js";
 import { updateArbispotterProductQuery } from "../db/util/crudArbispotterProduct.js";
 import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { lookForPendingKeepaLookups } from "../util/lookForPendingKeepaLookups.js";
-import { ObjectId } from "@dipmaxtech/clr-pkg";
 import { KeepaPreProduct } from "../types/keepaPreProduct.js";
+import { LocalLogger } from "@dipmaxtech/clr-pkg";
+import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
 
 config({
   path: [`.env`],
 });
+
+const loggerName = CJ_LOGGER.PENDING_KEEPAS;
+const logger = new LocalLogger().createLogger(loggerName);
+setTaskLogger(logger, loggerName);
 
 // Mock queue with Asins (initially empty)
 const asinQueue: KeepaPreProduct[] = [];
@@ -41,16 +46,17 @@ export async function processQueue(keepaJob: Job | null = null) {
   job = keepaJob;
   running = true;
   while (true) {
-    console.log("Remaining Asins in batch:", asinQueue.length);
+    logGlobal(loggerName, "Processing queue..." + asinQueue.length);
     await updateTaskWithQuery({ type: "KEEPA_NORMAL" }, { total });
     if (asinQueue.length === 0) {
-      console.log(
+      logGlobal(
+        loggerName,
         "Queue is empty after processing all pending products. Starting job to look for pending keepa lookups..."
       );
       if (!job) {
-        console.log("Queue is empty, starting job");
+        logGlobal(loggerName, "Queue is empty, starting job");
         job = scheduleJob("*/10 * * * *", async () => {
-          console.log("Checking for pending products...");
+          logGlobal(loggerName, "Checking for pending products...");
           await lookForPendingKeepaLookups(job);
         });
       }
@@ -91,11 +97,13 @@ export async function processQueue(keepaJob: Job | null = null) {
 
     if (asinQueue.length === 0) {
       if (job) {
-        console.log("Batch is done, cancel job!");
         job.cancel();
         job = null;
       }
-      console.log("Batch is done. Looking for pending keepa lookups...");
+      logGlobal(
+        loggerName,
+        "Batch is done. Looking for pending keepa lookups..."
+      );
       await lookForPendingKeepaLookups(job);
     }
 

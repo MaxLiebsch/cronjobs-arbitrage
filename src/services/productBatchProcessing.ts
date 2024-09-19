@@ -3,6 +3,8 @@ import { matchTitlesBatchInteration } from "./matchTitelsBatchForShops.js";
 import { detectQuantityBatchInteration } from "./detectQuantityBatchForShops.js";
 import { scheduleJob } from "node-schedule";
 import { BatchTaskTypes } from "../types/tasks.js";
+import { LocalLogger } from "@dipmaxtech/clr-pkg";
+import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
 
 export const BATCHES = "AI_TASKS";
 
@@ -18,6 +20,9 @@ export const BATCH_TASK_TYPES: { [key in BatchTaskTypes]: BatchTaskTypes } = {
     1. MATCH_TITLES
     2. DETECT_QUANTITY
 */
+const loggerName = CJ_LOGGER.BATCHES;
+const logger = new LocalLogger().createLogger(loggerName);
+setTaskLogger(logger, loggerName);
 
 const productBatchProcessingForShops = async () => {
   const crawlDataDb = await getCrawlDataDb();
@@ -28,10 +33,9 @@ const productBatchProcessingForShops = async () => {
   ) => {
     const check = await checkFunction();
     if (check === "No new batches found") {
-      console.log(
-        "No new batches found for ",
-        BATCH_TASK_TYPES.DETECT_QUANTITY,
-        ", moving to next task " + BATCH_TASK_TYPES.MATCH_TITLES
+      logGlobal(
+        loggerName,
+        `No new batches found for ${BATCH_TASK_TYPES.DETECT_QUANTITY} moving to next task ${BATCH_TASK_TYPES.MATCH_TITLES}`
       );
       await tasksCol.updateOne(
         { type: BATCHES },
@@ -46,13 +50,14 @@ const productBatchProcessingForShops = async () => {
     const currentTask = aiTasks.currentTask;
     let matchTitlesTaskCompleted = false;
     if (currentTask === BATCH_TASK_TYPES.DETECT_QUANTITY) {
-      console.log(BATCH_TASK_TYPES.DETECT_QUANTITY + "...");
+      logGlobal(loggerName, "Current task is " + BATCH_TASK_TYPES.DETECT_QUANTITY);
       await updateTaskIfNoNewBatches(detectQuantityBatchInteration);
     } else {
-      console.log(BATCH_TASK_TYPES.MATCH_TITLES + "...");
+      logGlobal(loggerName, "Current task is " + BATCH_TASK_TYPES.MATCH_TITLES);
       const check = await matchTitlesBatchInteration();
       if (check === "No new batches found") {
-        console.log(
+        logGlobal(
+          loggerName,
           "No new batches found for " + BATCH_TASK_TYPES.MATCH_TITLES
         );
         matchTitlesTaskCompleted = true;
@@ -63,12 +68,18 @@ const productBatchProcessingForShops = async () => {
     }
 
     const job = scheduleJob("1-59/1 * * * *", async () => {
-      console.log("\n\n\n\n ProductBatchProcessingForShops job started...");
+      logGlobal(loggerName, "ProductBatchProcessingForShops job started...");
       job.cancel();
       await productBatchProcessingForShops();
     });
   } catch (error) {
-    console.error("Error in productBatchProcessingForShops", error);
+    console.log('error:', error)
+    if (error instanceof Error)
+      logGlobal(
+        loggerName,
+        "Error in productBatchProcessingForShops " + error.message
+      );
   }
 };
+
 export default productBatchProcessingForShops;

@@ -9,6 +9,9 @@ import { CURRENT_MATCH_TITLES_PROMPT_VERSION } from "../services/matchTitelsBatc
 import { createJsonlFile } from "./createJsonlFile.js";
 import { BatchTaskTypes } from "../types/tasks.js";
 import { CURRENT_DETECT_QUANTITY_PROMPT_VERSION } from "../services/detectQuantityBatchForShops.js";
+import { CJ_LOGGER, logGlobal } from "./logger.js";
+
+const loggerName = CJ_LOGGER.BATCHES;
 
 export const checkForPendingProductsAndCreateBatchesForShops = async (
   batchTaskType: BatchTaskTypes
@@ -18,21 +21,16 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
   const tasksCol = crawlDataDb.collection("tasks");
   const newBatchFileContents = await retrieveProductsForBatchesForShops(
     batchTaskType
-  );
+  ); 
 
   if (!newBatchFileContents) return "No new batches found";
 
   newBatchFileContents.length &&
-    console.log(
-      `${batchTaskType}:\n`,
-      newBatchFileContents.map((newBatch) => {
-        if (!newBatch) return;
-        const { prompts, batchShops } = newBatch;
-        return {
-          prompts: prompts.length,
-          batchShops,
-        };
-      })
+    logGlobal(
+      loggerName,
+      `${batchTaskType}: ${
+        newBatchFileContents[0].prompts.length
+      } prompts needed ${newBatchFileContents[0].batchShops.join(", ")}`
     );
   try {
     for (let index = 0; index < newBatchFileContents.length; index++) {
@@ -68,8 +66,10 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
           }
         }
         if (success) {
-          console.log(batch.id, " started successfully!");
-
+          logGlobal(
+            loggerName,
+            batchTaskType + " " + batch.id + " started successfully!"
+          );
           for (let index = 0; index < batchShops.length; index++) {
             const batchShop = batchShops[index];
             const hashesForShop = productIds.get(batchShop);
@@ -88,7 +88,7 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
             );
           }
 
-          await tasksCol.updateOne(
+          const result = await tasksCol.updateOne(
             { type: batchTaskType },
             {
               $push: {
@@ -103,10 +103,23 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
               },
             }
           );
+          logGlobal(
+            loggerName,
+            `Batch created. ${
+              result.acknowledged && result.modifiedCount
+                ? "Task updated"
+                : "Task not updated"
+            }`
+          );
         }
       }
     }
   } catch (error) {
-    console.log("Error in checkForPendingProductsAndCreateBatches", error);
+    console.log('error:', error)
+    logGlobal(
+      loggerName,
+      "Error in checkForPendingProductsAndCreateBatches" +
+        (error as Error)?.message
+    );
   }
 };

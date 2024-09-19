@@ -13,6 +13,7 @@ import {
   transformProduct,
 } from "@dipmaxtech/clr-pkg";
 import { UTCDate } from "@date-fns/utc";
+import { CJ_LOGGER, logGlobal } from "../util/logger.js";
 
 function deleteProperties(product: any, properties: KeepaNameProperties) {
   Object.keys(properties).forEach((prop) => {
@@ -97,6 +98,7 @@ function handleProductWithEAN(
 }
 
 export async function resurrectionFromGrave() {
+  const loggerName = CJ_LOGGER.RESURRECTION;
   const db = await getArbispotterDb();
   const collection = db.collection("grave");
   const limit = RECOVER_LIMIT_PER_DAY;
@@ -112,11 +114,11 @@ export async function resurrectionFromGrave() {
       .toArray();
 
     const bulkWrites: {
-      [key: string]: AnyBulkWriteOperation<Partial<DbProductRecord>>[];
+      [shopDomain: string]: AnyBulkWriteOperation<Partial<DbProductRecord>>[];
     } = {};
 
     if (products.length === 0) {
-      console.log("No products found in the grave");
+      logGlobal(loggerName, "No products found in the grave");
       cnt = limit + 1;
       return;
     } else {
@@ -130,7 +132,7 @@ export async function resurrectionFromGrave() {
           const url = new URL(link);
           product.shop = url.hostname.replace("www.", "");
         } catch (error) {
-          console.log("error", error);
+          logGlobal(loggerName, `Error parsing URL: ${link}`);
           continue;
         }
       }
@@ -234,6 +236,10 @@ export async function resurrectionFromGrave() {
       if (spotterProduct) {
         await collection.deleteOne({ _id: product._id });
         products = products.filter((p) => p._id !== product._id);
+        logGlobal(
+          loggerName,
+          `Product with hash ${transformedProduct.s_hash} already exists in shop ${product.shop}`
+        );
         continue;
       }
 
@@ -245,6 +251,10 @@ export async function resurrectionFromGrave() {
           },
         },
       };
+      logGlobal(
+        loggerName,
+        `Product with hash ${transformedProduct.s_hash} is new`
+      );
       const shopBulkWrites = bulkWrites[product.shop];
       bulkWrites[product.shop] = [
         ...(shopBulkWrites && shopBulkWrites.length ? shopBulkWrites : []),
@@ -252,24 +262,26 @@ export async function resurrectionFromGrave() {
       ];
     }
 
-    await collection.updateMany(
+    const result = await collection.updateMany(
       { _id: { $in: products.map((p) => p._id) } },
       { $set: { recoveredAt: new UTCDate().toISOString() } }
     );
+    logGlobal(loggerName, `Recovered ${result.modifiedCount} products`);
 
     if (Object.keys(bulkWrites).length > 0) {
-      const array = Object.keys(bulkWrites);
-      for (let index = 0; index < array.length; index++) {
-        const key = array[index];
-        const result = await db.collection(key).bulkWrite(bulkWrites[key]);
-        console.log(
-          "Shop: ",
-          key,
-          "Inserted documents: ",
-          result.insertedCount
+      const shopDomains = Object.keys(bulkWrites);
+      for (let index = 0; index < shopDomains.length; index++) {
+        const shopDomain = shopDomains[index];
+        const result = await db
+          .collection(shopDomain)
+          .bulkWrite(bulkWrites[shopDomain]);
+
+        logGlobal(
+          loggerName,
+          `Shop: ${shopDomain} Inserted documents: ${result.insertedCount}`
         );
       }
     }
   }
-  console.log("Resurrection finished");
+  logGlobal(loggerName, "Resurrection finished");
 }

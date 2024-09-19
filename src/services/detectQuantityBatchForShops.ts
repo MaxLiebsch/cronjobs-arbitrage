@@ -4,6 +4,7 @@ import { config } from "dotenv";
 import { BATCH_TASK_TYPES, BATCHES } from "./productBatchProcessing.js";
 import { checkForPendingProductsAndCreateBatchesForShops } from "../util/checkForPendingProductsAndCreateBatchesForShops.js";
 import { checkAndProcessBatchesForShops } from "../util/checkAndProcessBatchesForShops.js";
+import { CJ_LOGGER, logGlobal } from "../util/logger.js";
 
 config({
   path: [`.env`],
@@ -12,6 +13,7 @@ config({
 let intervalId = 0;
 
 export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = "v03";
+const loggerName = CJ_LOGGER.BATCHES;
 
 export const detectQuantityBatchInteration = async () => {
   clearInterval(intervalId);
@@ -25,8 +27,6 @@ export const detectQuantityBatchInteration = async () => {
     { $set: { currentTask: BATCH_TASK_TYPES.DETECT_QUANTITY } }
   );
 
-  console.log("Interval started... for " + BATCH_TASK_TYPES.DETECT_QUANTITY);
-
   if (!task)
     throw new Error(
       "No task found for type " + BATCH_TASK_TYPES.DETECT_QUANTITY
@@ -39,11 +39,20 @@ export const detectQuantityBatchInteration = async () => {
       BATCH_TASK_TYPES.DETECT_QUANTITY
     );
   } else {
-    const result = await checkAndProcessBatchesForShops(batchesData, BATCH_TASK_TYPES.DETECT_QUANTITY);
+    const result = await checkAndProcessBatchesForShops(
+      batchesData,
+      BATCH_TASK_TYPES.DETECT_QUANTITY
+    );
     if (result === "processed") {
-      await tasksCol.updateOne(
+      const result = await tasksCol.updateOne(
         { type: BATCHES },
         { $set: { currentTask: BATCH_TASK_TYPES.MATCH_TITLES } }
+      );
+      logGlobal(
+        loggerName,
+        `Batch processed. ${
+          result.acknowledged ? "Task updated" : "Task not updated"
+        }`
       );
     }
   }

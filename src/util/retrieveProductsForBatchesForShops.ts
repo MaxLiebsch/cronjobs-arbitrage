@@ -8,6 +8,9 @@ import { ProductWithShop } from "../types/products.js";
 import { ShopBatches } from "../types/ShopBatches.js";
 import { createBatches } from "./createBatchesForShops.js";
 import { BatchTaskTypes } from "../types/tasks.js";
+import { CJ_LOGGER, logGlobal } from "./logger.js";
+
+const loggerName = CJ_LOGGER.BATCHES
 
 export const retrieveProductsForBatchesForShops = async (
   batchTaskType: BatchTaskTypes
@@ -34,7 +37,7 @@ export const retrieveProductsForBatchesForShops = async (
       batchShops.push(shop.d);
       products.push(...productsWithShop);
     } catch (error) {
-      console.error(`Error fetching products for shop ${shop.d}:`, error);
+      logGlobal(loggerName, `Error fetching products for shop ${shop.d}: ${error}`);
       continue;
     }
   }

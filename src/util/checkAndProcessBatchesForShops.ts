@@ -6,17 +6,39 @@ import {
 import { processFailedBatch } from "./processFailedBatch.js";
 import { getCrawlDataDb } from "../db/mongo.js";
 import fsjetpack from "fs-jetpack";
-import { NotFoundError } from "openai";
+import { NotFoundError, RateLimitError } from "openai";
 import { processResultsForShops } from "./processResultsForShops.js";
 import { Batch, BatchTaskTypes } from "../types/tasks.js";
+import { CJ_LOGGER, logGlobal } from "./logger.js";
 const { remove } = fsjetpack;
+
+const loggerName = CJ_LOGGER.BATCHES;
+
+// Define the retry function
+async function retry<T>(
+  fn: () => Promise<T>,
+  retries: number,
+  delay: number
+): Promise<T> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (i === retries - 1 || !(error instanceof NotFoundError)) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+  throw new Error("Max retries reached");
+}
 
 export const checkAndProcessBatchesForShops = async (
   batchesData: Batch[],
   batchTaskType: BatchTaskTypes
 ) => {
   if (!batchesData.length) {
-    console.info("No batches to process for " + batchTaskType);
+    logGlobal(loggerName, "No batches to process for " + batchTaskType);
     return "processed";
   }
   const crawlDataDb = await getCrawlDataDb();
@@ -27,16 +49,18 @@ export const checkAndProcessBatchesForShops = async (
 
     const { filepath, batchId, status, processed } = batchData;
     try {
-      const batch = await retrieveBatch(batchId);
+      const batch = await retry(() => retrieveBatch(batchId), 3, 2500);
       if (batch.status === "in_progress") {
         inProgress = true;
       }
       if (batch.status === "completed" && !processed) {
-        console.log(
-          "Processing completed batch ",
-          batchId,
-          " for " + batchTaskType,
-          "..."
+        logGlobal(
+          loggerName,
+          "Processing completed batch " +
+            batchId +
+            " for " +
+            batchTaskType +
+            "..."
         );
         if (batch.output_file_id) {
           const fileContents = await retrieveOutputFile(batch.output_file_id);
@@ -65,14 +89,29 @@ export const checkAndProcessBatchesForShops = async (
       await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       if (error instanceof NotFoundError) {
-        console.error("Batch not found: ", batchId, "deleting batch");
-        await tasksCol.updateOne(
-          { type: batchTaskType },
-          {
-            $pull: {
-              batches: { batchId },
-            },
-          }
+        logGlobal(
+          loggerName,
+          "Batch not found: " + batchId + " " + error.message + " " + error.code
+        );
+        // await tasksCol.updateOne(
+        //   { type: batchTaskType },
+        //   {
+        //     $pull: {
+        //       batches: { batchId },
+        //     },
+        //   }
+        // );
+      } else if (error instanceof RateLimitError) {
+        logGlobal(
+          loggerName,
+          `Error processing batch ${batchId}: ${(error as Error).message} ${
+            error.code
+          }`
+        );
+      } else {
+        logGlobal(
+          loggerName,
+          `Error processing batch ${batchId}: ${(error as Error).message}`
         );
       }
     }

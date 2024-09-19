@@ -5,6 +5,9 @@ import { asinKeepa } from "./asinKeepa.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 import { KeepaPreProduct } from "../types/keepaPreProduct.js";
 import { sleep } from "@dipmaxtech/clr-pkg";
+import { CJ_LOGGER, logGlobal } from "./logger.js";
+
+const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
 export async function makeRequestsForEan(product: KeepaPreProduct) {
   const { ean } = product;
@@ -35,7 +38,7 @@ export async function makeRequestsForEan(product: KeepaPreProduct) {
         },
       });
       console.log(
-        `Request for ID ${ean} - ${product.shopDomain} failed with status ${response.status}`
+        `Request for EAN: ${ean} - ${product.shopDomain} failed with status ${response.status}`
       );
     }
   } catch (error) {
@@ -45,14 +48,14 @@ export async function makeRequestsForEan(product: KeepaPreProduct) {
       },
     });
     if (error instanceof AxiosError) {
-      console.error(
-        `Error for ID ${ean} - ${product.shopDomain}: `,
-        error.status,
-        error.message
+      logGlobal(
+        loggerName,
+        `Error for EAN: ${ean} - ${product.shopDomain}, ${error.status}, ${error.message}`
       );
       if (error.status === 429) {
-        console.log("Rate limit reached. Waiting for 60 seconds...");
+        logGlobal(loggerName, "Rate limit reached. Waiting for 60 seconds...");
         await sleep(1000 * 60); // Wait for 60 seconds
+        logGlobal(loggerName, "Resuming...");
       }
     }
   }
@@ -67,7 +70,7 @@ export async function makeRequestsForId(product: KeepaPreProduct) {
     );
 
     if (response.status === 200 && response.data.error === undefined) {
-      console.log(`Request for ID ${trimedAsin} - ${product.shopDomain}`);
+      console.log(`Request for ASIN: ${trimedAsin} - ${product.shopDomain}`);
       await asinKeepa({
         ...product,
         analysis: response.data,
@@ -83,7 +86,7 @@ export async function makeRequestsForId(product: KeepaPreProduct) {
         },
       });
       console.log(
-        `Request for ID ${trimedAsin} - ${product.shopDomain} failed with status ${response.status}`
+        `Request for ASIN: ${trimedAsin} - ${product.shopDomain} failed with status ${response.status}`
       );
     }
   } catch (error) {
@@ -93,14 +96,14 @@ export async function makeRequestsForId(product: KeepaPreProduct) {
       },
     });
     if (error instanceof AxiosError) {
-      console.error(
-        `Error for ID ${trimedAsin} - ${product.shopDomain}: `,
-        error.status,
-        error.message
+      logGlobal(
+        loggerName,
+        `Error for ASIN: ${trimedAsin} - ${product.shopDomain}, ${error.status}, ${error.message}`
       );
       if (error.status === 429) {
-        console.log("Rate limit reached. Waiting for 60 seconds...");
+        logGlobal(loggerName, "Rate limit reached. Waiting for 60 seconds...");
         await sleep(1000 * 60); // Wait for 60 seconds
+        logGlobal(loggerName, "Resuming...");
       }
     }
   }

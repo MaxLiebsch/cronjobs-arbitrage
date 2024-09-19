@@ -1,5 +1,5 @@
 import { getArbispotterDb, getCrawlDataDb } from "../db/mongo.js";
-import { getAllShops } from "../db/util/shops.js";
+import { getActiveShops, getAllShops } from "../db/util/shops.js";
 
 const resetNameBatch = async () => {
   const spotter = await getArbispotterDb();
@@ -13,7 +13,13 @@ const resetNameBatch = async () => {
       },
     }
   );
-  const shops = await getAllShops();
+  const shops = await getActiveShops();
+
+  if(!shops) {
+    console.log("No active shops found");
+    process.exit(0);
+  }
+  
   const activeShops = shops.filter((shop) => shop.active);
 
   for (let index = 0; index < activeShops.length; index++) {

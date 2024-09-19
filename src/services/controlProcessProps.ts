@@ -1,8 +1,10 @@
-
+import { MongoBulkWriteError } from "@dipmaxtech/clr-pkg";
 import { MAX_AGE_PROPS } from "../constants.js";
 import { getArbispotterDb } from "../db/mongo.js";
 import { findArbispotterProducts } from "../db/util/crudArbispotterProduct.js";
 import { getActiveShops } from "../db/util/shops.js";
+import { BulkWrite } from "../types/BulkTypes.js";
+import { CJ_LOGGER, logGlobal } from "../util/logger.js";
 
 const catPropInvalids = [
   "missing",
@@ -17,6 +19,8 @@ const ebyPropInvalids = ["missing"];
 const eanPropInvalids = ["missing", "invalid", "timeout"];
 
 export const controlProcessProps = async () => {
+  const loggerName = CJ_LOGGER.PROCESS_PROPS;
+  logGlobal(loggerName, "Control process props");
   const activeShops = await getActiveShops();
   if (!activeShops) return;
   const spotter = await getArbispotterDb();
@@ -27,6 +31,7 @@ export const controlProcessProps = async () => {
   for (const shop of Object.values(activeShops)) {
     let hasMoreProducts = true;
     const batchSize = 500;
+    let cnt = 0;
     while (hasMoreProducts) {
       const bulkWrites = [];
       const products = await findArbispotterProducts(
@@ -60,11 +65,16 @@ export const controlProcessProps = async () => {
         batchSize
       );
       if (products.length) {
+        cnt += products.length;
+        logGlobal(
+          loggerName,
+          `Processing ${products.length} products for shop ${shop.d}`
+        );
         let _i = 60;
         for (const product of products) {
           const { _id, ean_prop, info_prop, cat_prop, eby_prop, costs } =
             product;
-          const spotterBulk: any = {
+          const spotterBulk: BulkWrite = {
             updateOne: {
               filter: { _id: _id },
               update: { $unset: {} },
@@ -92,12 +102,25 @@ export const controlProcessProps = async () => {
           bulkWrites.push(spotterBulk);
         }
         console.log("Updates: ", bulkWrites.length, " Shop: ", shop.d);
-        // console.log(JSON.stringify(bulkWrites[_i], null, 2));
-        await spotter.collection(shop.d).bulkWrite(bulkWrites);
+        try {
+          await spotter.collection(shop.d).bulkWrite(bulkWrites);
+        } catch (error) {
+          if (error instanceof MongoBulkWriteError)
+            logGlobal(
+              loggerName,
+              `Error in bulkWrite ${shop.d} ${error.message}`
+            );
+        }
       } else {
-        console.log(`No props updates needed ${shop.d}`);
+        logGlobal(loggerName, `No props updates needed ${shop.d}`);
       }
       hasMoreProducts = products.length === batchSize;
     }
+    logGlobal(
+      loggerName,
+      `Finished processing ${cnt} products for shop ${shop.d}`
+    );
   }
+
+  logGlobal(loggerName, "Finished control process props");
 };
