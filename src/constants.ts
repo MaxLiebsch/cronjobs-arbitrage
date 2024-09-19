@@ -8,9 +8,9 @@ export const MAX_AGE_PROPS = 7;
 export const PENDING_KEEPA_LOOKUPS_INTERVAL = 1000 * 60 * KEEPA_MINUTES;
 export const CHECK_PACKAGE_BATCH_INTERVAL =
   process.env.NODE_ENV === "production" ? 1000 * 60 * 1.5 : 1000 * 60 * 0.5;
-export const TOKEN_LIMIT = 160000;
+export const TOKEN_LIMIT = 3800000;
 export const MAX_PACKAGE_SIZE = 11;
-export const BATCH_SIZE = process.env.NODE_ENV === "development" ? 50 : 900;
+export const BATCH_SIZE = process.env.NODE_ENV === "development" ? 50 : 6000;
 export const MAX_BATCH_SIZE = 300;
 export const MIN_BATCH_SIZE = 100;
 export const MINIMAL_SCORE = 0.6;

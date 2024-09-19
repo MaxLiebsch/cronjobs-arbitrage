@@ -1,11 +1,10 @@
-import { MAX_BATCH_SIZE } from "../../constants.js";
 import {
   ebayMarginCalculationAggregationStep,
   totalPositivAmazon,
   totalPositivEbay,
 } from "../../db/queries.js";
 
-export const aggregation = [
+export const titleAggregation = (limit: number) => [
   ...ebayMarginCalculationAggregationStep,
   {
     $match: {
@@ -76,5 +75,5 @@ export const aggregation = [
       ],
     },
   },
-  { $limit: MAX_BATCH_SIZE },
+  { $limit: limit },
 ];

@@ -5,7 +5,7 @@ import {
   totalPositivEbay,
 } from "../../db/queries.js";
 
-export const aggregation = [
+export const quantityAggregation = (limit: number) => [
   ...ebayMarginCalculationAggregationStep,
   {
     $match: {
@@ -66,5 +66,5 @@ export const aggregation = [
       ],
     },
   },
-  { $limit: MAX_BATCH_SIZE },
+  { $limit: limit },
 ];
