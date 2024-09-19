@@ -50,7 +50,7 @@ export const checkAndProcessBatchesForShops = async (
     const { filepath, batchId, status, processed } = batchData;
     try {
       const batch = await retry(() => retrieveBatch(batchId), 3, 2500);
-      if (batch.status === "in_progress") {
+      if (batch.status === "in_progress" || batch.status === "finalizing") {
         inProgress = true;
       }
       if (batch.status === "completed" && !processed) {
