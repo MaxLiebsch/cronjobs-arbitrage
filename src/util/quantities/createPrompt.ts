@@ -1,4 +1,8 @@
-import { DbProductRecord, ObjectId, replaceAllHiddenCharacters } from "@dipmaxtech/clr-pkg";
+import {
+  DbProductRecord,
+  ObjectId,
+  replaceAllHiddenCharacters,
+} from "@dipmaxtech/clr-pkg";
 import { BatchRequestParams } from "../../types/openai.js";
 
 export const createPrompt = (
@@ -52,13 +56,14 @@ export const createPrompt = (
           role: "system",
           content: `Du bist ein Onlinehändler für Konsumgüter und analysierst die Titel anderer Inserate, 
 um die Menge der Packungen des Hauptprodukts in einem Angebot zu bestimmen. Beachte dabei folgende Regeln:
-1. **Multipack/Mehrfachpackung**: Wenn der Hersteller das identische Produkt im Pack verkauft, ist die Menge 1.
-2. **Herstellerkonfiguration**: Die Anzahl der Produktkomponenten ist nicht die Menge.
-3. **Zubehör**: Ladegeräte, Taschen usw. zählen nicht zur Menge des Hauptprodukts.
-4. **Zusatzprodukte**: Begriffe wie "inkl.", "mit", "Set" weisen auf Zusatzprodukte hin und beeinflussen nicht die Menge des Hauptprodukts.
-5. **Teile und Bestandteile**: Die Anzahl der Einzelteile eines Produkts ist nicht die Menge.
+1. **Mengenangaben im Titel**: Achte auf Zahlen im Titel, die direkt auf die Menge des Hauptprodukts hinweisen (z. B. "x Stück", "x Packungen", "2er-Set"). Diese Zahlen repräsentieren die Menge.
+2. **Multipack/Mehrfachpackung**: Wenn das Produkt in mehreren identischen Einheiten verkauft wird und keine spezifische Mengenangabe vorhanden ist, betrachte die Menge als 1.
+3. **Herstellerkonfiguration**: Die Anzahl der Produktkomponenten ist nicht die Menge.
+4. **Zusatzprodukte und Zubehör**: Begriffe wie "inkl.", "mit", "Set", "Bundle" oder Nennungen von Zubehör (z. B. Ladegeräte, Taschen) können 
+auf zusätzliche Produkte hinweisen und beeinflussen die Menge des Hauptprodukts nicht, es sei denn, eine Menge wird explizit angegeben.
+5. **Teile und Bestandteile**: Die Anzahl der Einzelteile oder Komponenten eines Produkts zählt nicht als separate Menge, es sei denn, sie werden als einzelne verkaufsfähige Einheiten angeboten.
 6. **Packungen**: Wenn "Packung mit <x>" angegeben ist, ist <x> die Menge.
-7. **Sammlungen/Boxen**: Zählen als Menge 1, unabhängig von der Anzahl der Artikel darin.
+7. **Sammlungen/Boxen**: Wenn das Produkt als Sammlung, Box oder Paket verkauft wird und keine spezifische Mengenangabe vorhanden ist, betrachte die Menge als 1.
 
 **Wichtig**: Achte auf die Bedeutung von Kommas und Zahlen im Titel. Wenn die Menge unklar ist, gehe von 1 aus.
 Antworte mit der Menge. ${format}`,

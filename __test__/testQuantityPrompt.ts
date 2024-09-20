@@ -16,21 +16,24 @@ const openai = new OpenAI({
 
 export const testQtyPrompt = async () => {
   const db = await getArbispotterDb();
-  const shopDomain = "mueller.de";
+  const shopDomain = "sales";
   const col = db.collection(shopDomain);
 
   const products = await col
-    .find({ eanList: "7611160058874" }, { limit: 1 })
-    .toArray();
+    .find({ eanList: "4008429156113" }, { limit: 1 })
+    .toArray()
   const prompt = createPrompt(
     shopDomain,
     products[0].s_hash,
+    //@ts-ignore
     products[0],
     true
   );
   console.log("prompts:", JSON.stringify(prompt.body.messages[1], null, 2));
+  console.log("prompts:", JSON.stringify(prompt.body.messages[0], null, 2));
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini",
+    //@ts-ignore
     messages: prompt.body.messages,
     max_tokens: 1000,
     temperature: 0.1,
