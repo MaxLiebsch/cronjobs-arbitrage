@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import { Job, scheduleJob } from "node-schedule";
 import { makeRequestsForEan, makeRequestsForId } from "../util/keepaHelper.js";
 import { KEEPA_RATE_LIMIT } from "../constants.js";
-import { updateArbispotterProductQuery } from "../db/util/crudArbispotterProduct.js";
+import { updateProductWithQuery } from "../db/util/crudProducts.js";
 import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { lookForPendingKeepaLookups } from "../util/lookForPendingKeepaLookups.js";
 import { KeepaPreProduct } from "../types/keepaPreProduct.js";
@@ -76,16 +76,12 @@ export async function processQueue(keepaJob: Job | null = null) {
             incrementTotal();
             promises.push(makeRequestsForEan(product));
           } else {
-            await updateArbispotterProductQuery(
-              product.shopDomain,
-              product._id,
-              {
-                $unset: {
-                  keepa_lckd: "",
-                  keepaEan_lckd: "",
-                },
-              }
-            );
+            await updateProductWithQuery(product._id, {
+              $unset: {
+                keepa_lckd: "",
+                keepaEan_lckd: "",
+              },
+            });
           }
         }
       } else {

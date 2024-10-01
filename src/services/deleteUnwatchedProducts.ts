@@ -1,9 +1,9 @@
 import { MAX_AGE_PRODUCTS } from "../constants.js";
 import {
   deleteArbispotterProducts,
-  findArbispotterProducts,
-  insertArbispotterProducts,
-} from "../db/util/crudArbispotterProduct.js";
+  findProducts,
+  insertProductsToCol,
+} from "../db/util/crudProducts.js";
 import { getActiveShops } from "../db/util/shops.js";
 import { CJ_LOGGER, logGlobal } from "../util/logger.js";
 
@@ -17,10 +17,10 @@ export const deleteUnwatchedProducts = async () => {
     let hasMoreProducts = true;
     const batchSize = 500;
     while (hasMoreProducts) {
-      const products = await findArbispotterProducts(
-        shop.d,
+      const products = await findProducts(
         {
           // Find products that have not been updated in the last 14 days
+          sdmn: shop.d,
           updatedAt: {
             $lt: new Date(
               Date.now() - 1000 * 60 * 60 * 24 * MAX_AGE_PRODUCTS
@@ -30,7 +30,7 @@ export const deleteUnwatchedProducts = async () => {
         batchSize
       );
       if (products.length) {
-        const result = await insertArbispotterProducts(
+        const result = await insertProductsToCol(
           "grave",
           products.map((product) => ({
             ...product,
@@ -38,7 +38,7 @@ export const deleteUnwatchedProducts = async () => {
             deletedAt: new Date().toISOString(),
           }))
         );
-        const deletedResult = await deleteArbispotterProducts(shop.d, {
+        const deletedResult = await deleteArbispotterProducts({
           _id: { $in: products.map((product) => product._id) },
         });
         logGlobal(

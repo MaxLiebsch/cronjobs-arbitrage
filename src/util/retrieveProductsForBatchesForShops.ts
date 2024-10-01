@@ -1,6 +1,6 @@
 import { DbProductRecord } from "@dipmaxtech/clr-pkg";
 import { BATCH_SIZE, MIN_BATCH_SIZE } from "../constants.js";
-import { getArbispotterDb } from "../db/mongo.js";
+import {  getProductsCol } from "../db/mongo.js";
 import { getActiveShops } from "../db/util/shops.js";
 import { shopFilter } from "./shopFilter.js";
 import { titleAggregation } from "./titles/titleAggregation.js";
@@ -19,7 +19,7 @@ export const retrieveProductsForBatchesForShops = async (
 ): Promise<ShopBatches | null> => {
   const shops = await getActiveShops();
   if (!shops) return null;
-  const spotterDb = await getArbispotterDb();
+  const productCol = await getProductsCol();
   const activeShops = shops.filter((shop) => shopFilter(shop));
   const products = [];
   const batchShops: string[] = [];
@@ -41,9 +41,8 @@ export const retrieveProductsForBatchesForShops = async (
 
     const shop = activeShops[index];
     try {
-      const rawProducts = (await spotterDb
-        .collection(shop.d)
-        .aggregate(aggregation(limitPerShop))
+      const rawProducts = (await productCol
+        .aggregate(aggregation(limitPerShop, shop.d))
         .toArray()) as DbProductRecord[];
       if (rawProducts.length === 0) {
         logGlobal(loggerName, `No products found for shop ${shop.d}`);
@@ -55,7 +54,10 @@ export const retrieveProductsForBatchesForShops = async (
         continue;
       } else {
         limit -= rawProducts.length;
-        logGlobal(loggerName, `Products found for shop ${shop.d}: ${rawProducts.length} Remaining limit: ${limit}`);
+        logGlobal(
+          loggerName,
+          `Products found for shop ${shop.d}: ${rawProducts.length} Remaining limit: ${limit}`
+        );
       }
       const productsWithShop = rawProducts.map<ProductWithShop>((product) => {
         return { ...product, shop: shop.d };

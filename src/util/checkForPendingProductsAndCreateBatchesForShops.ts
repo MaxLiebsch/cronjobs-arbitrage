@@ -1,15 +1,18 @@
-import { getArbispotterDb, getCrawlDataDb } from "../db/mongo.js";
+import {
+  getCrawlDataDb,
+  getProductsCol,
+} from "../db/mongo.js";
 import {
   createBatch,
   retrieveBatch,
   uploadFile,
 } from "../services/openai/index.js";
 import { retrieveProductsForBatchesForShops } from "./retrieveProductsForBatchesForShops.js";
-import { CURRENT_MATCH_TITLES_PROMPT_VERSION } from "../services/matchTitelsBatchForShops.js";
 import { createJsonlFile } from "./createJsonlFile.js";
 import { BatchTaskTypes } from "../types/tasks.js";
-import { CURRENT_DETECT_QUANTITY_PROMPT_VERSION } from "../services/detectQuantityBatchForShops.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
+import { CURRENT_MATCH_TITLES_PROMPT_VERSION } from "./titles/matchTitelsBatchForShops.js";
+import { CURRENT_DETECT_QUANTITY_PROMPT_VERSION } from "./quantities/detectQuantityBatchForShops.js";
 
 const loggerName = CJ_LOGGER.BATCHES;
 
@@ -17,7 +20,7 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
   batchTaskType: BatchTaskTypes
 ) => {
   const crawlDataDb = await getCrawlDataDb();
-  const spotterDb = await getArbispotterDb();
+  const productCol = await getProductsCol();
   const tasksCol = crawlDataDb.collection("tasks");
   const newBatchFileContents = await retrieveProductsForBatchesForShops(
     batchTaskType
@@ -75,16 +78,16 @@ export const checkForPendingProductsAndCreateBatchesForShops = async (
             const batchShop = batchShops[index];
             const hashesForShop = productIds.get(batchShop);
             const newLocal = batchTaskType === "MATCH_TITLES";
-            await spotterDb.collection(batchShop).updateMany(
+            await productCol.updateMany(
               { _id: { $in: hashesForShop! } },
               {
-              $set: {
-                [`${prefix}_prop`]: "in_progress",
-                [`${prefix}_batchId`]: batch.id,
-                [`${prefix}_v`]: newLocal
-                ? CURRENT_MATCH_TITLES_PROMPT_VERSION
-                : CURRENT_DETECT_QUANTITY_PROMPT_VERSION,
-              },
+                $set: {
+                  [`${prefix}_prop`]: "in_progress",
+                  [`${prefix}_batchId`]: batch.id,
+                  [`${prefix}_v`]: newLocal
+                    ? CURRENT_MATCH_TITLES_PROMPT_VERSION
+                    : CURRENT_DETECT_QUANTITY_PROMPT_VERSION,
+                },
               }
             );
           }

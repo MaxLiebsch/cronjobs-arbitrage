@@ -1,17 +1,14 @@
 import { Shop } from "@dipmaxtech/clr-pkg";
 import { MAX_EARNING_MARGIN } from "../../constants.js";
-import { getArbispotterDb } from "../mongo.js";
+import {  getProductsCol } from "../mongo.js";
 import { pendingFallbackKeepaProductsQuery } from "../queries.js";
 import { PendingShops } from "../../types/shops.js";
 
-// arbispotter amazon
-export const getAmazonProductCount = async (
-  shopProductCollectionName: string
-) => {
-  const db = await getArbispotterDb();
-  const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.countDocuments({
+export const getAmazonProductCount = async (domain: string) => {
+  const productCol = await getProductsCol();
+  return productCol.countDocuments({
     $and: [
+      { sdmn: domain },
       { asin: { $exists: true, $ne: "" } },
       { a_prc: { $gt: 0 } },
       { a_mrgn_pct: { $gt: 0, $lte: MAX_EARNING_MARGIN } },
@@ -20,21 +17,15 @@ export const getAmazonProductCount = async (
 };
 
 export const getAmazonFallbackProductsToUpdateKeepaCount = async (
-  shopProductCollectionName: string
+  domain: string
 ) => {
-  const db = await getArbispotterDb();
-  const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.countDocuments(
-    pendingFallbackKeepaProductsQuery
-  );
+  const productCol = await getProductsCol();
+  return productCol.countDocuments(pendingFallbackKeepaProductsQuery(domain));
 };
 
-export const getFallbackKeepaProgress = async (shopDomain: string) => {
-  const shopProductCollectionName = shopDomain;
-  const pending = await getAmazonFallbackProductsToUpdateKeepaCount(
-    shopProductCollectionName
-  );
-  const total = await getAmazonProductCount(shopProductCollectionName);
+export const getFallbackKeepaProgress = async (domain: string) => {
+  const pending = await getAmazonFallbackProductsToUpdateKeepaCount(domain);
+  const total = await getAmazonProductCount(domain);
 
   return {
     percentage: `${(((total - pending) / total) * 100).toFixed(2)} %`,

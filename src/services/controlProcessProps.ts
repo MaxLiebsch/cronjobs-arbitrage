@@ -1,10 +1,10 @@
 import { MongoBulkWriteError } from "@dipmaxtech/clr-pkg";
 import { MAX_AGE_PROPS } from "../constants.js";
-import { getArbispotterDb } from "../db/mongo.js";
-import { findArbispotterProducts } from "../db/util/crudArbispotterProduct.js";
+import { getProductsCol } from "../db/mongo.js";
 import { getActiveShops } from "../db/util/shops.js";
 import { BulkWrite } from "../types/BulkTypes.js";
 import { CJ_LOGGER, logGlobal } from "../util/logger.js";
+import { findProducts } from "../db/util/crudProducts.js";
 
 const catPropInvalids = [
   "missing",
@@ -23,7 +23,7 @@ export const controlProcessProps = async () => {
   logGlobal(loggerName, "Control process props");
   const activeShops = await getActiveShops();
   if (!activeShops) return;
-  const spotter = await getArbispotterDb();
+  const productsCol = await getProductsCol();
   const lt = new Date(
     Date.now() - 1000 * 60 * 60 * 24 * MAX_AGE_PROPS
   ).toISOString();
@@ -33,10 +33,10 @@ export const controlProcessProps = async () => {
     const batchSize = 500;
     let cnt = 0;
     while (hasMoreProducts) {
-      const bulkWrites = [];
-      const products = await findArbispotterProducts(
-        shop.d,
+      const bulkWrites: any[] = [];
+      const products = await findProducts(
         {
+          sdmn: shop.d,
           $or: [
             {
               "costs.azn": { $lte: 0.3 },
@@ -102,7 +102,7 @@ export const controlProcessProps = async () => {
           bulkWrites.push(spotterBulk);
         }
         try {
-          const result = await spotter.collection(shop.d).bulkWrite(bulkWrites);
+          const result = await productsCol.bulkWrite(bulkWrites);
           logGlobal(
             loggerName,
             `Processed ${result.modifiedCount}/${products.length} products`

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { updateArbispotterProductQuery } from "../db/util/crudArbispotterProduct.js";
+import { updateProductWithQuery } from "../db/util/crudProducts.js";
 import { eanKeepa } from "./eanKeepa.js";
 import { asinKeepa } from "./asinKeepa.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
@@ -29,7 +29,7 @@ export async function makeRequestsForEan(product: KeepaPreProduct) {
         asin: response.data.products[0].asin,
       });
     } else {
-      await updateArbispotterProductQuery(product.shopDomain, product._id, {
+      await updateProductWithQuery(product._id, {
         $set: {
           keepaEanUpdatedAt: new Date().toISOString(),
         },
@@ -42,7 +42,7 @@ export async function makeRequestsForEan(product: KeepaPreProduct) {
       );
     }
   } catch (error) {
-    await updateArbispotterProductQuery(product.shopDomain, product._id, {
+    await updateProductWithQuery(product._id, {
       $unset: {
         keepaEan_lckd: "",
       },
@@ -77,7 +77,7 @@ export async function makeRequestsForId(product: KeepaPreProduct) {
         asin: trimedAsin,
       });
     } else {
-      await updateArbispotterProductQuery(product.shopDomain, product._id, {
+      await updateProductWithQuery(product._id, {
         $set: {
           asin: trimedAsin,
         },
@@ -90,7 +90,7 @@ export async function makeRequestsForId(product: KeepaPreProduct) {
       );
     }
   } catch (error) {
-    await updateArbispotterProductQuery(product.shopDomain, product._id, {
+    await updateProductWithQuery(product._id, {
       $unset: {
         keepa_lckd: "",
       },

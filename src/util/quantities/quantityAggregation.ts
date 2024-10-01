@@ -4,7 +4,12 @@ import {
   totalPositivEbay,
 } from "../../db/queries.js";
 
-export const quantityAggregation = (limit: number) => [
+export const quantityAggregation = (limit: number, domain: string) => [
+  {
+    $match: {
+      sdmn: domain,
+    },
+  },
   ...ebayMarginCalculationAggregationStep,
   {
     $match: {

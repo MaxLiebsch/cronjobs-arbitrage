@@ -1,8 +1,8 @@
 import { calculateMonthlySales, ObjectId } from "@dipmaxtech/clr-pkg";
 import {
   findArbispotterProduct,
-  updateArbispotterProductQuery,
-} from "../db/util/crudArbispotterProduct.js";
+  updateProductWithQuery,
+} from "../db/util/crudProducts.js";
 import { upsertAsin } from "../db/util/asinTable.js";
 import { buildKeepaResult } from "./buildKeepaResult.js";
 
@@ -24,7 +24,7 @@ export const eanKeepa = async ({
   }
 
   if (result["monthlySold"] === null) {
-    const product = await findArbispotterProduct(shopDomain, _id);
+    const product = await findArbispotterProduct(_id);
     const { salesRanks, categories, categoryTree } = result;
     if (product && salesRanks && categories && categoryTree) {
       const monthlySold = calculateMonthlySales(
@@ -38,7 +38,7 @@ export const eanKeepa = async ({
     }
   }
 
-  await updateArbispotterProductQuery(shopDomain, _id, {
+  await updateProductWithQuery(_id, {
     $set: {
       ...result,
       keepaEanUpdatedAt: new Date().toISOString(),

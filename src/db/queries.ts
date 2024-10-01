@@ -21,10 +21,10 @@ export const totalPositivEbay = {
 export const totalPositivEbayCond = {
   $and: [
     { e_pblsh: true },
-    { $gt: ["$e_prc",0] },
-    { $gt: ["$e_uprc",0] },
-    { $gt: ["$e_mrgn",0] },
-    { $gt: ["$e_mrgn_pct",0] },
+    { $gt: ["$e_prc", 0] },
+    { $gt: ["$e_uprc", 0] },
+    { $gt: ["$e_mrgn", 0] },
+    { $gt: ["$e_mrgn_pct", 0] },
   ],
 };
 
@@ -102,61 +102,73 @@ export const ebayMarginCalculationAggregationStep = [
   },
 ];
 
-export const pendingKeepaProductsQuery = {
-  $and: [
-    {
-      $and: [
-        { a_prc: { $gt: 0 } },
-        { a_mrgn: { $gt: 0 } },
-        { a_mrgn_pct: { $gt: 0 } },
-      ],
-    },
-    {
-      $or: [{ keepa_lckd: { $exists: false } }, { keepa_lckd: { $eq: false } }],
-    },
-    { asin: { $exists: true, $nin: ["", null] } },
-    {
-      $or: [
-        { keepaUpdatedAt: { $exists: false } },
-        {
-          keepaUpdatedAt: {
-            $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
+export const pendingKeepaProductsQuery = (domain: string) => {
+  return {
+    $and: [
+      { sdmn: domain },
+      {
+        $and: [
+          { a_prc: { $gt: 0 } },
+          { a_mrgn: { $gt: 0 } },
+          { a_mrgn_pct: { $gt: 0 } },
+        ],
+      },
+      {
+        $or: [
+          { keepa_lckd: { $exists: false } },
+          { keepa_lckd: { $eq: false } },
+        ],
+      },
+      { asin: { $exists: true, $nin: ["", null] } },
+      {
+        $or: [
+          { keepaUpdatedAt: { $exists: false } },
+          {
+            keepaUpdatedAt: {
+              $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
+            },
           },
-        },
-      ],
-    },
-  ],
+        ],
+      },
+    ],
+  };
 };
 
-export const recoverKeepaProductsQuery = {
+export const recoverKeepaProductsQuery: any = (domain: string) => {
+  return {
   keepa_lckd: true,
   asin: { $exists: true, $nin: ["", null] },
-};
+}}
 
-export const pendingFallbackKeepaProductsQuery = {
-  $and: [
-    { keepaEan_lckd: { $exists: false } },
-    {
-      $or: [
-        { info_prop: { $in: ["missing"] } },
-        { "costs.azn": { $lte: 0.3 } },
-      ],
-    },
-    { eanList: { $exists: true, $ne: [] } },
-    {
-      $or: [
-        { keepaEanUpdatedAt: { $exists: false } },
-        {
-          keepaEanUpdatedAt: {
-            $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
+export const pendingFallbackKeepaProductsQuery: any = (domain: string) => {
+  return {
+    $and: [
+      { sdmn: domain },
+      { keepaEan_lckd: { $exists: false } },
+      {
+        $or: [
+          { info_prop: { $in: ["missing"] } },
+          { "costs.azn": { $lte: 0.3 } },
+        ],
+      },
+      { eanList: { $exists: true, $ne: [] } },
+      {
+        $or: [
+          { keepaEanUpdatedAt: { $exists: false } },
+          {
+            keepaEanUpdatedAt: {
+              $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
+            },
           },
-        },
-      ],
-    },
-  ],
+        ],
+      },
+    ],
+  };
 };
 
-export const recoverFallbackKeepaProductsQuery = {
-  keepaEan_lckd: true,
-  eanList: { $exists: true, $ne: [] },
+export const recoverFallbackKeepaProductsQuery: any = (domain: string) => {
+  return {
+    keepaEan_lckd: true,
+    eanList: { $exists: true, $ne: [] },
+  };
 };

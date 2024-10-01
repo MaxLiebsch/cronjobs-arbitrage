@@ -1,8 +1,8 @@
 import { upsertAsin } from "../db/util/asinTable.js";
 import {
   findArbispotterProduct,
-  updateArbispotterProductQuery,
-} from "../db/util/crudArbispotterProduct.js";
+  updateProductWithQuery,
+} from "../db/util/crudProducts.js";
 import { calculateMonthlySales, ObjectId } from "@dipmaxtech/clr-pkg";
 import { buildKeepaResult } from "./buildKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
@@ -25,7 +25,7 @@ export const asinKeepa = async ({
   }
 
   if (result["monthlySold"] === null) {
-    const product = await findArbispotterProduct(shopDomain, _id);
+    const product = await findArbispotterProduct( _id);
     const { salesRanks, categories, categoryTree } = result;
     if (product && salesRanks && categories && categoryTree) {
       const monthlySold = calculateMonthlySales(
@@ -39,7 +39,7 @@ export const asinKeepa = async ({
     }
   }
 
-  await updateArbispotterProductQuery(shopDomain, _id, {
+  await updateProductWithQuery(_id, {
     $set: {
       ...result,
       keepaUpdatedAt: new Date().toISOString(),

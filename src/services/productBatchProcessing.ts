@@ -1,10 +1,10 @@
 import { getCrawlDataDb } from "../db/mongo.js";
-import { matchTitlesBatchInteration } from "./matchTitelsBatchForShops.js";
-import { detectQuantityBatchInteration } from "./detectQuantityBatchForShops.js";
 import { scheduleJob } from "node-schedule";
 import { BatchTaskTypes } from "../types/tasks.js";
 import { LocalLogger } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
+import { matchTitlesBatchInteration } from "../util/titles/matchTitelsBatchForShops.js";
+import { detectQuantityBatchInteration } from "../util/quantities/detectQuantityBatchForShops.js";
 
 export const BATCHES = "AI_TASKS";
 

@@ -1,7 +1,6 @@
 import { RECOVER_LIMIT_PER_DAY } from "../constants.js";
-import { getArbispotterDb } from "../db/mongo.js";
+import { getArbispotterDb, getProductsCol } from "../db/mongo.js";
 import {
-  AnyBulkWriteOperation,
   aznUnsetProperties,
   createHash,
   DbProductRecord,
@@ -52,7 +51,7 @@ function handleEbayLink(product: DbProductRecord) {
   });
 }
 
-function uniqueBulkWrite(bulkWriteArray: BulkWrite[]): BulkWrite[] {
+function uniqueBulkWrite(bulkWriteArray: BulkWrite[]): any[] {
   const uniqueProducts = new Set();
   const uniqueBulkWriteArray = [];
 
@@ -117,11 +116,12 @@ function handleProductWithEAN(
 export async function resurrectionFromGrave() {
   const loggerName = CJ_LOGGER.RESURRECTION;
   const db = await getArbispotterDb();
-  const collection = db.collection("grave");
+  const graveCol = db.collection("grave");
+  const productCol = await getProductsCol();
   const limit = RECOVER_LIMIT_PER_DAY;
   let cnt = 0;
   while (cnt <= limit) {
-    let products = await collection
+    let products = await graveCol
       .find(
         {
           recoveredAt: { $exists: false },
@@ -130,9 +130,7 @@ export async function resurrectionFromGrave() {
       )
       .toArray();
 
-    const bulkWrites: {
-      [shopDomain: string]: AnyBulkWriteOperation<Partial<DbProductRecord>>[];
-    } = {};
+    const bulkWrites: any = {};
 
     if (products.length === 0) {
       logGlobal(loggerName, "No products found in the grave");
@@ -147,7 +145,7 @@ export async function resurrectionFromGrave() {
       if (!product.shop && link) {
         try {
           const url = new URL(link);
-          product.shop = url.hostname.replace("www.", "");
+          product["shop"] = url.hostname.replace("www.", "");
         } catch (error) {
           logGlobal(loggerName, `Error parsing URL: ${link}`);
           continue;
@@ -246,12 +244,12 @@ export async function resurrectionFromGrave() {
         }
       }
 
-      const spotterProduct = await db.collection(product.shop).findOne({
+      const spotterProduct = await productCol.findOne({
         lnk: transformedProduct.lnk,
       });
 
       if (spotterProduct) {
-        const result = await collection.deleteOne({ _id: product._id });
+        const result = await graveCol.deleteOne({ _id: product._id });
         products = products.filter((p) => p._id !== product._id);
         logGlobal(
           loggerName,
@@ -264,6 +262,7 @@ export async function resurrectionFromGrave() {
         insertOne: {
           document: {
             ...transformedProduct,
+            sdmn: product.shop,
             updatedAt: new UTCDate().toISOString(),
           },
         },
@@ -279,7 +278,7 @@ export async function resurrectionFromGrave() {
       ];
     }
 
-    const result = await collection.updateMany(
+    const result = await graveCol.updateMany(
       { _id: { $in: products.map((p) => p._id) } },
       { $set: { recoveredAt: new UTCDate().toISOString() } }
     );
@@ -289,9 +288,9 @@ export async function resurrectionFromGrave() {
       const shopDomains = Object.keys(bulkWrites);
       for (let index = 0; index < shopDomains.length; index++) {
         const shopDomain = shopDomains[index];
-        const result = await db
-          .collection(shopDomain)
-          .bulkWrite(uniqueBulkWrite(bulkWrites[shopDomain] as BulkWrite[]));
+        const result = await productCol.bulkWrite(
+          uniqueBulkWrite(bulkWrites[shopDomain] as BulkWrite[])
+        );
 
         logGlobal(
           loggerName,

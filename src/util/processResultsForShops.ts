@@ -1,5 +1,7 @@
-import { MongoBulkWriteError } from "mongodb";
-import { getArbispotterDb, getCrawlDataDb } from "../db/mongo.js";
+import {
+  getCrawlDataDb,
+  getProductsCol,
+} from "../db/mongo.js";
 
 import { Batch, BatchTaskTypes } from "../types/tasks.js";
 import { DbProductRecord, ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
@@ -25,8 +27,8 @@ export const processResultsForShops = async (
     .filter(Boolean) as BatchResults;
 
   const crawlDataDb = await getCrawlDataDb();
-  const spotterDb = await getArbispotterDb();
-  const bulkSpotterUpdates: BulkWrite[] = [];
+  const productCol = await getProductsCol();
+  const bulkSpotterUpdates: any[] = [];
   const batchMap = new Map<string, BatchResults>();
   results.forEach((result) => {
     const shopDomain = result.custom_id.split("-")[0];
@@ -43,8 +45,7 @@ export const processResultsForShops = async (
       (result) => new ObjectId(result.custom_id.split("-")[1])
     );
 
-    const products = (await spotterDb
-      .collection(shopDomain)
+    const products = (await productCol
       .find({ _id: { $in: ids } })
       .toArray()) as DbProductRecord[];
 
@@ -61,9 +62,7 @@ export const processResultsForShops = async (
         );
       }
       try {
-        const result = await spotterDb
-          .collection(shopDomain)
-          .bulkWrite(bulkSpotterUpdates);
+        const result = await productCol.bulkWrite(bulkSpotterUpdates);
         logGlobal(
           loggerName,
           `BulkWrite result: ${result.modifiedCount}/${products.length} modified for ${shopDomain}`

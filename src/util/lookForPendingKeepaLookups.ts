@@ -4,7 +4,7 @@ import { getKeepaProgressPerShop } from "../db/util/getKeepaProgress.js";
 import { getActiveShops } from "../db/util/shops.js";
 import { addToQueue } from "../services/keepa.js";
 import { KEEPA_MINUTES, KEEPA_RATE_LIMIT } from "../constants.js";
-import { lockProductsForKeepa } from "../db/util/crudArbispotterProduct.js";
+import { lockProductsForKeepa } from "../db/util/crudProducts.js";
 import {
   keepaEanTaskRecovery,
   keepaTaskRecovery,

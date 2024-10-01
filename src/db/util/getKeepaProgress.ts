@@ -1,17 +1,14 @@
 import { Shop } from "@dipmaxtech/clr-pkg";
 import { MAX_EARNING_MARGIN } from "../../constants.js";
-import { getArbispotterDb } from "../mongo.js";
+import { getProductsCol } from "../mongo.js";
 import { pendingKeepaProductsQuery } from "../queries.js";
 import { PendingShops } from "../../types/shops.js";
 
-// arbispotter amazon
-export const getAmazonProductCount = async (
-  shopProductCollectionName: string
-) => {
-  const db = await getArbispotterDb();
-  const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.countDocuments({
+export const getAmazonProductCount = async (domain: string) => {
+  const productCol = await getProductsCol();
+  return productCol.countDocuments({
     $and: [
+      { sdmn: domain },
       { asin: { $exists: true, $ne: "" } },
       { a_prc: { $gt: 0 } },
       { a_mrgn_pct: { $gt: 0, $lte: MAX_EARNING_MARGIN } },
@@ -19,20 +16,14 @@ export const getAmazonProductCount = async (
   });
 };
 
-export const getAmazonProductsToUpdateKeepaCount = async (
-  shopProductCollectionName: string
-) => {
-  const db = await getArbispotterDb();
-  const shopProductCollection = db.collection(shopProductCollectionName);
-  return shopProductCollection.countDocuments(pendingKeepaProductsQuery);
+export const getAmazonProductsToUpdateKeepaCount = async (domain: string) => {
+  const productCol = await getProductsCol();
+  return productCol.countDocuments(pendingKeepaProductsQuery(domain));
 };
 
-export const getKeepaProgress = async (shopDomain: string) => {
-  const shopProductCollectionName = shopDomain;
-  const pending = await getAmazonProductsToUpdateKeepaCount(
-    shopProductCollectionName
-  );
-  const total = await getAmazonProductCount(shopProductCollectionName);
+export const getKeepaProgress = async (domain: string) => {
+  const pending = await getAmazonProductsToUpdateKeepaCount(domain);
+  const total = await getAmazonProductCount(domain);
 
   return {
     percentage: `${(((total - pending) / total) * 100).toFixed(2)} %`,

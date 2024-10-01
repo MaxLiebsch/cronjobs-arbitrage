@@ -1,10 +1,10 @@
-import { getCrawlDataDb } from "../db/mongo.js";
 import "dotenv/config";
 import { config } from "dotenv";
-import { BATCH_TASK_TYPES, BATCHES } from "./productBatchProcessing.js";
-import { checkForPendingProductsAndCreateBatchesForShops } from "../util/checkForPendingProductsAndCreateBatchesForShops.js";
-import { checkAndProcessBatchesForShops } from "../util/checkAndProcessBatchesForShops.js";
-import { CJ_LOGGER, logGlobal } from "../util/logger.js";
+import { BATCH_TASK_TYPES, BATCHES } from "../../services/productBatchProcessing.js";
+import { checkForPendingProductsAndCreateBatchesForShops } from "../checkForPendingProductsAndCreateBatchesForShops.js";
+import { checkAndProcessBatchesForShops } from "../checkAndProcessBatchesForShops.js";
+import { getCrawlDataDb } from "../../db/mongo.js";
+import { CJ_LOGGER, logGlobal } from "../logger.js";
 
 config({
   path: [`.env`],
