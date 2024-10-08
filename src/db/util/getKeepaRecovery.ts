@@ -1,5 +1,5 @@
 import { Shop } from "@dipmaxtech/clr-pkg";
-import {  getProductsCol } from "../mongo.js";
+import { getProductsCol } from "../mongo.js";
 import {
   recoverFallbackKeepaProductsQuery,
   recoverKeepaProductsQuery,
@@ -27,7 +27,7 @@ export async function keepaEanTaskRecovery(activeShops: Shop[]) {
     Object.values(
       activeShops.map(async (shop) => {
         const progress = await productCol.countDocuments(
-          recoverFallbackKeepaProductsQuery
+          recoverFallbackKeepaProductsQuery(shop.d)
         );
         return { pending: progress, d: shop.d };
       })

@@ -1,5 +1,4 @@
 import { Shop } from "@dipmaxtech/clr-pkg";
-import { MAX_EARNING_MARGIN } from "../../constants.js";
 import { getProductsCol } from "../mongo.js";
 import { pendingKeepaProductsQuery } from "../queries.js";
 import { PendingShops } from "../../types/shops.js";
@@ -11,7 +10,7 @@ export const getAmazonProductCount = async (domain: string) => {
       { sdmn: domain },
       { asin: { $exists: true, $ne: "" } },
       { a_prc: { $gt: 0 } },
-      { a_mrgn_pct: { $gt: 0, $lte: MAX_EARNING_MARGIN } },
+      { a_mrgn_pct: { $gt: 0 } },
     ],
   });
 };

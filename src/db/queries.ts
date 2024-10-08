@@ -136,9 +136,11 @@ export const pendingKeepaProductsQuery = (domain: string) => {
 
 export const recoverKeepaProductsQuery: any = (domain: string) => {
   return {
-  keepa_lckd: true,
-  asin: { $exists: true, $nin: ["", null] },
-}}
+    sdmn: domain,
+    keepa_lckd: true,
+    asin: { $exists: true, $nin: ["", null] },
+  };
+};
 
 export const pendingFallbackKeepaProductsQuery: any = (domain: string) => {
   return {
@@ -166,8 +168,11 @@ export const pendingFallbackKeepaProductsQuery: any = (domain: string) => {
   };
 };
 
-export const recoverFallbackKeepaProductsQuery: any = (domain: string) => {
+export const recoverFallbackKeepaProductsQuery: (domain: string) => any = (
+  domain: string
+) => {
   return {
+    sdmn: domain,
     keepaEan_lckd: true,
     eanList: { $exists: true, $ne: [] },
   };

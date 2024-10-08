@@ -8,12 +8,10 @@ import { buildKeepaResult } from "./buildKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 
 export const asinKeepa = async ({
-  shopDomain,
   asin,
   _id,
   analysis,
 }: {
-  shopDomain: string;
   asin: string;
   _id: ObjectId;
   analysis: KeepaResponse;
