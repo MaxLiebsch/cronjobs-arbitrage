@@ -1,4 +1,5 @@
 import { MAX_AGE_PRODUCTS } from "../constants.js";
+import { getCrawlDataCollection } from "../db/mongo.js";
 import {
   deleteArbispotterProducts,
   findProducts,
@@ -9,6 +10,7 @@ import { CJ_LOGGER, logGlobal } from "../util/logger.js";
 
 export const deleteUnwatchedProducts = async () => {
   const loggerName = CJ_LOGGER.UNWATCHED_PRODUCTS;
+  const graveCol = await getCrawlDataCollection("grave");
   logGlobal(loggerName, "Deleting unwatched products");
   const activeShops = await getActiveShops();
   if (!activeShops) return;
@@ -30,9 +32,20 @@ export const deleteUnwatchedProducts = async () => {
         batchSize
       );
       if (products.length) {
+        const existingProducts = await graveCol
+          .find({ lnk: { $in: products.map((product) => product.lnk) } })
+          .toArray();
+
+        const notExistingProducts = products.filter(
+          (product) =>
+            !existingProducts.some(
+              (existingProduct) => existingProduct.lnk === product.lnk
+            )
+        );
+
         const result = await insertProductsToCol(
           "grave",
-          products.map((product) => ({
+          notExistingProducts.map((product) => ({
             ...product,
             shop: shop.d,
             deletedAt: new Date().toISOString(),
