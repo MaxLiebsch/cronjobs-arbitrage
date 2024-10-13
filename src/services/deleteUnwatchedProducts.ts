@@ -45,11 +45,16 @@ export const deleteUnwatchedProducts = async () => {
 
         const result = await insertProductsToCol(
           "grave",
-          notExistingProducts.map((product) => ({
-            ...product,
-            shop: shop.d,
-            deletedAt: new Date().toISOString(),
-          }))
+          notExistingProducts.map((product) => {
+            // Remove _id field
+            //@ts-ignore
+            delete product._id;
+            return {
+              ...product,
+              shop: shop.d,
+              deletedAt: new Date().toISOString(),
+            };
+          })
         );
         const deletedResult = await deleteArbispotterProducts({
           _id: { $in: products.map((product) => product._id) },
