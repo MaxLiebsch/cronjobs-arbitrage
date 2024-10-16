@@ -121,14 +121,7 @@ export async function resurrectionFromGrave() {
   const limit = RECOVER_LIMIT_PER_DAY;
   let cnt = 0;
   while (cnt <= limit) {
-    let products = await graveCol
-      .find(
-        {
-          recoveredAt: { $exists: false },
-        },
-        { limit: 500 }
-      )
-      .toArray();
+    let products = await graveCol.find({}, { limit: 500 }).toArray();
 
     const bulkWrites: any = {};
 
@@ -278,11 +271,10 @@ export async function resurrectionFromGrave() {
       ];
     }
 
-    const result = await graveCol.updateMany(
-      { _id: { $in: products.map((p) => p._id) } },
-      { $set: { recoveredAt: new UTCDate().toISOString() } }
-    );
-    logGlobal(loggerName, `Recovered ${result.modifiedCount} products`);
+    const result = await graveCol.deleteMany({
+      _id: { $in: products.map((p) => p._id) },
+    });
+    logGlobal(loggerName, `Recovered ${result.deletedCount} products`);
 
     if (Object.keys(bulkWrites).length > 0) {
       const shopDomains = Object.keys(bulkWrites);
