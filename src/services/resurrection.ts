@@ -11,7 +11,7 @@ import {
   removeSearchParams,
   transformProduct,
 } from "@dipmaxtech/clr-pkg";
-import { UTCDate } from "@date-fns/utc";
+
 import { CJ_LOGGER, logGlobal } from "../util/logger.js";
 import { BulkWrite } from "../types/BulkTypes.js";
 
@@ -169,13 +169,13 @@ export async function resurrectionFromGrave() {
 
       if (eanList && eanList.length) {
         transformedProduct["ean_prop"] = "found";
-        transformedProduct["eanUpdatedAt"] = new UTCDate().toISOString();
+        transformedProduct["eanUpdatedAt"] = new Date().toISOString();
       }
 
       if (costs && costs?.azn > 0.3 && transformedProduct.asin) {
         transformedProduct["a_pblsh"] = true;
         transformedProduct["info_prop"] = "complete";
-        transformedProduct["infoUpdatedAt"] = new UTCDate().toISOString();
+        transformedProduct["infoUpdatedAt"] = new Date().toISOString();
       }
 
       if (
@@ -185,11 +185,11 @@ export async function resurrectionFromGrave() {
       ) {
         transformedProduct["e_pblsh"] = true;
         transformedProduct["cat_prop"] = "complete";
-        transformedProduct["catUpdatedAt"] = new UTCDate().toISOString();
+        transformedProduct["catUpdatedAt"] = new Date().toISOString();
       }
 
       if (transformedProduct.esin) {
-        transformedProduct["qEbyUpdatedAt"] = new UTCDate().toISOString();
+        transformedProduct["qEbyUpdatedAt"] = new Date().toISOString();
         transformedProduct["eby_prop"] = "complete";
       }
       const { salesRanks, ahstprcs, auhstprcs, anhstprcs } = transformedProduct;
@@ -256,7 +256,7 @@ export async function resurrectionFromGrave() {
           document: {
             ...transformedProduct,
             sdmn: product.shop,
-            updatedAt: new UTCDate().toISOString(),
+            updatedAt: new Date().toISOString(),
           },
         },
       };

@@ -10,17 +10,11 @@ import { LocalLogger } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, setTaskLogger } from "./util/logger.js";
 
 const main = async () => {
-  // Look for old products
-  scheduleJob("0 0 * * *", async () => {
-    const logger = new LocalLogger().createLogger(CJ_LOGGER.UNWATCHED_PRODUCTS);
-    setTaskLogger(logger, CJ_LOGGER.UNWATCHED_PRODUCTS);
-    await deleteUnwatchedProducts();
-  });
-
   scheduleJob("0 */16 * * *", async () => {
     const logger = new LocalLogger().createLogger(CJ_LOGGER.PROCESS_PROPS);
     setTaskLogger(logger, CJ_LOGGER.PROCESS_PROPS);
     await controlProcessProps();
+    //@ts-ignore
     LocalLogger.instance.destroy(CJ_LOGGER.PROCESS_PROPS);
   });
 
@@ -28,6 +22,7 @@ const main = async () => {
     const logger = new LocalLogger().createLogger(CJ_LOGGER.RESURRECTION);
     setTaskLogger(logger, CJ_LOGGER.RESURRECTION);
     await resurrectionFromGrave();
+    //@ts-ignore
     LocalLogger.instance.destroy(CJ_LOGGER.RESURRECTION);
   });
 
