@@ -148,14 +148,19 @@ export const pendingFallbackKeepaProductsQuery: any = (domain: string) => {
       { sdmn: domain },
       { keepaEan_lckd: { $exists: false } },
       {
-        $or: [
+        $or:[
           {
-            $or: [
-              { info_prop: { $in: ["missing"] } },
-              { "costs.azn": { $lte: 0.3 } },
+            $and: [
+              {
+                $or: [
+                  { info_prop: { $in: ["missing"] } },
+                  { "costs.azn": { $lte: 0.3 } },
+                ],
+              },
+              { eanList: { $exists: true, $ne: [] } },
             ],
           },
-          { eanList: { $exists: true, $ne: [] } },
+          { eanList: { $exists: true, $ne: [] } }
         ],
       },
       {

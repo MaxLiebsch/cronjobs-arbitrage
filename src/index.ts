@@ -1,10 +1,8 @@
 import { scheduleJob } from "node-schedule";
 import { processQueue, setTotal } from "./services/keepa.js";
-import { deleteUnwatchedProducts } from "./services/deleteUnwatchedProducts.js";
 import { controlProcessProps } from "./services/controlProcessProps.js";
 import { lookForPendingKeepaLookups } from "./util/lookForPendingKeepaLookups.js";
 import { getCrawlDataDb } from "./db/mongo.js";
-import { resurrectionFromGrave } from "./services/resurrection.js";
 import productBatchProcessingForShops from "./services/productBatchProcessing.js";
 import { LocalLogger } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, setTaskLogger } from "./util/logger.js";
@@ -16,14 +14,6 @@ const main = async () => {
     await controlProcessProps();
     //@ts-ignore
     LocalLogger.instance.destroy(CJ_LOGGER.PROCESS_PROPS);
-  });
-
-  scheduleJob("0 */18 * * *", async () => {
-    const logger = new LocalLogger().createLogger(CJ_LOGGER.RESURRECTION);
-    setTaskLogger(logger, CJ_LOGGER.RESURRECTION);
-    await resurrectionFromGrave();
-    //@ts-ignore
-    LocalLogger.instance.destroy(CJ_LOGGER.RESURRECTION);
   });
 
   // Look for pending keepa lookups
