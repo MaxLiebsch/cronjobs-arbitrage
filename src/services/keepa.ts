@@ -1,14 +1,14 @@
 import "dotenv/config";
 import { config } from "dotenv";
 import { Job, scheduleJob } from "node-schedule";
-import { makeRequestsForEan, makeRequestsForId } from "../util/keepaHelper.js";
 import { KEEPA_RATE_LIMIT } from "../constants.js";
-import { updateProductWithQuery } from "../db/util/crudProducts.js";
 import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { lookForPendingKeepaLookups } from "../util/lookForPendingKeepaLookups.js";
-import { KeepaPreProduct } from "../types/keepaPreProduct.js";
 import { LocalLogger } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
+import { ProductWithTask } from "../types/products.js";
+import { makeRequestsForAsin } from "../util/makeRequestForAsin.js";
+import { makeRequestsForEan } from "../util/makeRequestForEan.js";
 
 config({
   path: [`.env`],
@@ -19,7 +19,7 @@ const logger = new LocalLogger().createLogger(loggerName);
 setTaskLogger(logger, loggerName);
 
 // Mock queue with Asins (initially empty)
-const asinQueue: KeepaPreProduct[] = [];
+const asinQueue: ProductWithTask[] = [];
 
 let total = 0;
 
@@ -68,21 +68,12 @@ export async function processQueue(keepaJob: Job | null = null) {
     for (let i = 0; i < KEEPA_RATE_LIMIT; i++) {
       if (asinQueue.length > 0) {
         const product = asinQueue.shift()!;
-        if (product?.asin) {
+        if (product.taskType === "KEEPA_NORMAL") {
           incrementTotal();
-          promises.push(makeRequestsForId(product));
-        } else {
-          if (product?.ean) {
-            incrementTotal();
-            promises.push(makeRequestsForEan(product));
-          } else {
-            await updateProductWithQuery(product._id, {
-              $unset: {
-                keepa_lckd: "",
-                keepaEan_lckd: "",
-              },
-            });
-          }
+          promises.push(makeRequestsForAsin(product));
+        } else if (product.taskType === "KEEPA_EAN") {
+          incrementTotal();
+          promises.push(makeRequestsForEan(product));
         }
       } else {
         break; // Break the loop if the queue is empty
@@ -108,7 +99,7 @@ export async function processQueue(keepaJob: Job | null = null) {
 }
 
 // Function to add new Asins to the queue
-export function addToQueue(newAsins: KeepaPreProduct[]) {
+export function addToQueue(newAsins: ProductWithTask[]) {
   asinQueue.push(...newAsins);
   if (queueResolve) {
     queueResolve(undefined); // Resolve the promise to wake up processQueue

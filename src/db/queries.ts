@@ -1,3 +1,5 @@
+import { keepaEanProps, keepaProps } from "../util/keepaProps";
+
 export const totalPositivAmazon = {
   $and: [
     { a_pblsh: true },
@@ -103,6 +105,7 @@ export const ebayMarginCalculationAggregationStep = [
 ];
 
 export const pendingKeepaProductsQuery = (domain: string) => {
+  const { lock, updatedAt } = keepaProps;
   return {
     $and: [
       { sdmn: domain },
@@ -114,17 +117,14 @@ export const pendingKeepaProductsQuery = (domain: string) => {
         ],
       },
       {
-        $or: [
-          { keepa_lckd: { $exists: false } },
-          { keepa_lckd: { $eq: false } },
-        ],
+        $or: [{ [lock]: { $exists: false } }, { [lock]: { $eq: false } }],
       },
       { asin: { $exists: true, $nin: ["", null] } },
       {
         $or: [
-          { keepaUpdatedAt: { $exists: false } },
+          { [updatedAt]: { $exists: false } },
           {
-            keepaUpdatedAt: {
+            [updatedAt]: {
               $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
             },
           },
@@ -142,32 +142,34 @@ export const recoverKeepaProductsQuery: any = (domain: string) => {
   };
 };
 
-export const pendingFallbackKeepaProductsQuery: any = (domain: string) => {
+export const pendingEanKeepaProductsQuery: any = (domain: string) => {
+  const { lock, updatedAt } = keepaEanProps;
   return {
     $and: [
       { sdmn: domain },
-      { keepaEan_lckd: { $exists: false } },
+      { [lock]: { $exists: false } },
       {
-        $or:[
+        $or: [
           {
             $and: [
-              {
-                $or: [
-                  { info_prop: { $in: ["missing"] } },
-                  { "costs.azn": { $lte: 0.3 } },
-                ],
-              },
+              { info_prop: { $in: ["missing"] } },
               { eanList: { $exists: true, $ne: [] } },
             ],
           },
-          { eanList: { $exists: true, $ne: [] } }
+          {
+            $and: [
+              { a_mrgn: { $lt: 0 } },
+              { a_mrgn_pct: { $lt: 0 } },
+              { eanList: { $exists: true, $ne: [] } },
+            ],
+          },
         ],
       },
       {
         $or: [
-          { keepaEanUpdatedAt: { $exists: false } },
+          { [updatedAt]: { $exists: false } },
           {
-            keepaEanUpdatedAt: {
+            [updatedAt]: {
               $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
             },
           },
@@ -175,6 +177,15 @@ export const pendingFallbackKeepaProductsQuery: any = (domain: string) => {
       },
     ],
   };
+};
+
+export const keepaFallbackResetQuery = {
+  $set: {
+    [keepaEanProps.updatedAt]: new Date().toISOString(),
+  },
+  $unset: {
+    [keepaEanProps.lock]: "",
+  },
 };
 
 export const recoverFallbackKeepaProductsQuery: (domain: string) => any = (

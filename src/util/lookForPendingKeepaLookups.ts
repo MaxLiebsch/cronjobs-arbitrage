@@ -1,5 +1,5 @@
 import { Job, scheduleJob } from "node-schedule";
-import { getKeepaEanProgressPerShop } from "../db/util/getFallbackKeepaProgress.js";
+import { getKeepaEanProgressPerShop } from "../db/util/getEanKeepaProgress.js";
 import { getKeepaProgressPerShop } from "../db/util/getKeepaProgress.js";
 import { getActiveShops } from "../db/util/shops.js";
 import { addToQueue } from "../services/keepa.js";
@@ -10,8 +10,9 @@ import {
   keepaTaskRecovery,
 } from "../db/util/getKeepaRecovery.js";
 import { updateTaskWithQuery } from "../db/util/updateTask.js";
-import { KeepaPreProduct } from "../types/keepaPreProduct.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
+import { PendingShop } from "../types/shops.js";
+import { ProductWithTask } from "../types/products.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -66,10 +67,10 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   }
 }
 async function prepareProducts(
-  keepaProgressPerShop: { pending: number; d: string }[],
+  keepaProgressPerShop: PendingShop[],
   fallback: boolean,
   recovery: boolean
-): Promise<KeepaPreProduct[][]> {
+): Promise<ProductWithTask[][]> {
   const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
   await updateTaskWithQuery(
     { type: fallback ? "KEEPA_EAN" : "KEEPA_NORMAL" },
@@ -92,22 +93,13 @@ async function prepareProducts(
         fallback,
         recovery
       );
-      const keepaPreProducts = products.map((product) => {
-        if (fallback) {
-          return {
-            ean: product.eanList[0],
-            shopDomain: shop.d,
-            _id: product._id,
-          };
-        } else {
-          return {
-            asin: product.asin,
-            shopDomain: shop.d,
-            _id: product._id,
-          };
-        }
-      });
-      return keepaPreProducts as KeepaPreProduct[];
+
+      return products.map((product) => {
+        return {
+          ...product,
+          taskType: fallback ? "KEEPA_EAN" : "KEEPA_NORMAL",
+        };
+      }) as ProductWithTask[];
     })
   );
 }

@@ -1,6 +1,6 @@
 import { Shop } from "@dipmaxtech/clr-pkg";
 import { getProductsCol } from "../mongo.js";
-import { pendingFallbackKeepaProductsQuery } from "../queries.js";
+import { pendingEanKeepaProductsQuery } from "../queries.js";
 import { PendingShops } from "../../types/shops.js";
 
 export const getAmazonProductCount = async (domain: string) => {
@@ -23,10 +23,10 @@ export const getAmazonFallbackProductsToUpdateKeepaCount = async (
   domain: string
 ) => {
   const productCol = await getProductsCol();
-  return productCol.countDocuments(pendingFallbackKeepaProductsQuery(domain));
+  return productCol.countDocuments(pendingEanKeepaProductsQuery(domain));
 };
 
-export const getFallbackKeepaProgress = async (domain: string) => {
+export const getEanKeepaProgress = async (domain: string) => {
   const pending = await getAmazonFallbackProductsToUpdateKeepaCount(domain);
   const total = await getAmazonProductCount(domain);
 
@@ -43,7 +43,7 @@ export async function getKeepaEanProgressPerShop(
   return await Promise.all(
     Object.values(
       activeShops.map(async (shop) => {
-        const progress = await getFallbackKeepaProgress(shop.d);
+        const progress = await getEanKeepaProgress(shop.d);
         return { pending: progress.pending, d: shop.d };
       })
     )

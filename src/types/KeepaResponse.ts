@@ -17,7 +17,7 @@ export interface Error {
 }
 
 export interface Product {
-  csv: number[] | undefined[];
+  csv: number[][] | undefined;
   categories: number[];
   imagesCSV: string;
   manufacturer: string;
@@ -116,8 +116,7 @@ export interface Attribute {
 }
 
 export interface SalesRanks {
-  "3167641": number[];
-  "3677554031": number[];
+  [key: string]: number[];
 }
 
 export interface Stats {

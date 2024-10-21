@@ -1,4 +1,3 @@
-
 import { getArbispotterDb, getProductsCol } from "../mongo.js";
 import { MongoError } from "mongodb";
 import {
@@ -8,11 +7,15 @@ import {
   ObjectId,
 } from "@dipmaxtech/clr-pkg";
 import {
-  pendingFallbackKeepaProductsQuery,
+  pendingEanKeepaProductsQuery,
   pendingKeepaProductsQuery,
   recoverFallbackKeepaProductsQuery,
   recoverKeepaProductsQuery,
 } from "../queries.js";
+import { CJ_LOGGER, logGlobal } from "../../util/logger.js";
+import { keepaEanProps, keepaProps } from "../../util/keepaProps.js";
+
+const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
 const getCollection = async (collectionName: string) => {
   const db = await getArbispotterDb();
@@ -23,7 +26,6 @@ export const findArbispotterProduct = async (id: ObjectId) => {
   const productCol = await getProductsCol();
   return productCol.findOne({ _id: id });
 };
-
 
 export const insertProductsToCol = async (
   colName: string,
@@ -89,20 +91,20 @@ export const updateProductWithQuery = async (
     } catch (e) {
       attempt++;
       if (e instanceof MongoError && e.code === 11000) {
-        console.error(
-          "Duplicate key error:",
-          e.message,
-          `${id.toString()}`,
-          JSON.stringify(query)
+        logGlobal(
+          loggerName,
+          `Duplicate key error: ${e.message} ${id.toString()} ${JSON.stringify(
+            query
+          )}`
         );
         break; // Exit the function
       } else if (attempt >= maxRetries) {
         if (e instanceof Error) {
-          console.error(
-            "Error updating product:",
-            e?.message,
-            `${id.toString()}`,
-            JSON.stringify(query)
+          logGlobal(
+            loggerName,
+            `Error updating product ${
+              e?.message
+            } ${id.toString()} ${JSON.stringify(query)}`
           );
         }
         return; // Exit the function
@@ -133,7 +135,7 @@ export const lockProductsForKeepa = async (
   } else {
     // Determine the query based on the fallback condition
     let query = fallback
-      ? pendingFallbackKeepaProductsQuery(domain)
+      ? pendingEanKeepaProductsQuery(domain)
       : pendingKeepaProductsQuery(domain);
 
     if (limit) {
@@ -144,10 +146,12 @@ export const lockProductsForKeepa = async (
       .find(query, options)
       .toArray()) as DbProductRecord[];
 
+    const lock = fallback ? keepaEanProps.lock : keepaProps.lock;
+
     // Update documents to mark them as locked
     await productCol.updateMany(
       { _id: { $in: documents.map((doc) => doc._id) } },
-      { $set: { keepa_lckd: true } }
+      { $set: { [lock]: true } }
     );
 
     return documents;

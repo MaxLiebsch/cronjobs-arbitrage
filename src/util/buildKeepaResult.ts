@@ -1,22 +1,30 @@
 import pkg from "lodash";
 const { get } = pkg;
 import { keepaProperties } from "../constants.js";
-import { reduceSalesRankArray } from "@dipmaxtech/clr-pkg";
+import { KeepaProperties, reduceSalesRankArray } from "@dipmaxtech/clr-pkg";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 
 export const buildKeepaResult = (analysis: KeepaResponse) => {
-  let result: any = {};
-  keepaProperties.forEach((property) => {
-    const key = property.name
-      ? property.name
-      : property.key.replace("products[0].", "");
+  let result: Partial<KeepaProperties> = {};
 
-    result[key] = get(analysis, property.key, null);
+  const { products } = analysis;
+  const { salesRanks, csv } = products[0];
+  const [ahstprcs, anhstprcs, auhstprcs] = csv || [[], [], []];
+
+  keepaProperties.forEach((property) => {
+    const key = (
+      property.name ? property.name : property.key.replace("products[0].", "")
+    ) as keyof KeepaProperties;
+    const value = get(analysis, property.key, undefined);
+    
+    if (value && value !== null && value !== -1) {
+      result[key] = value;
+    }
   });
 
   if (result.salesRanks) {
     const _salesRanks: { [key: string]: number[][] } = {};
-    Object.entries<number[]>(result.salesRanks).forEach(([key, value]) => {
+    Object.entries<number[]>(salesRanks).forEach(([key, value]) => {
       if (value.length > 2) {
         _salesRanks[key] = reduceSalesRankArray(value);
       }
@@ -30,21 +38,21 @@ export const buildKeepaResult = (analysis: KeepaResponse) => {
 
   if (result.ahstprcs) {
     if (result.ahstprcs.length > 2) {
-      result.ahstprcs = reduceSalesRankArray(result.ahstprcs);
+      result.ahstprcs = reduceSalesRankArray(ahstprcs);
     } else {
       delete result.ahstprcs;
     }
   }
   if (result.auhstprcs) {
     if (result.auhstprcs.length > 2) {
-      result.auhstprcs = reduceSalesRankArray(result.auhstprcs);
+      result.auhstprcs = reduceSalesRankArray(auhstprcs);
     } else {
       delete result.auhstprcs;
     }
   }
   if (result.anhstprcs) {
     if (result.anhstprcs.length > 2) {
-      result.anhstprcs = reduceSalesRankArray(result.anhstprcs);
+      result.anhstprcs = reduceSalesRankArray(anhstprcs);
     } else {
       delete result.anhstprcs;
     }
