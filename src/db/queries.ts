@@ -1,4 +1,4 @@
-import { keepaEanProps, keepaProps } from "../util/keepaProps";
+import { keepaEanProps, keepaProps } from "../util/keepaProps.js";
 
 export const totalPositivAmazon = {
   $and: [

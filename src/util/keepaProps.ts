@@ -1,4 +1,4 @@
-import { KeepaProps } from "../types/keepaProps";
+import { KeepaProps } from "../types/keepaProps.js";
 
 export const keepaEanProps: KeepaProps = {
   lock: "keepaEan_lckd",
