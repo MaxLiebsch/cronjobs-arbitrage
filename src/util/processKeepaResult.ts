@@ -59,7 +59,7 @@ export const processKeepaResult = async ({
     await upsertAsin(asin, result["k_eanList"] ?? []);
   }
 
-  if (result["monthlySold"] === null) {
+  if (!result["monthlySold"]) {
     if (salesRanks && categories && categoryTree) {
       const monthlySold = calculateMonthlySales(
         categories,
