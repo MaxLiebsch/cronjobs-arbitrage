@@ -1,7 +1,4 @@
-import {
-  getCrawlDataDb,
-  getProductsCol,
-} from "../db/mongo.js";
+import { getCrawlDataDb, getProductsCol } from "../db/mongo.js";
 
 import { Batch, BatchTaskTypes } from "../types/tasks.js";
 import { DbProductRecord, ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
@@ -41,12 +38,23 @@ export const processResultsForShops = async (
   logGlobal(loggerName, `${results.length} Results in batch ${batchId}`);
 
   for (const [shopDomain, results] of batchMap.entries()) {
-    const ids = results.filter(result => ObjectId.isValid(result.custom_id.split("-")[1])).map(
-      (result) => new ObjectId(result.custom_id.split("-")[1].trim())
+    const ids = results
+      .filter((result) => {
+        const isValid = ObjectId.isValid(result.custom_id.split("-")[1]);
+        if (!isValid) {
+          logGlobal(
+            loggerName,
+            `Invalid product id found: ${result.custom_id} for ${shopDomain}`
+          );
+        }
+        return isValid;
+      })
+      .map((result) => new ObjectId(result.custom_id.split("-")[1].trim()));
+
+    logGlobal(
+      loggerName,
+      `${ids.length}/${results.length} valid product ids for ${shopDomain}`
     );
-    
-    logGlobal(loggerName, `${ids.length}/${results.length} valid product ids for ${shopDomain}`);
-    
 
     const products = (await productCol
       .find({ _id: { $in: ids } })
