@@ -76,7 +76,7 @@ export const checkAndProcessBatchesForShops = async (
       if (batch.status === status) continue;
       if (batch.status === "failed") {
         await deleteFile(batch.input_file_id);
-        await processFailedBatch(batchData);
+        await processFailedBatch(batchData, batchTaskType);
       }
       await tasksCol.updateOne(
         { type: batchTaskType, "batches.batchId": batchId },
@@ -93,14 +93,6 @@ export const checkAndProcessBatchesForShops = async (
           loggerName,
           "Batch not found: " + batchId + " " + error.message + " " + error.code
         );
-        // await tasksCol.updateOne(
-        //   { type: batchTaskType },
-        //   {
-        //     $pull: {
-        //       batches: { batchId },
-        //     },
-        //   }
-        // );
       } else if (error instanceof RateLimitError) {
         logGlobal(
           loggerName,

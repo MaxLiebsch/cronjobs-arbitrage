@@ -65,7 +65,7 @@ export const processResultsForShops = async (
         const result = await productCol.bulkWrite(bulkSpotterUpdates);
         logGlobal(
           loggerName,
-          `BulkWrite result: ${result.modifiedCount}/${products.length} modified for ${shopDomain}`
+          `${batchTaskType} BulkWrite result: ${result.modifiedCount}/${products.length} modified for ${shopDomain}`
         );
       } catch (error) {
         logGlobal(

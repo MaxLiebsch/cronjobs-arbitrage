@@ -1,4 +1,4 @@
-import { getCrawlDataDb } from "../db/mongo.js";
+import { getCrawlDataDb, getProductsCol } from "../db/mongo.js";
 
 import "dotenv/config";
 import { config } from "dotenv";
@@ -7,12 +7,15 @@ config({
 });
 
 import fsjetpack from "fs-jetpack";
-import { Batch } from "../types/tasks.js";
+import { Batch, BatchTaskTypes } from "../types/tasks.js";
 import { ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
 import { BatchResults } from "../types/batchResult.js";
 const { readAsync } = fsjetpack;
 
-export const processFailedBatch = async (batchData: Batch) => {
+export const processFailedBatch = async (
+  batchData: Batch,
+  batchTaskType: BatchTaskTypes
+) => {
   const fileContents = await readAsync(batchData.filepath, "utf8");
   const results = fileContents!
     .split("\n")
@@ -32,17 +35,21 @@ export const processFailedBatch = async (batchData: Batch) => {
   const productIds = results.map(
     (r) => new ObjectId(r.custom_id.split("-")[1])
   );
-  const crawlDataDb = await getCrawlDataDb();
-
-  for (const [shopDomain, results] of batchMap.entries()) {
-    const ids = results.map(
-      (result) => new ObjectId(result.custom_id.split("-")[1])
-    );
-    await crawlDataDb.collection(shopDomain).updateMany(
-      { _id: { $in: productIds } },
-      {
-        $unset: { nm_prop: "", nm_batchId: "" },
-      }
-    );
+  const productCol = await getProductsCol();
+  let unset: any = {
+    nm_prop: "",
+    nm_batchId: "",
+  };
+  if (batchTaskType === "DETECT_QUANTITY") {
+    unset = {
+      qty_prop: "",
+      nm_batchId: "",
+    };
   }
+  await productCol.updateMany(
+    { _id: { $in: productIds } },
+    {
+      $unset: { ...unset },
+    }
+  );
 };

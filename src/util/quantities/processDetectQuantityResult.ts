@@ -17,7 +17,7 @@ export function processDetectQuantityResult(
   products: DbProductRecord[],
   bulkSpotterUpdates: BulkWrite[]
 ) {
-  const productId = result.custom_id.split("-")[1] as string;
+  const productId = result.custom_id.split("-")[1].trim() as string;
 
   const product = products.find(
     (product) => product._id.toString() === productId
@@ -25,6 +25,10 @@ export function processDetectQuantityResult(
 
   if (!product) {
     return "Product not found in spotterDb";
+  }
+
+  if (!productId || !ObjectId.isValid(productId)) {
+    return "Invalid product id";
   }
 
   const content = result.response.body?.choices[0].message.content;

@@ -17,7 +17,7 @@ export function processMatchTitleResult(
 ) {
   let deleteAzn = false;
   let deleteEby = false;
-  const productId = result.custom_id.split("-")[1];
+  const productId = result.custom_id.split("-")[1].trim() as string;
 
   const product = products.find(
     (product) => product._id.toString() === productId
@@ -70,6 +70,10 @@ export function processMatchTitleResult(
         isMatch: update.e_isMatch,
       };
     }
+  }
+
+  if (!productId || !ObjectId.isValid(productId)) {
+    return 'Invalid product id';
   }
 
   let bulkUpdate: BulkWrite = {
