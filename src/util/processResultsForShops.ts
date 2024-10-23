@@ -8,6 +8,7 @@ import { processMatchTitleResult } from "./titles/processMatchTitleResult.js";
 import { BATCH_TASK_TYPES } from "../services/productBatchProcessing.js";
 import { processDetectQuantityResult } from "./quantities/processDetectQuantityResult.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
+import { extractId } from "./extractId.js";
 
 const loggerName = CJ_LOGGER.BATCHES;
 
@@ -38,26 +39,9 @@ export const processResultsForShops = async (
   logGlobal(loggerName, `${results.length} Results in batch ${batchId}`);
 
   for (const [shopDomain, results] of batchMap.entries()) {
-    const ids = results
-      .filter((result) => {
-        const isValid = ObjectId.isValid(result.custom_id.split("-")[1]);
-        if (!isValid) {
-          const id = result.custom_id.split("-")[2];
-          const isValid = ObjectId.isValid(id);
-
-          if (isValid) {
-            return isValid;
-          } else {
-            logGlobal(
-              loggerName,
-              `Invalid product id found: ${result.custom_id} for ${shopDomain}`
-            );
-            return false;
-          }
-        }
-        return isValid;
-      })
-      .map((result) => new ObjectId(result.custom_id.split("-")[1].trim()));
+    const ids = results.map(
+      (result) => new ObjectId(extractId(result.custom_id))
+    );
 
     logGlobal(
       loggerName,

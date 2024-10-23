@@ -10,6 +10,7 @@ import fsjetpack from "fs-jetpack";
 import { Batch, BatchTaskTypes } from "../types/tasks.js";
 import { ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
 import { BatchResults } from "../types/batchResult.js";
+import { extractId } from "./extractId.js";
 const { readAsync } = fsjetpack;
 
 export const processFailedBatch = async (
@@ -33,7 +34,7 @@ export const processFailedBatch = async (
   });
 
   const productIds = results.map(
-    (r) => new ObjectId(r.custom_id.split("-")[1])
+    (r) => new ObjectId(extractId(r.custom_id))
   );
   const productCol = await getProductsCol();
   let unset: any = {

@@ -8,6 +8,7 @@ import {
 import { BulkWrite } from "../../types/BulkTypes.js";
 import { cleanScore } from "../cleanScore.js";
 import { MINIMAL_SCORE } from "../../constants.js";
+import { extractId } from "../extractId.js";
 
 export function processMatchTitleResult(
   set: Partial<DbProductRecord>,
@@ -17,7 +18,7 @@ export function processMatchTitleResult(
 ) {
   let deleteAzn = false;
   let deleteEby = false;
-  const productId = result.custom_id.split("-")[1].trim() as string;
+  const productId = extractId(result.custom_id);
 
   const product = products.find(
     (product) => product._id.toString() === productId
@@ -73,7 +74,7 @@ export function processMatchTitleResult(
   }
 
   if (!productId || !ObjectId.isValid(productId)) {
-    return 'Invalid product id';
+    return "Invalid product id";
   }
 
   let bulkUpdate: BulkWrite = {
