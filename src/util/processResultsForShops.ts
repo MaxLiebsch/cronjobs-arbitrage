@@ -41,9 +41,12 @@ export const processResultsForShops = async (
   logGlobal(loggerName, `${results.length} Results in batch ${batchId}`);
 
   for (const [shopDomain, results] of batchMap.entries()) {
-    const ids = results.map(
+    const ids = results.filter(result => ObjectId.isValid(result.custom_id.split("-")[1])).map(
       (result) => new ObjectId(result.custom_id.split("-")[1].trim())
     );
+    
+    logGlobal(loggerName, `${ids.length}/${results.length} valid product ids for ${shopDomain}`);
+    
 
     const products = (await productCol
       .find({ _id: { $in: ids } })
