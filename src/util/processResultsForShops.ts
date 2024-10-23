@@ -42,7 +42,7 @@ export const processResultsForShops = async (
 
   for (const [shopDomain, results] of batchMap.entries()) {
     const ids = results.map(
-      (result) => new ObjectId(result.custom_id.split("-")[1])
+      (result) => new ObjectId(result.custom_id.split("-")[1].trim())
     );
 
     const products = (await productCol
