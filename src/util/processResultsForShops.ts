@@ -42,10 +42,18 @@ export const processResultsForShops = async (
       .filter((result) => {
         const isValid = ObjectId.isValid(result.custom_id.split("-")[1]);
         if (!isValid) {
-          logGlobal(
-            loggerName,
-            `Invalid product id found: ${result.custom_id} for ${shopDomain}`
-          );
+          const id = result.custom_id.split("-")[2];
+          const isValid = ObjectId.isValid(id);
+
+          if (isValid) {
+            return isValid;
+          } else {
+            logGlobal(
+              loggerName,
+              `Invalid product id found: ${result.custom_id} for ${shopDomain}`
+            );
+            return false;
+          }
         }
         return isValid;
       })
