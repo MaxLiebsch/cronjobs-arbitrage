@@ -53,7 +53,7 @@ export async function makeRequestsForAsin(product: DbProductRecord) {
       );
       if (error.status === 429) {
         logGlobal(loggerName, "Rate limit reached. Waiting for 60 seconds...");
-        await sleep(1000 * 60); // Wait for 60 seconds
+        await sleep(1000 * 10); // Wait for 10 seconds
         logGlobal(loggerName, "Resuming...");
       }
     }
