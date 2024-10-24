@@ -1,5 +1,5 @@
 import { getArbispotterDb, getProductsCol } from "../mongo.js";
-import { MongoError } from "mongodb";
+import { MongoError, UpdateFilter } from "mongodb";
 import {
   DbProductRecord,
   Filter,
@@ -69,6 +69,14 @@ export const findProducts = async (
 export const deleteArbispotterProducts = async (query = {}) => {
   const collection = await getProductsCol();
   return collection.deleteMany(query);
+};
+
+export const updateProducts = async (
+  query: Filter<DbProductRecord>,
+  update: { [key: string]: any }
+) => {
+  const productsCol = await getProductsCol();
+  return productsCol.updateMany({ ...query }, { ...update });
 };
 
 export const updateProductWithQuery = async (

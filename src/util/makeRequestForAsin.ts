@@ -2,14 +2,15 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
 import { processKeepaResult } from "./processKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
-import { DbProductRecord, sleep } from "@dipmaxtech/clr-pkg";
+import {  sleep } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaProps } from "./keepaProps.js";
+import { ProductWithTask } from "../types/products.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
 // Function to make two requests for each ID
-export async function makeRequestsForAsin(product: DbProductRecord) {
+export async function makeRequestsForAsin(product: ProductWithTask) {
   const { sdmn, asin, _id: productId } = product;
   const trimedAsin = asin!.replace(/\W/g, "");
   try {

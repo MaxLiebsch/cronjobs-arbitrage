@@ -4,11 +4,15 @@ import {
   DbProductRecord,
   roundToTwoDecimals,
 } from "@dipmaxtech/clr-pkg";
-import { updateProductWithQuery } from "../db/util/crudProducts.js";
+import {
+  updateProducts,
+  updateProductWithQuery,
+} from "../db/util/crudProducts.js";
 import { upsertAsin } from "../db/util/asinTable.js";
 import { buildKeepaResult } from "./buildKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
+import { ProductWithTask } from "../types/products.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -19,11 +23,14 @@ export const processKeepaResult = async ({
   a_prc,
   prc,
   a_qty,
+  ean,
+  taskType,
+  eanList,
   costs,
   tax,
   qty,
   props,
-}: DbProductRecord & {
+}: ProductWithTask & {
   analysis: KeepaResponse;
   props: {
     lock: string;
@@ -119,6 +126,39 @@ export const processKeepaResult = async ({
     }
   }
 
+  let sameProductCnt = 0;
+  if (taskType === "KEEPA_EAN") {
+    const _ean = ean || eanList?.[0];
+
+    const updatedProducts = await updateProducts(
+      {
+        eanList: _ean,
+      },
+      {
+        $set: {
+          ...set,
+        },
+        $unset: props.unset,
+      }
+    );
+    sameProductCnt = updatedProducts?.modifiedCount ?? 0;
+  }
+
+  if (taskType === "KEEPA_NORMAL") {
+    const updatedProducts = await updateProducts(
+      {
+        asin: asin,
+      },
+      {
+        $set: {
+          ...set,
+        },
+        $unset: props.unset,
+      }
+    );
+    sameProductCnt = updatedProducts?.modifiedCount ?? 0;
+  }
+
   const productUpdated = await updateProductWithQuery(productId, {
     $set: {
       ...set,
@@ -127,6 +167,6 @@ export const processKeepaResult = async ({
   });
   logGlobal(
     loggerName,
-    `Updated product: ${asin} - Updated: ${productUpdated?.modifiedCount} product.`
+    `Updated product: ${asin} - Updated: ${productUpdated?.modifiedCount} product. ${sameProductCnt} products updated.`
   );
 };

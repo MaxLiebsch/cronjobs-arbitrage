@@ -2,14 +2,15 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
 import { processKeepaResult } from "./processKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
-import { DbProductRecord, sleep } from "@dipmaxtech/clr-pkg";
+import { sleep } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaEanProps } from "./keepaProps.js";
 import { keepaFallbackResetQuery } from "../db/queries.js";
+import { ProductWithTask } from "../types/products.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
-export async function makeRequestsForEan(product: DbProductRecord) {
+export async function makeRequestsForEan(product: ProductWithTask) {
   const { _id: productId, sdmn } = product;
   const ean = product.ean || product.eanList?.[0];
 
