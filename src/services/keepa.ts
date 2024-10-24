@@ -94,7 +94,7 @@ export async function processQueue(keepaJob: Job | null = null) {
       await lookForPendingKeepaLookups(job);
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 70 * 1000)); // Wait for 1 minute
+    await new Promise((resolve) => setTimeout(resolve, 61 * 1000)); // Wait for 1:01 minute
   }
 }
 
