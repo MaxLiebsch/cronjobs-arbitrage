@@ -1,5 +1,5 @@
 import pkg from "lodash";
-const { get } = pkg;
+const { get, setWith } = pkg;
 import { keepaProperties } from "../constants.js";
 import { KeepaProperties, reduceSalesRankArray } from "@dipmaxtech/clr-pkg";
 import { KeepaResponse } from "../types/KeepaResponse.js";
@@ -16,9 +16,14 @@ export const buildKeepaResult = (analysis: KeepaResponse) => {
       property.name ? property.name : property.key.replace("products[0].", "")
     ) as keyof KeepaProperties;
     const value = get(analysis, property.key, undefined);
-    
+
     if (value && value !== null && value !== -1) {
-      result[key] = value;
+      if (property.name === "costs.ktpt") {
+        const keepaFbaPickAndPackFee = (Number(value) - 0.25).toString();
+        setWith(result, key, keepaFbaPickAndPackFee, Object);
+      } else {
+        setWith(result, key, value, Object);
+      }
     }
   });
 
