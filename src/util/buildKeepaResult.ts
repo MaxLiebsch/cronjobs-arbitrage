@@ -19,7 +19,7 @@ export const buildKeepaResult = (analysis: KeepaResponse) => {
 
     if (value && value !== null && value !== -1) {
       if (property.name === "costs.ktpt") {
-        const keepaFbaPickAndPackFee = (Number(value) - 0.25).toString();
+        const keepaFbaPickAndPackFee = (Number(value/100) - 0.25)
         setWith(result, key, keepaFbaPickAndPackFee, Object);
       } else {
         setWith(result, key, value, Object);
