@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
 import { processKeepaResult } from "./processKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
-import {  sleep } from "@dipmaxtech/clr-pkg";
+import { sleep } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaProps } from "./keepaProps.js";
 import { ProductWithTask } from "../types/products.js";
@@ -33,6 +33,9 @@ export async function makeRequestsForAsin(product: ProductWithTask) {
       });
     } else {
       await updateProductWithQuery(productId, {
+        $set: {
+          info_prop: "not_found",
+        },
         $unset: {
           keepa_lckd: "",
         },

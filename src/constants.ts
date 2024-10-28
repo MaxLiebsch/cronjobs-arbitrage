@@ -4,7 +4,7 @@ export const KEEPA_MINUTES = 20;
 export const PRODUCTS_PER_MINUTE = 60;
 export const MAX_RETRIES = 3;
 export const MAX_AGE_PRODUCTS = 21;
-export const MAX_AGE_PROPS = 7;
+export const MAX_AGE_PROPS = 14;
 export const PENDING_KEEPA_LOOKUPS_INTERVAL = 1000 * 60 * KEEPA_MINUTES;
 export const CHECK_PACKAGE_BATCH_INTERVAL =
   process.env.NODE_ENV === "production" ? 1000 * 60 * 1.5 : 1000 * 60 * 0.5;

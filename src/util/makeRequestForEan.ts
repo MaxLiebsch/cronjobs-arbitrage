@@ -46,10 +46,13 @@ export async function makeRequestsForEan(product: ProductWithTask) {
         props: keepaEanProps,
       });
     } else {
-      const result = await updateProductWithQuery(
-        productId,
-        keepaFallbackResetQuery
-      );
+      const result = await updateProductWithQuery(productId, {
+        ...keepaFallbackResetQuery,
+        $set: {
+          ...keepaFallbackResetQuery.$set,
+          info_prop: "not_found"
+        },
+      });
 
       logGlobal(
         loggerName,
