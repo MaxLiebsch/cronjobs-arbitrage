@@ -21,23 +21,27 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   if (!activeShops) return;
 
   const keepaProgressPerShop = await getKeepaProgressPerShop(activeShops);
+  const pendingProducts = keepaProgressPerShop.reduce((acc, shop) => {
+    return acc + shop.pending;
+  }, 0);
   const recoveryShops = await keepaTaskRecovery(activeShops!);
   const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
   logGlobal(loggerName, `Recover keepa task: ${pleaseRecover}`);
   const products = await prepareProducts(
     pleaseRecover ? recoveryShops : keepaProgressPerShop,
     false,
-    pleaseRecover
+    pleaseRecover,
+    pendingProducts
   );
   logGlobal(
     loggerName,
-    `Keepa normal Products: ${products.length} ${pleaseRecover} Limit reached${
+    `Keepa normal Products: ${
+      products.length
+    } Recover: ${pleaseRecover} Limit reached: ${
       products.length >= KEEPA_RATE_LIMIT
     }`
   );
-  if (
-    pleaseRecover ? products.length > 0 : products.length >= KEEPA_RATE_LIMIT
-  ) {
+  if (products.length) {
     logGlobal(loggerName, `Keepa Products: ${products.length}`);
     if (job) {
       job.cancel();
@@ -46,7 +50,9 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     addToQueue(products.flatMap((ps) => ps));
   } else {
     const keepaProgressPerShop = await getKeepaEanProgressPerShop(activeShops);
-
+    const pendingProducts = keepaProgressPerShop.reduce((acc, shop) => {
+      return acc + shop.pending;
+    }, 0);
     const recoveryShops = await keepaEanTaskRecovery(activeShops!);
     const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
     logGlobal(loggerName, `Recover keepa ean task: ${pleaseRecover}`);
@@ -54,17 +60,18 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     const products = await prepareProducts(
       pleaseRecover ? recoveryShops : keepaProgressPerShop,
       true,
-      pleaseRecover
+      pleaseRecover,
+      pendingProducts
     );
     logGlobal(
       loggerName,
-      `Keepa Ean Products: ${products.length} ${pleaseRecover} Limit reached${
+      `Keepa Ean Products: ${
+        products.length
+      } Recover: ${pleaseRecover} Limit reached: ${
         products.length >= KEEPA_RATE_LIMIT
       }`
     );
-    if (
-      pleaseRecover ? products.length > 0 : products.length >= KEEPA_RATE_LIMIT
-    ) {
+    if (products.length) {
       if (job) {
         job.cancel();
         job = null;
@@ -81,11 +88,16 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     }
   }
 }
+
 async function prepareProducts(
   keepaProgressPerShop: PendingShop[],
   fallback: boolean,
-  recovery: boolean
+  recovery: boolean,
+  pendingProducts: number
 ): Promise<ProductWithTask[][]> {
+  if (pendingProducts < KEEPA_RATE_LIMIT && !recovery) {
+    return [];
+  }
   const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
   await updateTaskWithQuery(
     { type: fallback ? "KEEPA_EAN" : "KEEPA_NORMAL" },
