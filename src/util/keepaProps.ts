@@ -6,6 +6,7 @@ export const keepaEanProps: KeepaProps = {
   unset: {
     keepaEan_lckd: "",
     info_prop: "",
+    infoUpdatedAt: '',
   },
 };
 

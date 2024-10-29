@@ -17,9 +17,12 @@ import { ProductWithTask } from "../types/products.js";
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
 export async function lookForPendingKeepaLookups(job: Job | null = null) {
+  logGlobal(loggerName, "Starting looking for pending keepa lookups...");
   const activeShops = await getActiveShops();
+  logGlobal(loggerName, `Active shops: ${activeShops?.length} loaded`);
   if (!activeShops) return;
-
+  
+  logGlobal(loggerName, `Checking for pending keepa lookups...`);
   const keepaProgressPerShop = await getKeepaProgressPerShop(activeShops);
   const recoveryShops = await keepaTaskRecovery(activeShops);
   const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
@@ -31,6 +34,7 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     : keepaProgressPerShop.reduce((acc, shop) => {
         return acc + shop.pending;
       }, 0);
+
   logGlobal(loggerName, `Recover keepa task: ${pleaseRecover}`);
   const products = await prepareProducts(
     pleaseRecover ? recoveryShops : keepaProgressPerShop,
