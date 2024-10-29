@@ -21,11 +21,16 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   if (!activeShops) return;
 
   const keepaProgressPerShop = await getKeepaProgressPerShop(activeShops);
-  const pendingProducts = keepaProgressPerShop.reduce((acc, shop) => {
-    return acc + shop.pending;
-  }, 0);
-  const recoveryShops = await keepaTaskRecovery(activeShops!);
+  const recoveryShops = await keepaTaskRecovery(activeShops);
   const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
+
+  const pendingProducts = pleaseRecover
+    ? recoveryShops.reduce((acc, shop) => {
+        return acc + shop.pending;
+      }, 0)
+    : keepaProgressPerShop.reduce((acc, shop) => {
+        return acc + shop.pending;
+      }, 0);
   logGlobal(loggerName, `Recover keepa task: ${pleaseRecover}`);
   const products = await prepareProducts(
     pleaseRecover ? recoveryShops : keepaProgressPerShop,
@@ -50,13 +55,18 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     addToQueue(products.flatMap((ps) => ps));
   } else {
     const keepaProgressPerShop = await getKeepaEanProgressPerShop(activeShops);
-    const pendingProducts = keepaProgressPerShop.reduce((acc, shop) => {
-      return acc + shop.pending;
-    }, 0);
     const recoveryShops = await keepaEanTaskRecovery(activeShops!);
     const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
     logGlobal(loggerName, `Recover keepa ean task: ${pleaseRecover}`);
 
+    const pendingProducts = pleaseRecover
+      ? recoveryShops.reduce((acc, shop) => {
+          return acc + shop.pending;
+        }, 0)
+      : keepaProgressPerShop.reduce((acc, shop) => {
+          return acc + shop.pending;
+        }, 0);
+   
     const products = await prepareProducts(
       pleaseRecover ? recoveryShops : keepaProgressPerShop,
       true,
