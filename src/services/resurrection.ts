@@ -149,11 +149,7 @@ export async function resurrectionFromGrave() {
       transformedProduct.s_hash = createHash(transformedProduct.lnk);
 
       const { a_lnk, e_lnk, eanList, costs } = transformedProduct;
-      if (
-        !transformedProduct.ean &&
-        !transformedProduct.eanList &&
-        (a_lnk || e_lnk)
-      ) {
+      if (!transformedProduct.eanList && (a_lnk || e_lnk)) {
         handleProductWithoutEAN(transformedProduct, a_lnk!, e_lnk!);
       } else {
         handleProductWithEAN(transformedProduct, a_lnk!, e_lnk!);

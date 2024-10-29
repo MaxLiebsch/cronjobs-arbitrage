@@ -12,7 +12,7 @@ const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
 export async function makeRequestsForEan(product: ProductWithTask) {
   const { _id: productId, sdmn } = product;
-  const ean = product.ean || product.eanList?.[0];
+  const ean = product.eanList[0];
 
   if (!ean) {
     const result = await updateProductWithQuery(
@@ -50,7 +50,7 @@ export async function makeRequestsForEan(product: ProductWithTask) {
         ...keepaFallbackResetQuery,
         $set: {
           ...keepaFallbackResetQuery.$set,
-          info_prop: "not_found"
+          info_prop: "not_found",
         },
       });
 

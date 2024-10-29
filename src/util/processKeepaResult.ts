@@ -23,7 +23,6 @@ export const processKeepaResult = async ({
   a_prc,
   prc,
   a_qty,
-  ean,
   taskType,
   eanList,
   costs,
@@ -128,7 +127,7 @@ export const processKeepaResult = async ({
 
   let sameProductCnt = 0;
   if (taskType === "KEEPA_EAN") {
-    const _ean = ean || eanList?.[0];
+    const _ean = eanList[0];
 
     const updatedProducts = await updateProducts(
       {
