@@ -30,7 +30,7 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     pleaseRecover
   );
 
-  if (products.length) {
+  if (products.length >= KEEPA_RATE_LIMIT) {
     logGlobal(loggerName, `Keepa Products: ${products.length}`);
     if (job) {
       job.cancel();
@@ -49,7 +49,7 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
       true,
       pleaseRecover
     );
-    if (products.length) {
+    if (products.length >= KEEPA_RATE_LIMIT) {
       if (job) {
         job.cancel();
         job = null;
