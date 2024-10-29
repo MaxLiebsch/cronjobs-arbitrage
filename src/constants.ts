@@ -1,4 +1,4 @@
-export const KEEPA_RATE_LIMIT = 20;
+export const KEEPA_RATE_LIMIT = 60;
 export const MAX_EARNING_MARGIN = 150;
 export const KEEPA_MINUTES = 20;
 export const PRODUCTS_PER_MINUTE = 60;

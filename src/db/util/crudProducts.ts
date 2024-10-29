@@ -154,11 +154,31 @@ export const lockProductsForKeepa = async (
       .find(query, options)
       .toArray()) as DbProductRecord[];
 
+    // Filter unique documents based on eanList[0]
+    const uniqueEanSet = new Set<string>();
+    const uniqueDocuments = documents.filter((doc) => {
+      if (!doc.eanList || doc.eanList.length === 0) {
+        return true;
+      }
+      const ean = doc.eanList[0];
+      if (uniqueEanSet.has(ean)) {
+        return false;
+      } else {
+        uniqueEanSet.add(ean);
+        return true;
+      }
+    });
+
+    logGlobal(
+      loggerName,
+      `Found ${uniqueDocuments.length} unique documents fron ${documents.length} documents`
+    );
+
     const lock = fallback ? keepaEanProps.lock : keepaProps.lock;
 
     // Update documents to mark them as locked
     await productCol.updateMany(
-      { _id: { $in: documents.map((doc) => doc._id) } },
+      { _id: { $in: uniqueDocuments.map((doc) => doc._id) } },
       { $set: { [lock]: true } }
     );
 
