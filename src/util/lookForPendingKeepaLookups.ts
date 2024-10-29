@@ -29,8 +29,15 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     false,
     pleaseRecover
   );
-
-  if (products.length >= KEEPA_RATE_LIMIT) {
+  logGlobal(
+    loggerName,
+    `Keepa normal Products: ${products.length} ${pleaseRecover} Limit reached${
+      products.length >= KEEPA_RATE_LIMIT
+    }`
+  );
+  if (
+    pleaseRecover ? products.length > 0 : products.length >= KEEPA_RATE_LIMIT
+  ) {
     logGlobal(loggerName, `Keepa Products: ${products.length}`);
     if (job) {
       job.cancel();
@@ -49,7 +56,15 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
       true,
       pleaseRecover
     );
-    if (products.length >= KEEPA_RATE_LIMIT) {
+    logGlobal(
+      loggerName,
+      `Keepa Ean Products: ${products.length} ${pleaseRecover} Limit reached${
+        products.length >= KEEPA_RATE_LIMIT
+      }`
+    );
+    if (
+      pleaseRecover ? products.length > 0 : products.length >= KEEPA_RATE_LIMIT
+    ) {
       if (job) {
         job.cancel();
         job = null;
