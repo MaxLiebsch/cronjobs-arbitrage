@@ -77,9 +77,13 @@ export const processKeepaResult = async ({
       }
     }
   }
-
+  
   let set: { [key in keyof Partial<DbProductRecord>]: any } = {
     ...result,
+    costs:{
+      ...costs,
+      ...result['costs']
+    },
     [props.updatedAt]: new Date().toISOString(),
   };
 
