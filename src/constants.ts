@@ -24,12 +24,14 @@ export const keepaProperties = [
   { key: "products[0].brand", name: "" },
   { key: "products[0].numberOfItems", name: "" },
   { key: "products[0].referralFeePercentage", name: "costs.prvsn" }, // Provision
-  { key: "products[0].itemHeight", name: "iwhd.height" },//Item
+  { key: "products[0].itemHeight", name: "iwhd.height" }, //Item
   { key: "products[0].itemLength", name: "iwhd.length" },
   { key: "products[0].itemWidth", name: "iwhd.width" },
+  { key: "products[0].itemWeight", name: "iwhd.weight" },
   { key: "products[0].packageHeight", name: "pwhd.height" }, // Package
   { key: "products[0].packageLength", name: "pwhd.length" },
   { key: "products[0].packageWidth", name: "pwhd.width" },
+  { key: "products[0].packageWeight", name: "pwhd.weight" },
   { key: "products[0].salesRankDrops30", name: "drops30" },
   { key: "products[0].fbaFees.pickAndPackFee", name: "costs.ktpt" }, // Packaging
   { key: "products[0].salesRankDrops90", name: "drops90" },
