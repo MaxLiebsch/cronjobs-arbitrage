@@ -16,6 +16,8 @@ export const MIN_BATCH_SIZE = 100;
 export const MINIMAL_SCORE = 0.6;
 export const MINIMAL_QUANTITY_SCORE = 0.8;
 export const RECOVER_LIMIT_PER_DAY = 15000;
+export const MAX_RETRIES_SC = 7;
+export const SC_TIMEOUT = 8000;
 
 export const keepaProperties = [
   { key: "products[0].asin", name: "" },
@@ -26,15 +28,16 @@ export const keepaProperties = [
   { key: "products[0].referralFeePercentage", name: "costs.prvsn" }, // Provision
   { key: "products[0].itemHeight", name: "iwhd.height" }, //Item
   { key: "products[0].itemLength", name: "iwhd.length" },
+  { key: "products[0].competitivePriceThreshold", name: "cmpPrcThrshld" },
   { key: "products[0].itemWidth", name: "iwhd.width" },
   { key: "products[0].itemWeight", name: "iwhd.weight" },
   { key: "products[0].packageHeight", name: "pwhd.height" }, // Package
   { key: "products[0].packageLength", name: "pwhd.length" },
   { key: "products[0].packageWidth", name: "pwhd.width" },
   { key: "products[0].packageWeight", name: "pwhd.weight" },
-  { key: "products[0].salesRankDrops30", name: "drops30" },
+  { key: "products[0].stats.salesRankDrops30", name: "drops30" },
   { key: "products[0].fbaFees.pickAndPackFee", name: "costs.ktpt" }, // Packaging
-  { key: "products[0].salesRankDrops90", name: "drops90" },
+  { key: "products[0].stats.salesRankDrops90", name: "drops90" },
   { key: "products[0].availabilityAmazon", name: "" },
   { key: "products[0].categoryTree", name: "" },
   { key: "products[0].salesRanks", name: "" }, // Sales Rank nullable
