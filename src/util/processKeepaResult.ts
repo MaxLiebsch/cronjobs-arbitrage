@@ -39,6 +39,8 @@ export const processKeepaResult = async ({
 }) => {
   const result = buildKeepaResult(analysis);
 
+  const sellQty = result["a_qty"] !== -1 ? result["a_qty"] : a_qty || 1;
+
   const {
     avg30_ansprcs,
     avg30_ahsprcs,
@@ -77,25 +79,26 @@ export const processKeepaResult = async ({
       }
     }
   }
-  
+
   let set: { [key in keyof Partial<DbProductRecord>]: any } = {
     ...result,
-    costs:{
+    a_qty: sellQty,
+    costs: {
       ...costs,
-      ...result['costs']
+      ...result["costs"],
     },
     [props.updatedAt]: new Date().toISOString(),
   };
 
   const arbitrageCanBeCalculated =
-    a_prc !== undefined && a_prc >= 0 && a_qty && costs && qty;
+    a_prc !== undefined && a_prc >= 0 && sellQty && costs && qty;
 
   if (avgPrice && avgPrice > 0 && arbitrageCanBeCalculated) {
     const _avgPrice = roundToTwoDecimals(avgPrice / 100);
     if (a_prc < _avgPrice) {
       // Use current price for arbitrage calculation if the current price is lower than the average price
       const arbitrage = calculateAznArbitrage(
-        prc * (a_qty / qty),
+        prc * (sellQty / qty),
         _avgPrice,
         costs,
         tax
@@ -110,13 +113,13 @@ export const processKeepaResult = async ({
         set = {
           ...set,
           a_prc: _avgPrice,
-          a_uprc: roundToTwoDecimals(_avgPrice / a_qty),
+          a_uprc: roundToTwoDecimals(_avgPrice / sellQty),
         };
       }
     } else {
       // Use the price from the product for arbitrage calculation if the current price is higher than the average price
       const arbitrage = calculateAznArbitrage(
-        prc * (a_qty / qty),
+        prc * (sellQty / qty),
         a_prc,
         costs,
         tax

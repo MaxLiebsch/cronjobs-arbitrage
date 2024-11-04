@@ -24,7 +24,7 @@ export const keepaProperties = [
   { key: "products[0].categories", name: "" },
   { key: "products[0].eanList", name: "k_eanList" },
   { key: "products[0].brand", name: "" },
-  { key: "products[0].numberOfItems", name: "" },
+  { key: "products[0].numberOfItems", name: "a_qty" },
   { key: "products[0].referralFeePercentage", name: "costs.prvsn" }, // Provision
   { key: "products[0].itemHeight", name: "iwhd.height" }, //Item
   { key: "products[0].itemLength", name: "iwhd.length" },
