@@ -21,6 +21,7 @@ export const CJ_LOGGER: { [key in CronjobTasks]: CronjobTasks } = {
   PENDING_KEEPAS: "PENDING_KEEPAS",
   RESURRECTION: "RESURRECTION",
   BATCHES: "BATCHES",
+  RECALCULATE: "RECALCULATE",
 };
 
 // Create a placeholder for the task logger instance
