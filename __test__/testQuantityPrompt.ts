@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import "dotenv/config";
 import { config } from "dotenv";
 import { encodeChat } from "gpt-tokenizer";
-import { getArbispotterDb } from "../src/db/mongo.js";
+import { getArbispotterDb, getProductsCol } from "../src/db/mongo.js";
 import { createPrompt } from "../src/util/quantities/createPrompt.js";
 config({
   path: [`.env`],
@@ -16,16 +16,14 @@ const openai = new OpenAI({
 
 export const testQtyPrompt = async () => {
   const db = await getArbispotterDb();
-  const shopDomain = "sales";
-  const col = db.collection(shopDomain);
+  const col = await getProductsCol();
 
   const products = await col
-    .find({ eanList: "4008429156113" }, { limit: 1 })
-    .toArray()
+    .find({ eanList: "4005401511106", sdmn: 'idealo.de' }, { limit: 1 })
+    .toArray();
   const prompt = createPrompt(
-    shopDomain,
-    products[0].s_hash,
-    //@ts-ignore
+    products[0].sdmn,
+    products[0]._id,
     products[0],
     true
   );

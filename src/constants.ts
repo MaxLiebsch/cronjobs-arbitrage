@@ -18,6 +18,10 @@ export const MINIMAL_QUANTITY_SCORE = 0.8;
 export const RECOVER_LIMIT_PER_DAY = 15000;
 export const MAX_RETRIES_SC = 7;
 export const SC_TIMEOUT = 8000;
+export const SC_REQUEST_TIMEOUT = 15000;
+export const DEFAULT_TRANSPORT_FEE = 4.95;
+export const JAN_SEPT_M3_FEE = 27.54;
+export const OCT_DEC_M3_FEE = 42.37;
 
 export const keepaProperties = [
   { key: "products[0].asin", name: "" },
@@ -62,3 +66,66 @@ export const keepaProperties = [
   { key: "products[0].stats.stockBuyBox", name: "stockBuyBox" }, // he stock of the buy box offer, if available. Otherwise undefined.
   { key: "products[0].stats.totalOfferCount", name: "totalOfferCount" }, // The total count of offers for this product (all conditions combined). The offer count per condition can be found in the current field.
 ];
+
+export const packageSize = {
+  smallEnvelope: {
+    maxWeight: 80,
+    longest: 200,
+    median: 150,
+    shortest: 10,
+  },
+  standardEnvelope: {
+    maxWeight: 460,
+    longest: 330,
+    median: 230,
+    shortest: 25,
+  },
+  bigEnvelope: {
+    maxWeight: 960,
+    longest: 330,
+    median: 230,
+    shortest: 40,
+  },
+  extraEnvelope: {
+    maxWeight: 960,
+    longest: 330,
+    median: 230,
+    shortest: 60,
+  },
+  small: {
+    maxWeight: 3900,
+    longest: 350,
+    shortest: 120,
+    median: 250,
+  },
+  standard: {
+    maxWeight: 11900,
+    longest: 450,
+    shortest: 260,
+    median: 340,
+  },
+  smallOversize: {
+    volumnWeight: 25820,
+    packageWeight: 17600,
+    longest: 610,
+    shortest: 460,
+    median: 460,
+  },
+  standardOversize: {
+    volumnWeight: 86400,
+    packageWeight: 29760,
+    longest: 1200,
+    shortest: 600,
+    median: 600,
+  },
+  bigOversize: {
+    packageWeight: 31500,
+    shortest: 1200,
+    longest: 1750,
+  },
+  extraOversize: {
+    packageWeight: 31500,
+    longest: 1750,
+    perimeter: 360, //Umfang Eine Maßeinheit, die der längsten Seite + 2 x Breite + 2 x Höhe entspricht.
+  },
+};
