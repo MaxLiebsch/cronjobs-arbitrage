@@ -39,7 +39,7 @@ export const processKeepaResult = async ({
 }) => {
   const result = buildKeepaResult(analysis);
 
-  const sellQty = result["a_qty"] !== -1 ? result["a_qty"] : a_qty || 1;
+  const sellQty = a_qty || 1;
 
   const {
     avg30_ansprcs,
