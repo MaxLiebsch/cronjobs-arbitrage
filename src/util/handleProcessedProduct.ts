@@ -66,5 +66,7 @@ export async function handleProcessedProduct(
     loggerName,
     product.asin + " Updated: " + updateResult?.modifiedCount
   );
-  await updateProducts({ asin: product.asin }, update);
+  if (product?.asin) {
+    await updateProducts({ asin: product.asin }, update);
+  }
 }
