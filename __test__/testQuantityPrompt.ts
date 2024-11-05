@@ -19,7 +19,7 @@ export const testQtyPrompt = async () => {
   const col = await getProductsCol();
 
   const products = await col
-    .find({ eanList: "4005401511106", sdmn: 'idealo.de' }, { limit: 1 })
+    .find({ eanList: "0088698198070", sdmn: "idealo.de" }, { limit: 1 })
     .toArray();
   const prompt = createPrompt(
     products[0].sdmn,
@@ -30,7 +30,7 @@ export const testQtyPrompt = async () => {
   console.log("prompts:", JSON.stringify(prompt.body.messages[1], null, 2));
   console.log("prompts:", JSON.stringify(prompt.body.messages[0], null, 2));
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "gpt-4o-mini-2024-07-18",
     //@ts-ignore
     messages: prompt.body.messages,
     max_tokens: 1000,
@@ -40,8 +40,28 @@ export const testQtyPrompt = async () => {
     "response:",
     JSON.stringify(response.choices[0].message.content, null, 2)
   );
-  const tokenCnt = encodeChat(prompt.body.messages, "gpt-3.5-turbo").length;
-  console.log("tokenCnt:", tokenCnt);
+  const set: any = {};
+  //@ts-ignore
+  Object.entries(JSON.parse(response.choices[0].message.content)).forEach(
+    ([key, value]) => {
+      let qty = Number(value);
+      if (qty) {
+        if (qty === 0) qty = 1;
+        if (key === "a_nm") {
+          set["a_qty"] = qty;
+        }
+        if (key === "e_nm") {
+          set["e_qty"] = qty;
+        }
+        if (key === "nm") {
+          set["qty"] = qty;
+        }
+      }
+    }
+  );
+  console.log('set:', set)
+  const inputTokenCnt = encodeChat(prompt.body.messages, "gpt-3.5-turbo").length;
+  console.log("tokenCnt:", inputTokenCnt);
 };
 
 testQtyPrompt().then(() => {

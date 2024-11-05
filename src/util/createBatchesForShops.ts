@@ -32,7 +32,7 @@ export const createBatches = (
     let prompt: BatchRequestParams = {
       body: {
         messages: [],
-        model: "gpt-4",
+        model: "gpt-4o-mini-2024-07-18",
         temperature: 0.7,
         max_tokens: 1000,
       },
