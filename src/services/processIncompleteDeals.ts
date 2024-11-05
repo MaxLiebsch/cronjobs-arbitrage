@@ -22,6 +22,10 @@ export const incrementTotal = () => {
   total++;
 };
 
+const query = {
+  $and: [{ info_prop: "incomplete" }, { asin: { $exists: true } }],
+};
+
 const batchSize = 20;
 const processingProducts = new Set<ObjectId>();
 const queue = new PQueue({
@@ -37,13 +41,7 @@ queue.on("empty", () => {
   logGlobal(loggerName, "Queue is empty, starting job");
   job = scheduleJob("*/10 * * * *", async () => {
     logGlobal(loggerName, "Checking for pending products...");
-    const products = await findProducts(
-      {
-        $and: [{ info_prop: "incomplete" }, { asin: { $exists: true } }],
-      },
-      batchSize,
-      0
-    );
+    const products = await findProducts(query, batchSize, 0);
     if (products.length === 0) {
       logGlobal(
         loggerName,
@@ -94,14 +92,7 @@ queue.on("completed", async () => {
 
 export async function processIncompleteDeals() {
   try {
-    const products = await findProducts(
-      {
-        info_prop: "incomplete",
-        asin: { $exists: true },
-      },
-      batchSize,
-      0
-    );
+    const products = await findProducts(query, batchSize, 0);
 
     if (!products || products.length === 0) {
       console.log("No products found");
