@@ -83,6 +83,7 @@ aznApi.interceptors.response.use(
     const shouldRetry =
       code === "ECONNABORTED" || // Retry on timeout
       code === "ERR_CANCELED" || // Retry on canceled
+      code === "ERR_SSL_DECRYPTION_FAILED_OR_BAD_RECORD_MAC" ||
       (response &&
         (response.status === 429 ||
           response.status === 400 ||

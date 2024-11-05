@@ -39,8 +39,7 @@ queue.on("empty", () => {
     logGlobal(loggerName, "Checking for pending products...");
     const products = await findProducts(
       {
-        info_prop: "incomplete",
-        asin: { $exists: true },
+        $and: [{ info_prop: "incomplete" }, { asin: { $exists: true } }],
       },
       batchSize,
       0
@@ -72,9 +71,13 @@ queue.on("completed", async () => {
     console.log("exclude processingProducts:", [...processingProducts.keys()]);
     const products = await findProducts(
       {
-        info_prop: "incomplete",
-        asin: { $exists: true },
-        _id: { $nin: [...processingProducts.keys()] },
+        $and: [
+          { info_prop: "incomplete" },
+          { asin: { $exists: true } },
+          {
+            _id: { $nin: [...processingProducts.keys()] },
+          },
+        ],
       },
       batchSize,
       0
