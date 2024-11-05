@@ -62,9 +62,6 @@ export async function handleNewHappyPath(
     if (!product.a_nm) {
       productInfo["a_nm"] = "";
     }
-    if (!product.a_lnk) {
-      productInfo["a_lnk"] = "https://www.amazon.de/dp/product/" + product.asin;
-    }
     const processed = processArbitrageCalc(product, costs, true);
     errors = [];
     return { update: { tRexId, ...productInfo, ...processed }, errors };

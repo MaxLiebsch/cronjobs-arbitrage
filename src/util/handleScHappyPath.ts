@@ -102,7 +102,6 @@ export async function handleHappyPath(
     return {
       update: {
         gl,
-        a_lnk: "https://www.amazon.de/dp/product/" + product.asin,
         ...processedProductInfos,
         ...processed,
       },
