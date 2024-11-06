@@ -4,6 +4,7 @@ import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
 import PQueue from "p-queue";
 import { addProductsToQueue } from "../util/addProductsToQueue.js";
 import { Job, scheduleJob } from "node-schedule";
+import { findProductsForIncompleteDeals } from "../util/findProductsForIncompleteDealsService.js";
 
 const loggerName = CJ_LOGGER.RECALCULATE;
 const logger = new LocalLogger().createLogger(loggerName);
@@ -41,7 +42,7 @@ queue.on("empty", () => {
   logGlobal(loggerName, "Queue is empty, starting job");
   job = scheduleJob("*/10 * * * *", async () => {
     logGlobal(loggerName, "Checking for pending products...");
-    const products = await findProducts(query, batchSize, 0);
+    const products = await findProductsForIncompleteDeals(batchSize);
     if (products.length === 0) {
       logGlobal(
         loggerName,
@@ -67,18 +68,9 @@ queue.on("completed", async () => {
   if (queue.size <= 6) {
     logGlobal(loggerName, `Queue ${queue.pending} (${queue.size})`);
     console.log("exclude processingProducts:", [...processingProducts.keys()]);
-    const products = await findProducts(
-      {
-        $and: [
-          { info_prop: "incomplete" },
-          { asin: { $exists: true } },
-          {
-            _id: { $nin: [...processingProducts.keys()] },
-          },
-        ],
-      },
+    const products = await findProductsForIncompleteDeals(
       batchSize,
-      0
+      processingProducts
     );
     if (products.length === 0) {
       logGlobal(loggerName, "No products found");
@@ -92,7 +84,7 @@ queue.on("completed", async () => {
 
 export async function processIncompleteDeals() {
   try {
-    const products = await findProducts(query, batchSize, 0);
+    const products = await findProductsForIncompleteDeals(batchSize);
 
     if (!products || products.length === 0) {
       console.log("No products found");
