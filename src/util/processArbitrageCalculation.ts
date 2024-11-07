@@ -1,5 +1,6 @@
 import {
   calculateAznArbitrage,
+  calculatePriceRatio,
   Costs,
   DbProductRecord,
   getAznAvgPrice,
@@ -73,7 +74,7 @@ export function processArbitrageCalc(
   }
 
   const arbitrage = calculateAznArbitrage(
-    prc * (a_qty || 1 / qty),
+    calculatePriceRatio(prc, a_qty, qty),
     a_useCurrPrice ? newSellPrice : avgPrice,
     costs,
     tax
