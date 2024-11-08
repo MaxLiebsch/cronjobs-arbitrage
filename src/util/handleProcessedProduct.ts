@@ -96,33 +96,25 @@ const handleProductsUpdate = async (
     });
     let bulks: any = [];
     for (const product of products) {
-      const { _id, costs, a_prc } = product;
+      const { _id, costs, a_prc: existingSellPrice } = product;
       let productUpdate: Partial<DbProductRecord> = {};
-      if (a_prc) {
+      if (existingSellPrice) {
         // recalculate azn costs for existing listing
-        const { avgPrice, a_useCurrPrice } = getAznAvgPrice(product, a_prc);
-        const aznCosts = calcAznCosts(
-          newCosts,
-          newSellPrice,
-          a_useCurrPrice ? a_prc : avgPrice
-        );
-
-        if (aznCosts) {
-          product["costs"] = {
-            ...newCosts,
-            ...costs,
-            azn: aznCosts,
-          };
-          recalculateAznMargin(product, productUpdate);
-          productUpdate["costs"] = product["costs"];
-          productUpdate = {
-            ...productUpdate,
-            bsr: update.bsr || product.bsr || [],
-            a_qty: update.a_qty,
-            a_nm: update.a_nm,
-            a_useCurrPrice,
-          };
-        }
+        product["costs"] = {
+          ...costs,
+          ...newCosts,
+        };
+        product.a_prc = newSellPrice;
+        recalculateAznMargin(product, productUpdate);
+        productUpdate["costs"] = product["costs"];
+        productUpdate = {
+          ...productUpdate,
+          bsr: update.bsr || product.bsr || [],
+          a_qty: update.a_qty,
+          a_nm: update.a_nm,
+          a_prc: newSellPrice,
+          a_uprc: update.a_uprc,
+        };
       } else {
         product.costs = newCosts;
         product.a_prc = newSellPrice;
@@ -158,11 +150,16 @@ const handleProductsUpdate = async (
       }
       if (Object.keys(productUpdate).length > 0) {
         console.log(product.sdmn, "productUpdate:", productUpdate);
+        let taskUpdatedProp = "aznUpdatedAt";
+
+        if (update.a_mrgn && update.a_mrgn > 0) {
+          taskUpdatedProp = "dealAznUpdatedAt";
+        }
         const _update = {
           $set: {
             ...productUpdate,
             info_prop: update.info_prop,
-            aznUpdatedAt: new Date().toISOString(),
+            [taskUpdatedProp]: new Date().toISOString(),
             infoUpdatedAt: new Date().toISOString(),
           },
           $unset: { info_taskId: "" },
