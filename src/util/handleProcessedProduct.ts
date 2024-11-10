@@ -69,6 +69,13 @@ export async function handleProcessedProduct(
     infoUpdatedAt: new Date().toISOString(),
   };
 
+  if (product.costs) {
+    update["costs"] = {
+      ...product.costs,
+      ...update.costs,
+    };
+  }
+
   const updateQuery = {
     $set: {
       ...update,
