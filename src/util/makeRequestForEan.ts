@@ -40,7 +40,7 @@ export async function makeRequestsForEan(product: ProductWithTask) {
     ) {
       console.log(`Request for EAN: ${ean} - ${sdmn}`);
       await processKeepaResult({
-        ...product,
+        product,
         analysis: response.data,
         asin: response.data.products[0].asin,
         props: keepaEanProps,

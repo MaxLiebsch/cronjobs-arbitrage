@@ -26,7 +26,7 @@ export async function makeRequestsForAsin(product: ProductWithTask) {
     ) {
       console.log(`Request for ASIN: ${trimedAsin} - ${sdmn}`);
       await processKeepaResult({
-        ...product,
+        product,
         analysis: response.data,
         asin: trimedAsin,
         props: keepaProps,

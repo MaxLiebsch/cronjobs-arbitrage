@@ -3,6 +3,8 @@ import {
   calculateAznArbitrage,
   calculateMonthlySales,
   DbProductRecord,
+  getAznAvgPrice,
+  recalculateAznMargin,
   roundToTwoDecimals,
 } from "@dipmaxtech/clr-pkg";
 import {
@@ -19,53 +21,40 @@ import { getProductsCol } from "../db/mongo.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
-export const processKeepaResult = async ({
-  asin,
-  _id: productId,
-  analysis,
-  a_prc,
-  prc,
-  a_qty,
-  taskType,
-  eanList,
-  costs,
-  tax,
-  qty,
-  props,
-}: ProductWithTask & {
+export const processKeepaResult = async (processKeepaProps: {
+  product: ProductWithTask;
   analysis: KeepaResponse;
+  asin: string;
   props: {
     lock: string;
     updatedAt: "keepaEanUpdatedAt" | "keepaUpdatedAt";
     unset: any;
   };
 }) => {
+  const { analysis, props, product, asin } = processKeepaProps;
+  const {
+    a_qty,
+    costs,
+    prc,
+    tax,
+    qty,
+    a_prc: newSellPrice,
+    _id: productId,
+    taskType,
+    eanList,
+  } = product;
+
   const result = buildKeepaResult(analysis);
   const col = await getProductsCol();
 
   const sellQty = a_qty || 1;
 
-  const {
-    avg30_ansprcs,
-    avg30_ahsprcs,
-    avg90_ahsprcs,
-    avg90_ansprcs,
-    salesRanks,
-    categories,
-    categoryTree,
-  } = result;
+  const { a_prc, avgPrice, a_useCurrPrice } = getAznAvgPrice(
+    product,
+    newSellPrice!
+  );
 
-  let avgPrice = 0;
-
-  if (avg30_ahsprcs && avg30_ahsprcs > 0) {
-    avgPrice = avg30_ahsprcs;
-  } else if (avg30_ansprcs && avg30_ansprcs > 0) {
-    avgPrice = avg30_ansprcs;
-  } else if (avg90_ahsprcs && avg90_ahsprcs > 0) {
-    avgPrice = avg90_ahsprcs;
-  } else if (avg90_ansprcs && avg90_ansprcs > 0) {
-    avgPrice = avg90_ansprcs;
-  }
+  const { salesRanks, categories, categoryTree } = result;
 
   if (asin) {
     await upsertAsin(asin, result["k_eanList"] ?? []);
@@ -94,50 +83,12 @@ export const processKeepaResult = async ({
     a_prc !== undefined && a_prc >= 0 && sellQty && costs && qty;
 
   if (avgPrice && avgPrice > 0 && arbitrageCanBeCalculated) {
-    const _avgPrice = roundToTwoDecimals(avgPrice / 100);
     const newCosts = {
       ...costs,
       ...result["costs"],
     };
-    if (a_prc < _avgPrice) {
-      // Use current price for arbitrage calculation if the current price is lower than the average price
-      newCosts.azn = calcAznCosts(newCosts, a_prc, _avgPrice);
-      const arbitrage = calculateAznArbitrage(
-        prc * (sellQty / qty),
-        _avgPrice,
-        newCosts,
-        tax
-      );
-      set = {
-        ...set,
-        ...arbitrage,
-        costs: newCosts,
-        a_useCurrPrice: false,
-      };
-
-      if (a_prc === 0) {
-        set = {
-          ...set,
-          a_prc: _avgPrice,
-          a_uprc: roundToTwoDecimals(_avgPrice / sellQty),
-        };
-      }
-    } else {
-      // Use the price from the product for arbitrage calculation if the current price is higher than the average price
-      newCosts.azn = calcAznCosts(newCosts, a_prc, a_prc);
-      const arbitrage = calculateAznArbitrage(
-        prc * (sellQty / qty),
-        a_prc,
-        newCosts,
-        tax
-      );
-      set = {
-        ...set,
-        ...arbitrage,
-        costs: newCosts,
-        a_useCurrPrice: true,
-      };
-    }
+    product.costs = newCosts;
+    recalculateAznMargin(product, a_prc, set);
   }
 
   let sameProductCnt = 0;
@@ -146,6 +97,7 @@ export const processKeepaResult = async ({
     const _ean = eanList[0];
     const products = await findProducts({
       eanList: _ean,
+      _id: { $ne: productId },
     });
 
     for (const product of products) {
@@ -155,21 +107,15 @@ export const processKeepaResult = async ({
         a_prc: existingSellPrice,
         a_mrgn,
         qty: buyQty,
-        prc: buyPrice,
       } = product;
       const isComplete = a_mrgn && existingSellPrice && costs?.azn;
       if (costs && existingSellPrice && buyQty) {
-        costs.azn = calcAznCosts(costs, existingSellPrice, existingSellPrice);
-        const arbitrage = calculateAznArbitrage(
-          buyPrice * (sellQty / buyQty),
-          existingSellPrice,
-          costs,
-          tax
-        );
-        set = {
-          ...set,
-          ...arbitrage,
+        const newCosts = {
+          ...costs,
+          ...result["costs"],
         };
+        product.costs = newCosts;
+        recalculateAznMargin(product, existingSellPrice, set);
       }
       const bulkUpdate = {
         updateOne: {
@@ -193,29 +139,17 @@ export const processKeepaResult = async ({
   if (taskType === "KEEPA_NORMAL") {
     const products = await findProducts({
       asin: asin,
+      _id: { $ne: productId },
     });
     for (const product of products) {
-      const {
-        _id,
-        costs,
-        a_prc: existingSellPrice,
-        a_mrgn,
-        prc: buyPrice,
-        qty: buyQty,
-      } = product;
+      const { _id, costs, a_prc: existingSellPrice, qty: buyQty } = product;
       if (costs && existingSellPrice && buyQty) {
-        costs.azn = calcAznCosts(costs, existingSellPrice, existingSellPrice);
-        const arbitrage = calculateAznArbitrage(
-          buyPrice * (sellQty / buyQty),
-          existingSellPrice,
-          costs,
-          tax
-        );
-        set = {
-          ...set,
-          a_pblsh: true,
-          ...arbitrage,
+        const newCosts = {
+          ...costs,
+          ...result["costs"],
         };
+        product.costs = newCosts;
+        recalculateAznMargin(product, existingSellPrice, set);
       }
       const bulkUpdate = {
         updateOne: {
