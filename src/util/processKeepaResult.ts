@@ -176,6 +176,7 @@ export const processKeepaResult = async ({
           filter: { _id: _id },
           update: {
             $set: {
+              a_pblsh: true,
               ...set,
             },
             $unset: {
@@ -212,6 +213,7 @@ export const processKeepaResult = async ({
         );
         set = {
           ...set,
+          a_pblsh: true,
           ...arbitrage,
         };
       }
