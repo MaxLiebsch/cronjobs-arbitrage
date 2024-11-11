@@ -13,6 +13,8 @@ import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { PendingShop } from "../types/shops.js";
 import { ProductWithTask } from "../types/products.js";
+import { ObjectId } from "@dipmaxtech/clr-pkg";
+import { getProductsCol } from "../db/mongo.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -21,7 +23,7 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   const activeShops = await getActiveShops();
   logGlobal(loggerName, `Active shops: ${activeShops?.length} loaded`);
   if (!activeShops) return;
-  
+
   logGlobal(loggerName, `Checking for pending keepa lookups...`);
   const keepaProgressPerShop = await getKeepaProgressPerShop(activeShops);
   const recoveryShops = await keepaTaskRecovery(activeShops);
@@ -70,7 +72,7 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
       : keepaProgressPerShop.reduce((acc, shop) => {
           return acc + shop.pending;
         }, 0);
-   
+
     const products = await prepareProducts(
       pleaseRecover ? recoveryShops : keepaProgressPerShop,
       true,
@@ -122,7 +124,8 @@ async function prepareProducts(
   const totalProducts = KEEPA_MINUTES * KEEPA_RATE_LIMIT;
   const productsPerShop = Math.floor(totalProducts / numberOfPendingShops);
 
-  return await Promise.all(
+  const unqiueDocuments = new Set<string>();
+  const prepareProducts = await Promise.all(
     pendingShops.map(async (shop) => {
       logGlobal(
         loggerName,
@@ -135,12 +138,24 @@ async function prepareProducts(
         recovery
       );
 
-      return products.map((product) => {
-        return {
-          ...product,
-          taskType: fallback ? "KEEPA_EAN" : "KEEPA_NORMAL",
-        };
-      }) as ProductWithTask[];
+      return products
+        .filter((product) => {
+          const relevantFilter = fallback ? product.eanList[0] : product.asin!;
+          if (unqiueDocuments.has(relevantFilter)) {
+            return false;
+          } else {
+            unqiueDocuments.add(relevantFilter);
+            return true;
+          }
+        })
+        .map((product) => {
+          return {
+            ...product,
+            taskType: fallback ? "KEEPA_EAN" : "KEEPA_NORMAL",
+          };
+        }) as ProductWithTask[];
     })
   );
+
+  return prepareProducts;
 }

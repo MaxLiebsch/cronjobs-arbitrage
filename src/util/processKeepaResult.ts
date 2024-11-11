@@ -5,6 +5,7 @@ import {
   roundToTwoDecimals,
 } from "@dipmaxtech/clr-pkg";
 import {
+  findProducts,
   updateProducts,
   updateProductWithQuery,
 } from "../db/util/crudProducts.js";
@@ -13,6 +14,7 @@ import { buildKeepaResult } from "./buildKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { ProductWithTask } from "../types/products.js";
+import { getProductsCol } from "../db/mongo.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -38,6 +40,7 @@ export const processKeepaResult = async ({
   };
 }) => {
   const result = buildKeepaResult(analysis);
+  const col = await getProductsCol();
 
   const sellQty = a_qty || 1;
 
@@ -133,38 +136,60 @@ export const processKeepaResult = async ({
   }
 
   let sameProductCnt = 0;
+  const bulWrites: any = [];
   if (taskType === "KEEPA_EAN") {
     const _ean = eanList[0];
+    const products = await findProducts({
+      eanList: _ean,
+    });
 
-    const updatedProducts = await updateProducts(
-      {
-        eanList: _ean,
-      },
-      {
-        $set: {
-          ...set,
+    for (const product of products) {
+      const { _id, costs, a_prc: existingSellPrice, a_mrgn } = product;
+      const isComplete = a_mrgn && existingSellPrice && costs?.azn;
+      const bulkUpdate = {
+        updateOne: {
+          filter: { _id: _id },
+          update: {
+            $set: {
+              ...set,
+            },
+            $unset: {
+              keepaEan_lckd: "",
+              ...(!isComplete && { info_prop: "", infoUpdatedAt: "" }),
+            },
+          },
         },
-        $unset: props.unset,
-      }
-    );
-    sameProductCnt = updatedProducts?.modifiedCount ?? 0;
+      };
+      bulWrites.push(bulkUpdate);
+    }
   }
 
   if (taskType === "KEEPA_NORMAL") {
-    const updatedProducts = await updateProducts(
-      {
-        asin: asin,
-      },
-      {
-        $set: {
-          ...set,
+    const products = await findProducts({
+      asin: asin,
+    });
+    for (const product of products) {
+      const { _id } = product;
+      const bulkUpdate = {
+        updateOne: {
+          filter: { _id: _id },
+          update: {
+            $set: {
+              ...set,
+            },
+            $unset: {
+              keepa_lckd: "",
+            },
+          },
         },
-        $unset: props.unset,
-      }
-    );
-    sameProductCnt = updatedProducts?.modifiedCount ?? 0;
+      };
+      bulWrites.push(bulkUpdate);
+    }
   }
-
+  if (bulWrites.length > 0) {
+    const result = await col.bulkWrite(bulWrites);
+    sameProductCnt = result.modifiedCount;
+  }
   const productUpdated = await updateProductWithQuery(productId, {
     $set: {
       ...set,
