@@ -2,6 +2,7 @@ import {
   calcAznCosts,
   DbProductRecord,
   getAznAvgPrice,
+  LookupInfoProps,
   ObjectId,
   recalculateAznMargin,
   safeParsePrice,
@@ -86,12 +87,18 @@ export async function handleProcessedProduct(
     loggerName,
     product.asin + " Updated: " + updateResult?.modifiedCount
   );
-  await handleProductsUpdate(product._id, product.asin, update);
+  await syncAznListings(
+    product._id,
+    product.asin,
+    product.a_prc || update.a_prc!,
+    update
+  );
 }
 
-const handleProductsUpdate = async (
+const syncAznListings = async (
   productId: ObjectId,
   asin: string | undefined,
+  oldListingPrice: number,
   update: Partial<DbProductRecord>
 ) => {
   const { costs: newCosts, a_prc: newSellPrice } = update;
@@ -103,7 +110,13 @@ const handleProductsUpdate = async (
     });
     let bulks: any = [];
     for (const product of products) {
-      const { _id, costs, a_prc: existingSellPrice } = product;
+      const { _id, costs, a_prc: existingSellPrice, a_mrgn } = product;
+      const isComplete = a_mrgn && existingSellPrice && costs?.azn;
+
+      const info_prop = isComplete
+        ? LookupInfoProps.complete
+        : update.info_prop;
+
       let productUpdate: Partial<DbProductRecord> = {};
       if (existingSellPrice) {
         // recalculate azn costs for existing listing
@@ -112,12 +125,13 @@ const handleProductsUpdate = async (
           ...newCosts,
         };
         product.a_prc = newSellPrice;
-        recalculateAznMargin(product, productUpdate);
+        recalculateAznMargin(product, oldListingPrice, productUpdate);
         productUpdate["costs"] = product["costs"];
         productUpdate = {
           ...productUpdate,
           bsr: update.bsr || product.bsr || [],
           a_qty: update.a_qty,
+          a_pblsh: true,
           a_nm: update.a_nm,
           a_prc: newSellPrice,
           a_uprc: update.a_uprc,
@@ -125,7 +139,7 @@ const handleProductsUpdate = async (
       } else {
         product.costs = newCosts;
         product.a_prc = newSellPrice;
-        recalculateAznMargin(product, productUpdate);
+        recalculateAznMargin(product, oldListingPrice, productUpdate);
         const {
           a_rating,
           a_reviewcnt,
@@ -165,7 +179,7 @@ const handleProductsUpdate = async (
         const _update = {
           $set: {
             ...productUpdate,
-            info_prop: update.info_prop,
+            info_prop,
             [taskUpdatedProp]: new Date().toISOString(),
             infoUpdatedAt: new Date().toISOString(),
           },
