@@ -35,8 +35,6 @@ export const processKeepaResult = async (processKeepaProps: {
   const {
     a_qty,
     costs,
-    prc,
-    tax,
     qty,
     a_prc: newSellPrice,
     _id: productId,

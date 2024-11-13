@@ -14,7 +14,7 @@ const catPropInvalids = [
   "categories_missing",
   "category_not_found",
 ];
-const infoPropInvalids = ["missing"];
+// const infoPropInvalids = ["missing"];
 const ebyPropInvalids = ["missing"];
 const eanPropInvalids = ["missing", "invalid", "timeout"];
 
@@ -38,14 +38,14 @@ export const controlProcessProps = async () => {
         {
           sdmn: shop.d,
           $or: [
-            {
-              "costs.azn": { $lte: 0.3 },
-              infoUpdatedAt: { $lt: lt },
-            },
-            {
-              info_prop: { $in: infoPropInvalids },
-              infoUpdatedAt: { $lt: lt },
-            },
+            // {
+            //   "costs.azn": { $lte: 0.3 },
+            //   infoUpdatedAt: { $lt: lt },
+            // },
+            // {
+            //   info_prop: { $in: infoPropInvalids },
+            //   infoUpdatedAt: { $lt: lt },
+            // },
             {
               cat_prop: {
                 $in: catPropInvalids,
@@ -80,13 +80,13 @@ export const controlProcessProps = async () => {
               update: { $unset: {} },
             },
           };
-          if (
-            (info_prop && infoPropInvalids.includes(info_prop)) ||
-            (costs && costs?.azn <= 0.3)
-          ) {
-            spotterBulk.updateOne.update.$unset.info_prop = "";
-            spotterBulk.updateOne.update.$unset.infoUpdatedAt = "";
-          }
+          // if (
+          //   (info_prop && infoPropInvalids.includes(info_prop)) ||
+          //   (costs && costs?.azn <= 0.3)
+          // ) {
+          //   spotterBulk.updateOne.update.$unset.info_prop = "";
+          //   spotterBulk.updateOne.update.$unset.infoUpdatedAt = "";
+          // }
           if (cat_prop && catPropInvalids.includes(cat_prop)) {
             spotterBulk.updateOne.update.$unset.cat_prop = "";
             spotterBulk.updateOne.update.$unset.catUpdatedAt = "";

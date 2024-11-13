@@ -13,8 +13,6 @@ import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { PendingShop } from "../types/shops.js";
 import { ProductWithTask } from "../types/products.js";
-import { ObjectId } from "@dipmaxtech/clr-pkg";
-import { getProductsCol } from "../db/mongo.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
