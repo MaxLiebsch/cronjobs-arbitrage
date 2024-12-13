@@ -73,7 +73,6 @@ export const checkAndProcessBatchesForShops = async (
         }
         remove(filepath);
       }
-      if (batch.status === status) continue;
       if (
         batch.status === "failed" ||
         batch.status === "expired" ||
@@ -99,6 +98,7 @@ export const checkAndProcessBatchesForShops = async (
           },
         }
       );
+      if (batch.status === status) continue;
       await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error) {
       if (error instanceof NotFoundError) {
