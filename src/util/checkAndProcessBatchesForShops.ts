@@ -81,6 +81,15 @@ export const checkAndProcessBatchesForShops = async (
       ) {
         await deleteFile(batch.input_file_id);
         await processFailedBatch(batchData, batchTaskType);
+        await tasksCol.updateOne(
+          { type: batchTaskType, "batches.batchId": batchId },
+          {
+            $pull: {
+              batches: { batchId },
+            },
+          }
+        );
+        continue;
       }
       await tasksCol.updateOne(
         { type: batchTaskType, "batches.batchId": batchId },
