@@ -74,7 +74,11 @@ export const checkAndProcessBatchesForShops = async (
         remove(filepath);
       }
       if (batch.status === status) continue;
-      if (batch.status === "failed") {
+      if (
+        batch.status === "failed" ||
+        batch.status === "expired" ||
+        batch.status === "cancelled"
+      ) {
         await deleteFile(batch.input_file_id);
         await processFailedBatch(batchData, batchTaskType);
       }
