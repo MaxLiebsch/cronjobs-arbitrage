@@ -6,6 +6,7 @@ import { sleep } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaProps } from "./keepaProps.js";
 import { ProductWithTask } from "../types/products.js";
+import { keepaProductSearchParams } from "../constants.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -15,7 +16,9 @@ export async function makeRequestsForAsin(product: ProductWithTask) {
   const trimedAsin = asin!.replace(/\W/g, "");
   try {
     const response = await axios.get<any, AxiosResponse<KeepaResponse, any>>(
-      `${process.env.KEEPA_URL}/product?key=${process.env.KEEPA_API_KEY}&domain=3&asin=${trimedAsin}&stats=90&history=1&days=90`
+      `${process.env.KEEPA_URL}/product?key=${
+        process.env.KEEPA_API_KEY
+      }&asin=${trimedAsin}&${keepaProductSearchParams.join("&")}`
     );
 
     if (

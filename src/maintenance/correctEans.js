@@ -21,7 +21,7 @@ const correctEans = async () => {
     for (let index = 0; index < rounds; index++) {
       const products = await findCrawlDataProducts(
         shop.d,
-        { ean: { $exists: true, $not: /\b[0-9]{12,13}\b/, $ne: "" } },
+        { ean: { $exists: true, $not: /\b[0-9]{11,13}\b/, $ne: "" } },
         remaining > batchSize ? batchSize : remaining
       );
       if (products.length) {

@@ -7,6 +7,7 @@ import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaEanProps } from "./keepaProps.js";
 import { keepaFallbackResetQuery } from "../db/queries.js";
 import { ProductWithTask } from "../types/products.js";
+import { keepaProductSearchParams } from "../constants.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -29,7 +30,9 @@ export async function makeRequestsForEan(product: ProductWithTask) {
   }
   try {
     const response = await axios.get<any, AxiosResponse<KeepaResponse, any>>(
-      `${process.env.KEEPA_URL}/product?key=${process.env.KEEPA_API_KEY}&domain=3&code=${ean}&stats=90&history=1&days=90`
+      `${process.env.KEEPA_URL}/product?key=${
+        process.env.KEEPA_API_KEY
+      }&code=${ean}&${keepaProductSearchParams.join("&")}`
     );
 
     if (
