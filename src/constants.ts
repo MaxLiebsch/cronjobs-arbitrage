@@ -60,16 +60,19 @@ export const keepaProperties = [
   { key: "products[0].stats.current[1]", name: "curr_ansprcs" },
   { key: "products[0].stats.current[2]", name: "curr_ausprcs" },
   { key: "products[0].stats.current[3]", name: "curr_salesRank" },
+  { key: "products[0].stats.current[10]", name: "curr_fba" },
   { key: "products[0].stats.current[18]", name: "curr_buyBoxPrice" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.avg30[0]", name: "avg30_ahsprcs" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.avg30[1]", name: "avg30_ansprcs" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.avg30[2]", name: "avg30_ausprcs" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.avg30[3]", name: "avg30_salesRank" }, // Average of the Amazon history prices of the last 30 days
+  { key: "products[0].stats.avg30[10]", name: "avg30_fba" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.avg30[18]", name: "avg30_buyBoxPrice" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.avg90[0]", name: "avg90_ahsprcs" }, // Average of the Amazon history prices of the last 90 days
   { key: "products[0].stats.avg90[1]", name: "avg90_ansprcs" }, // Average of the Amazon history prices of the last 90 days
   { key: "products[0].stats.avg90[2]", name: "avg90_ausprcs" }, // Average of the Amazon history prices of the last 90 days
   { key: "products[0].stats.avg90[3]", name: "avg90_salesRank" }, // Average of the Amazon history prices of the last 90 days
+  { key: "products[0].stats.avg90[10]", name: "avg90_fba" }, // Average of the Amazon history prices of the last 90 days
   { key: "products[0].stats.avg90[18]", name: "avg90_buyBoxPrice" }, // Average of the Amazon history prices of the last 30 days
   { key: "products[0].stats.buyBoxIsAmazon", name: "buyBoxIsAmazon" },
   { key: "products[0].stats.stockAmount", name: "stockAmount" }, //  The stock of the Amazon offer, if available. Otherwise undefined.
