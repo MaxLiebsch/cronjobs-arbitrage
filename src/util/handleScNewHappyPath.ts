@@ -1,6 +1,7 @@
 import {
   AznCategoryTrexIdMapper,
   DbProductRecord,
+  determineAdjustedSellPrice,
   getAznAvgPrice,
 } from "@dipmaxtech/clr-pkg";
 import { scNewFeeFinder } from "../api/scApi.js";
@@ -24,7 +25,7 @@ async function scNewHappyPath(product: DbProductRecord) {
 
   if (!pwhd) throw new Error(ERRORS.scNewHappyPath.noDimensions);
 
-  const { avgPrice, a_useCurrPrice, a_prc } = getAznAvgPrice(
+  const { avgPrice, a_useCurrPrice, a_prc } = determineAdjustedSellPrice(
     product,
     sellPrice || 0
   );

@@ -1,15 +1,11 @@
 import {
-  calcAznCosts,
-  calculateAznArbitrage,
   calculateMonthlySales,
   DbProductRecord,
-  getAznAvgPrice,
+  determineAdjustedSellPrice,
   recalculateAznMargin,
-  roundToTwoDecimals,
 } from "@dipmaxtech/clr-pkg";
 import {
   findProducts,
-  updateProducts,
   updateProductWithQuery,
 } from "../db/util/crudProducts.js";
 import { upsertAsin } from "../db/util/asinTable.js";
@@ -47,7 +43,7 @@ export const processKeepaResult = async (processKeepaProps: {
 
   const sellQty = a_qty || 1;
 
-  const { a_prc, avgPrice, a_useCurrPrice } = getAznAvgPrice(
+  const { a_prc, avgPrice, a_useCurrPrice } = determineAdjustedSellPrice(
     product,
     newSellPrice!
   );

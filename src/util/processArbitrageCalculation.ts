@@ -3,6 +3,7 @@ import {
   calculatePriceRatio,
   Costs,
   DbProductRecord,
+  determineAdjustedSellPrice,
   getAznAvgPrice,
 } from "@dipmaxtech/clr-pkg";
 import {
@@ -29,7 +30,7 @@ export function processArbitrageCalc(
     a_useCurrPrice,
     a_prc: newSellPrice,
     a_uprc: newSellUPrice,
-  } = getAznAvgPrice(product, a_prc || 1);
+  } = determineAdjustedSellPrice(product, a_prc || 1);
 
   if (estimated) {
     costs.estmtd = true;

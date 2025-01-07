@@ -1,4 +1,4 @@
-import { DbProductRecord, getAznAvgPrice } from "@dipmaxtech/clr-pkg";
+import { DbProductRecord, determineAdjustedSellPrice, getAznAvgPrice } from "@dipmaxtech/clr-pkg";
 import {
   scAdditionalProductInfo,
   scFeeFinder,
@@ -37,7 +37,7 @@ async function scHappyPath(product: DbProductRecord) {
   }
 
   console.log("sellPrice:", product.a_prc);
-  const { avgPrice, a_useCurrPrice, a_prc } = getAznAvgPrice(
+  const { avgPrice, a_useCurrPrice, a_prc } = determineAdjustedSellPrice(
     product,
     product.a_prc || 0
   );

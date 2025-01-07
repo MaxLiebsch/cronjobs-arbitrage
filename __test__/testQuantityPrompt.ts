@@ -19,7 +19,7 @@ export const testQtyPrompt = async () => {
   const col = await getProductsCol();
 
   const products = await col
-    .find({ eanList: "0649528822505", sdmn: "idealo.de" }, { limit: 1 })
+    .find({ eanList: "3600523789856", sdmn: "dm.de" }, { limit: 1 })
     .toArray();
   const prompt = createPrompt(
     products[0].sdmn,
