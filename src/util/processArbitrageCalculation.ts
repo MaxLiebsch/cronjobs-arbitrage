@@ -27,6 +27,7 @@ export function processArbitrageCalc(
   a_qty = a_qty || 1;
   const {
     avgPrice,
+    avgField,
     a_useCurrPrice,
     a_prc: newSellPrice,
     a_uprc: newSellUPrice,
@@ -82,6 +83,8 @@ export function processArbitrageCalc(
   );
 
   return {
+    a_avg_fld: avgField,
+    a_avg_price: avgPrice,
     a_prc: newSellPrice,
     a_uprc: newSellUPrice,
     a_qty,
