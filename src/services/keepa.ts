@@ -9,6 +9,7 @@ import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
 import { ProductWithTask } from "../types/products.js";
 import { makeRequestsForAsin } from "../util/makeRequestForAsin.js";
 import { makeRequestsForEan } from "../util/makeRequestForEan.js";
+import { makeRequestsForWholesaleEan } from "../util/makeRequestForWholesaleEan.js";
 
 config({
   path: [`.env`],
@@ -68,12 +69,13 @@ export async function processQueue(keepaJob: Job | null = null) {
     for (let i = 0; i < KEEPA_RATE_LIMIT; i++) {
       if (asinQueue.length > 0) {
         const product = asinQueue.shift()!;
+        incrementTotal();
         if (product.taskType === "KEEPA_NORMAL") {
-          incrementTotal();
           promises.push(makeRequestsForAsin(product));
         } else if (product.taskType === "KEEPA_EAN") {
-          incrementTotal();
           promises.push(makeRequestsForEan(product));
+        } else if(product.taskType === "KEEPA_WHOLESALE") {
+          promises.push(makeRequestsForWholesaleEan(product));
         }
       } else {
         break; // Break the loop if the queue is empty

@@ -20,6 +20,7 @@ export const SC_TIMEOUT = 8000;
 export const SC_REQUEST_TIMEOUT = 15000;
 export const DEFAULT_TRANSPORT_FEE = 4.95;
 export const JAN_SEPT_M3_FEE = 27.54;
+export const MAX_WHOLESALE_PRODUCTS = 240;
 export const OCT_DEC_M3_FEE = 42.37;
 
 export const keepaProductSearchParams = [

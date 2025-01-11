@@ -87,6 +87,12 @@ export const processKeepaResult = async (processKeepaProps: {
 
   let sameProductCnt = 0;
   const bulWrites: any = [];
+  if (taskType === "KEEPA_WHOLESALE") {
+    props.unset = {
+      ...props.unset,
+      a_status: "",
+    };
+  }
   if (taskType === "KEEPA_EAN") {
     const _ean = eanList[0];
     const products = await findProducts({
@@ -129,7 +135,6 @@ export const processKeepaResult = async (processKeepaProps: {
       bulWrites.push(bulkUpdate);
     }
   }
-
   if (taskType === "KEEPA_NORMAL") {
     const products = await findProducts({
       asin: asin,

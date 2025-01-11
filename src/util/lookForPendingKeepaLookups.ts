@@ -3,7 +3,11 @@ import { getKeepaEanProgressPerShop } from "../db/util/getEanKeepaProgress.js";
 import { getKeepaProgressPerShop } from "../db/util/getKeepaProgress.js";
 import { getActiveShops } from "../db/util/shops.js";
 import { addToQueue } from "../services/keepa.js";
-import { KEEPA_MINUTES, KEEPA_RATE_LIMIT } from "../constants.js";
+import {
+  KEEPA_MINUTES,
+  KEEPA_RATE_LIMIT,
+  MAX_WHOLESALE_PRODUCTS,
+} from "../constants.js";
 import { lockProductsForKeepa } from "../db/util/crudProducts.js";
 import {
   keepaEanTaskRecovery,
@@ -13,6 +17,9 @@ import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { PendingShop } from "../types/shops.js";
 import { ProductWithTask } from "../types/products.js";
+import { DbProductRecord, Shop, WithId } from "@dipmaxtech/clr-pkg";
+import { getProductsCol } from "../db/mongo.js";
+import { Filter } from "mongodb";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -21,7 +28,33 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   const activeShops = await getActiveShops();
   logGlobal(loggerName, `Active shops: ${activeShops?.length} loaded`);
   if (!activeShops) return;
+  const standardProcessResult = await keepaStandardProcess({
+    job,
+    activeShops,
+  });
+  if (standardProcessResult) return;
 
+  const keepaWholesaleResult = await keepaWholesaleProcess({ job });
+  if (keepaWholesaleResult) return;
+
+  const keepaEanProcessResult = await keepaEanProcess({ job, activeShops });
+  if (keepaEanProcessResult) return;
+
+  if (!job) {
+    logGlobal(loggerName, "Queue is empty, starting job");
+    job = scheduleJob("*/10 * * * *", async () => {
+      logGlobal(loggerName, "Checking for pending products...");
+      await lookForPendingKeepaLookups(job);
+    });
+  }
+}
+async function keepaStandardProcess({
+  job,
+  activeShops,
+}: {
+  job: Job | null;
+  activeShops: WithId<Shop>[];
+}) {
   logGlobal(loggerName, `Checking for pending keepa lookups...`);
   const keepaProgressPerShop = await getKeepaProgressPerShop(activeShops);
   const recoveryShops = await keepaTaskRecovery(activeShops);
@@ -57,50 +90,86 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
       job = null;
     }
     addToQueue(products.flatMap((ps) => ps));
-  } else {
-    const keepaProgressPerShop = await getKeepaEanProgressPerShop(activeShops);
-    const recoveryShops = await keepaEanTaskRecovery(activeShops!);
-    const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
-    logGlobal(loggerName, `Recover keepa ean task: ${pleaseRecover}`);
-
-    const pendingProducts = pleaseRecover
-      ? recoveryShops.reduce((acc, shop) => {
-          return acc + shop.pending;
-        }, 0)
-      : keepaProgressPerShop.reduce((acc, shop) => {
-          return acc + shop.pending;
-        }, 0);
-
-    const products = await prepareProducts(
-      pleaseRecover ? recoveryShops : keepaProgressPerShop,
-      true,
-      pleaseRecover,
-      pendingProducts
-    );
-    logGlobal(
-      loggerName,
-      `Keepa Ean Products: ${
-        products.length
-      } Recover: ${pleaseRecover} Limit reached: ${
-        products.length >= KEEPA_RATE_LIMIT
-      }`
-    );
-    if (products.length) {
-      if (job) {
-        job.cancel();
-        job = null;
-      }
-      addToQueue(products.flatMap((ps) => ps));
-    } else {
-      if (!job) {
-        logGlobal(loggerName, "Queue is empty, starting job");
-        job = scheduleJob("*/10 * * * *", async () => {
-          logGlobal(loggerName, "Checking for pending products...");
-          await lookForPendingKeepaLookups(job);
-        });
-      }
-    }
+    return true;
   }
+  return false;
+}
+async function keepaEanProcess({
+  job,
+  activeShops,
+}: {
+  job: Job | null;
+  activeShops: WithId<Shop>[];
+}) {
+  const keepaProgressPerShop = await getKeepaEanProgressPerShop(activeShops);
+  const recoveryShops = await keepaEanTaskRecovery(activeShops!);
+  const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
+  logGlobal(loggerName, `Recover keepa ean task: ${pleaseRecover}`);
+
+  const pendingProducts = pleaseRecover
+    ? recoveryShops.reduce((acc, shop) => {
+        return acc + shop.pending;
+      }, 0)
+    : keepaProgressPerShop.reduce((acc, shop) => {
+        return acc + shop.pending;
+      }, 0);
+
+  const products = await prepareProducts(
+    pleaseRecover ? recoveryShops : keepaProgressPerShop,
+    true,
+    pleaseRecover,
+    pendingProducts
+  );
+  logGlobal(
+    loggerName,
+    `Keepa Ean Products: ${
+      products.length
+    } Recover: ${pleaseRecover} Limit reached: ${
+      products.length >= KEEPA_RATE_LIMIT
+    }`
+  );
+  if (products.length) {
+    if (job) {
+      job.cancel();
+      job = null;
+    }
+    addToQueue(products.flatMap((ps) => ps));
+    return true;
+  }
+  return false;
+}
+async function keepaWholesaleProcess({ job }: { job: Job | null }) {
+  const col = await getProductsCol();
+
+  const query: Filter<DbProductRecord> = {
+    a_lookup_pending: true,
+    a_status: "keepa",
+    target: "a",
+  };
+
+  const wholeSaleProducts = await col
+    .find(query)
+    .limit(MAX_WHOLESALE_PRODUCTS)
+    .toArray();
+
+  if (wholeSaleProducts.length) {
+    if (job) {
+      job.cancel();
+      job = null;
+    }
+    logGlobal(loggerName, `Whole sale products: ${wholeSaleProducts.length}`);
+    addToQueue(
+      wholeSaleProducts.map((product) => {
+        return {
+          ...product,
+          taskType: "KEEPA_WHOLESALE",
+        };
+      })
+    );
+    return true;
+  }
+
+  return false;
 }
 
 async function prepareProducts(
