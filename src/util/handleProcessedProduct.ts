@@ -29,7 +29,6 @@ export async function handleProcessedProduct(
   if (result.errors.length > 0) {
     processingProducts.delete(product._id);
     info_prop = "error";
-    console.log("info_prop:", info_prop, result.errors);
     result.update["a_pblsh"] = false;
     result.update["a_errors"] = result.errors;
     logGlobal(
@@ -46,17 +45,10 @@ export async function handleProcessedProduct(
     if (result.update.a_prc === 1) {
       info_prop = "no_offer";
       result.update["a_pblsh"] = false;
-      console.log(product.asin, "info_prop:", info_prop);
+      console.log(product.asin, "no offer");
     } else {
       result.update["a_pblsh"] = true;
-      console.log(
-        product.asin,
-        " result.update:",
-        result.update.a_prc,
-        result.update.a_mrgn,
-        "info_prop:",
-        info_prop
-      );
+      console.log(product.asin, "published");
     }
   }
 
@@ -167,8 +159,7 @@ const syncAznListings = async (
           }),
         };
       }
-      if (Object.keys(productUpdate).length > 0) {
-        console.log(product.sdmn, "productUpdate:", productUpdate);
+      if (Object.keys(productUpdate).length > 0) { 
         let taskUpdatedProp = "aznUpdatedAt";
 
         if (update.a_mrgn && update.a_mrgn > 0) {

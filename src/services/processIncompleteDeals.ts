@@ -67,7 +67,6 @@ queue.on("active", () => {
 queue.on("completed", async () => {
   if (queue.size <= 6) {
     logGlobal(loggerName, `Queue ${queue.pending} (${queue.size})`);
-    console.log("exclude processingProducts:", [...processingProducts.keys()]);
     const products = await findProductsForIncompleteDeals(
       batchSize,
       processingProducts
