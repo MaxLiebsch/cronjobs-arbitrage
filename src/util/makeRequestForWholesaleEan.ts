@@ -42,7 +42,7 @@ export async function makeRequestsForWholesaleEan(product: ProductWithTask) {
       response.data.products.length > 0 &&
       response.data.products[0].asin
     ) {
-      console.log(`Request for EAN: ${ean} - ${sdmn}`);
+      console.log(`Request for WHOLESALE EAN: ${ean} - ${sdmn}`);
       await processKeepaResult({
         product,
         analysis: response.data,
@@ -59,7 +59,7 @@ export async function makeRequestsForWholesaleEan(product: ProductWithTask) {
 
       logGlobal(
         loggerName,
-        `Request for EAN: ${ean} - ${sdmn} failed with status ${
+        `Request for WHOLESALE EAN: ${ean} - ${sdmn} failed with status ${
           response.status
         } - ${result && result.modifiedCount}`
       );

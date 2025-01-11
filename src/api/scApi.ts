@@ -95,24 +95,20 @@ aznApi.interceptors.response.use(
       (config as any)["__retryCount"] += 1;
 
       await sleep(retryDelay);
-      console.log("...try another time....", __retryCount);
 
       if (code === "ERR_CANCELED") {
-        console.log("retrying due to cancellation...setting up new timeout");
         // Set a new AbortController for each retry attempt
         const controller = new AbortController();
         config.signal = controller.signal;
 
         // Automatically abort this retry if it takes longer than 15 seconds
         (timeoutId as unknown as NodeJS.Timeout) = setTimeout(() => {
-          console.log("aborting retry due to timeout...");
           controller.abort();
         }, timeout);
       }
 
       if (__retryCount > 0 && __retryCount % 2 === 0) {
         const next = iterator.next().value;
-        console.log("Next proxy:", next!.proxy.host);
         config.httpAgent = next;
         config.httpsAgent = next;
       }
@@ -170,7 +166,6 @@ export const scAdditionalProductInfo = async (
   const abortController = new AbortController();
 
   const _timeout = setTimeout(() => {
-    console.log("abort...");
     abortController.abort();
   }, timeout);
 
@@ -202,7 +197,6 @@ export const scProductMatch = async (
   const abortController = new AbortController();
 
   const _timeout = setTimeout(() => {
-    console.log("abort...");
     abortController.abort();
   }, timeout);
 
@@ -232,7 +226,6 @@ export const scFeeFinder = async (
   const abortController = new AbortController();
 
   const _timeout = setTimeout(() => {
-    console.log("abort...");
     abortController.abort();
   }, timeout);
 
@@ -267,7 +260,6 @@ export const scNewFeeFinder = async (
   const abortController = new AbortController();
 
   const _timeout = setTimeout(() => {
-    console.log("abort...");
     abortController.abort();
   }, timeout);
 
