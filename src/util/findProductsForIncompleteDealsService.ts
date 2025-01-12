@@ -17,7 +17,7 @@ export const findProductsForIncompleteDeals = async (
     },
   };
 
-  if (processingProducts) {
+  if (processingProducts && processingProducts.size > 0) {
     matchStage.$match.$and.push({
       _id: { $nin: [...processingProducts.keys()] },
     });
@@ -41,5 +41,5 @@ export const findProductsForIncompleteDeals = async (
 
   aggregation.push({ $limit: batchSize });
 
-  return await col.aggregate(aggregation).toArray() as DbProductRecord[]
+  return (await col.aggregate(aggregation).toArray()) as DbProductRecord[];
 };
