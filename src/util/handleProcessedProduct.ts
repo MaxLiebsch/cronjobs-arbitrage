@@ -84,12 +84,10 @@ export async function handleProcessedProduct(
         await updateTaskWithQuery(
           { _id: task._id },
           {
-            $set: {
-              progress: {
-                ...progress,
-                pending: progress.pending - 1,
-                completed: progress.completed + 1,
-              },
+            progress: {
+              ...progress,
+              pending: progress.pending - 1,
+              completed: progress.completed + 1,
             },
           }
         );
