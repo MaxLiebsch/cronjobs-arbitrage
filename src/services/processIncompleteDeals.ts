@@ -59,7 +59,7 @@ const scheduleNewProductjob = () => {
 };
 
 queue.on("empty", () => {
-  console.log("Queue is idle");
+  console.log("Queue is empty");
   logGlobal(loggerName, "Queue is empty, starting job");
   scheduleNewProductjob();
 });
@@ -67,7 +67,6 @@ queue.on("empty", () => {
 queue.on("idle", () => {
   console.log("Queue is idle");
   logGlobal(loggerName, "Queue is idle, starting job");
-  scheduleNewProductjob();
 });
 
 queue.on("completed", async () => {
