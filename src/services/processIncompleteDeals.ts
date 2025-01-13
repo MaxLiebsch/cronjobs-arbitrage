@@ -60,10 +60,6 @@ queue.on("idle", () => {
   console.log("Queue is idle");
 });
 
-queue.on("active", () => {
-  console.log("Queue is active");
-});
-
 queue.on("completed", async () => {
   if (queue.size <= 6) {
     logGlobal(loggerName, `Queue ${queue.pending} (${queue.size})`);
