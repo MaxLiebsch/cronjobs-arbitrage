@@ -1,5 +1,4 @@
 import { LocalLogger, ObjectId } from "@dipmaxtech/clr-pkg";
-import { findProducts } from "../db/util/crudProducts.js";
 import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
 import PQueue from "p-queue";
 import { addProductsToQueue } from "../util/addProductsToQueue.js";
@@ -38,10 +37,9 @@ const queue = new PQueue({
 let count = 0;
 let job: Job | null = null;
 
-queue.on("empty", () => {
-  console.log("Queue is idle");
-  logGlobal(loggerName, "Queue is empty, starting job");
-  if(!job){
+const scheduleNewProductjob = () => {
+  if (!job) {
+    console.log('Scheduling new job...')
     job = scheduleJob("*/10 * * * *", async () => {
       logGlobal(loggerName, "Checking for pending products...");
       const products = await findProductsForIncompleteDeals(batchSize);
@@ -58,28 +56,18 @@ queue.on("empty", () => {
       }
     });
   }
+};
+
+queue.on("empty", () => {
+  console.log("Queue is idle");
+  logGlobal(loggerName, "Queue is empty, starting job");
+  scheduleNewProductjob();
 });
 
 queue.on("idle", () => {
   console.log("Queue is idle");
   logGlobal(loggerName, "Queue is idle, starting job");
-  if(!job){
-    job = scheduleJob("*/10 * * * *", async () => {
-      logGlobal(loggerName, "Checking for pending products...");
-      const products = await findProductsForIncompleteDeals(batchSize);
-      if (products.length === 0) {
-        logGlobal(
-          loggerName,
-          "No products found in Job, waiting for new products"
-        );
-      } else {
-        logGlobal(loggerName, "Adding products to queue");
-        job?.cancel();
-        job === null;
-        addProductsToQueue(products, queue, processingProducts);
-      }
-    });
-  }
+  scheduleNewProductjob();
 });
 
 queue.on("completed", async () => {
@@ -104,6 +92,7 @@ export async function processIncompleteDeals() {
     const products = await findProductsForIncompleteDeals(batchSize);
 
     if (!products || products.length === 0) {
+      scheduleNewProductjob();
       console.log("No products found");
       return;
     }
