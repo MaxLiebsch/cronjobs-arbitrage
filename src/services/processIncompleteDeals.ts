@@ -39,25 +39,47 @@ let count = 0;
 let job: Job | null = null;
 
 queue.on("empty", () => {
+  console.log("Queue is idle");
   logGlobal(loggerName, "Queue is empty, starting job");
-  job = scheduleJob("*/10 * * * *", async () => {
-    logGlobal(loggerName, "Checking for pending products...");
-    const products = await findProductsForIncompleteDeals(batchSize);
-    if (products.length === 0) {
-      logGlobal(
-        loggerName,
-        "No products found in Job, waiting for new products"
-      );
-    } else {
-      logGlobal(loggerName, "Adding products to queue");
-      job?.cancel();
-      addProductsToQueue(products, queue, processingProducts);
-    }
-  });
+  if(!job){
+    job = scheduleJob("*/10 * * * *", async () => {
+      logGlobal(loggerName, "Checking for pending products...");
+      const products = await findProductsForIncompleteDeals(batchSize);
+      if (products.length === 0) {
+        logGlobal(
+          loggerName,
+          "No products found in Job, waiting for new products"
+        );
+      } else {
+        logGlobal(loggerName, "Adding products to queue");
+        job?.cancel();
+        job == null;
+        addProductsToQueue(products, queue, processingProducts);
+      }
+    });
+  }
 });
 
 queue.on("idle", () => {
   console.log("Queue is idle");
+  logGlobal(loggerName, "Queue is idle, starting job");
+  if(!job){
+    job = scheduleJob("*/10 * * * *", async () => {
+      logGlobal(loggerName, "Checking for pending products...");
+      const products = await findProductsForIncompleteDeals(batchSize);
+      if (products.length === 0) {
+        logGlobal(
+          loggerName,
+          "No products found in Job, waiting for new products"
+        );
+      } else {
+        logGlobal(loggerName, "Adding products to queue");
+        job?.cancel();
+        job === null;
+        addProductsToQueue(products, queue, processingProducts);
+      }
+    });
+  }
 });
 
 queue.on("completed", async () => {
