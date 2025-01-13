@@ -13,3 +13,9 @@ export const updateTaskWithQuery = async (
     },
   });
 };
+
+export const findTaskWithQuery = async (query: Filter<any>) => {
+  const db = await getCrawlDataDb();
+  const collection = db.collection("tasks");
+  return collection.findOne(query);
+};

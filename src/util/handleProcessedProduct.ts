@@ -12,6 +12,10 @@ import {
 } from "../db/util/crudProducts.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { getProductsCol } from "../db/mongo.js";
+import {
+  findTaskWithQuery,
+  updateTaskWithQuery,
+} from "../db/util/updateTask.js";
 const loggerName = CJ_LOGGER.RECALCULATE;
 
 export async function handleProcessedProduct(
@@ -65,7 +69,32 @@ export async function handleProcessedProduct(
 
   if (product?.a_status) {
     update["a_status"] = a_status as (typeof update)["a_status"];
-    update['a_pblsh'] = true;
+    update["a_pblsh"] = true;
+    if (product.taskIds && product.taskIds.length > 0) {
+      let task = null;
+      for (const taskId of product.taskIds) {
+        task = await findTaskWithQuery({
+          _id: new ObjectId(taskId),
+          id: "wholesale_search",
+        });
+        if (task) break;
+      }
+      if (task) {
+        const progress = task.progress;
+        await updateTaskWithQuery(
+          { _id: task._id },
+          {
+            $set: {
+              progress: {
+                ...progress,
+                pending: progress.pending - 1,
+                completed: progress.completed + 1,
+              },
+            },
+          }
+        );
+      }
+    }
   }
 
   if (product.costs) {
