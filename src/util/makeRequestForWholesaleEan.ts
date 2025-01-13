@@ -2,11 +2,12 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
 import { processKeepaResult } from "./processKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
-import { sleep } from "@dipmaxtech/clr-pkg";
+import { DbProductRecord, sleep } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaEanProps } from "./keepaProps.js";
 import { ProductWithTask } from "../types/products.js";
 import { keepaProductSearchParams } from "../constants.js";
+import { updateWholesaleProgress } from "./updateWholesaleProgress.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -50,6 +51,7 @@ export async function makeRequestsForWholesaleEan(product: ProductWithTask) {
         props: keepaEanProps,
       });
     } else {
+      await updateWholesaleProgress(product)
       const result = await updateProductWithQuery(productId, {
         $set: {
           a_status: "not found",
@@ -65,12 +67,6 @@ export async function makeRequestsForWholesaleEan(product: ProductWithTask) {
       );
     }
   } catch (error) {
-    await updateProductWithQuery(productId, {
-      $set: {
-        a_status: "not found",
-        a_lookup_pending: false,
-      },
-    });
     if (error instanceof AxiosError) {
       logGlobal(
         loggerName,
