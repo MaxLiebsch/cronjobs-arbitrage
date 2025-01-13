@@ -78,6 +78,7 @@ queue.on("completed", async () => {
     );
     if (products.length === 0) {
       logGlobal(loggerName, "No products found");
+      scheduleNewProductjob();
       return;
     } else {
       logGlobal(loggerName, "Adding products to queue");
