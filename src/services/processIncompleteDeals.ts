@@ -67,6 +67,7 @@ queue.on("empty", () => {
 queue.on("idle", () => {
   console.log("Queue is idle");
   logGlobal(loggerName, "Queue is idle, starting job");
+  scheduleNewProductjob();
 });
 
 queue.on("completed", async () => {
