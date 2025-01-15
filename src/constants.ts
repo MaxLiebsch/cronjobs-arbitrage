@@ -4,7 +4,7 @@ export const KEEPA_MINUTES = 20;
 export const PRODUCTS_PER_MINUTE = 60;
 export const MAX_RETRIES = 3;
 export const MAX_AGE_PRODUCTS = 21;
-export const MAX_AGE_PROPS = 14;
+export const MAX_AGE_PROPS = 30;
 export const CHECK_PACKAGE_BATCH_INTERVAL =
   process.env.NODE_ENV === "production" ? 1000 * 60 * 1.5 : 1000 * 60 * 0.5;
 export const TOKEN_LIMIT = 3800000;
