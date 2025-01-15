@@ -38,7 +38,7 @@ let count = 0;
 let job: Job | null = null;
 
 const scheduleNewProductjob = () => {
-  if (!job) {
+  if (job === null) {
     console.log('Scheduling new job...')
     job = scheduleJob("*/10 * * * *", async () => {
       logGlobal(loggerName, "Checking for pending products...");
@@ -51,7 +51,7 @@ const scheduleNewProductjob = () => {
       } else {
         logGlobal(loggerName, "Adding products to queue");
         job?.cancel();
-        job == null;
+        job = null;
         addProductsToQueue(products, queue, processingProducts);
       }
     });
