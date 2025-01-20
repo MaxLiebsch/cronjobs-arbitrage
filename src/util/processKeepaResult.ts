@@ -43,7 +43,7 @@ export const processKeepaResult = async (processKeepaProps: {
 
   const sellQty = a_qty || 1;
 
-  const { a_prc, avgPrice, a_useCurrPrice } = determineAdjustedSellPrice(
+  const { a_prc,avgField ,avgPrice, a_useCurrPrice } = determineAdjustedSellPrice(
     product,
     newSellPrice!
   );
@@ -70,6 +70,8 @@ export const processKeepaResult = async (processKeepaProps: {
   let set: { [key in keyof Partial<DbProductRecord>]: any } = {
     ...result,
     a_qty: sellQty,
+    a_avg_fld: avgField,
+    a_avg_price: avgPrice,
     [props.updatedAt]: new Date().toISOString(),
   };
 

@@ -12,10 +12,6 @@ import {
 } from "../db/util/crudProducts.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { getProductsCol } from "../db/mongo.js";
-import {
-  findTaskWithQuery,
-  updateTaskWithQuery,
-} from "../db/util/updateTask.js";
 import { updateWholesaleProgress } from "./updateWholesaleProgress.js";
 const loggerName = CJ_LOGGER.RECALCULATE;
 
