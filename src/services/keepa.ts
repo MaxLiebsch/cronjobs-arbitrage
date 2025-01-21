@@ -10,6 +10,7 @@ import { ProductWithTask } from "../types/products.js";
 import { makeRequestsForAsin } from "../util/makeRequestForAsin.js";
 import { makeRequestsForEan } from "../util/makeRequestForEan.js";
 import { makeRequestsForWholesaleEan } from "../util/makeRequestForWholesaleEan.js";
+import { makeRequestsForSales } from "../util/makeRequestForSales.js";
 
 config({
   path: [`.env`],
@@ -74,8 +75,10 @@ export async function processQueue(keepaJob: Job | null = null) {
           promises.push(makeRequestsForAsin(product));
         } else if (product.taskType === "KEEPA_EAN") {
           promises.push(makeRequestsForEan(product));
-        } else if(product.taskType === "KEEPA_WHOLESALE") {
+        } else if (product.taskType === "KEEPA_WHOLESALE") {
           promises.push(makeRequestsForWholesaleEan(product));
+        } else if (product.taskType === "KEEPA_SALES") {
+          promises.push(makeRequestsForSales(product));
         }
       } else {
         break; // Break the loop if the queue is empty

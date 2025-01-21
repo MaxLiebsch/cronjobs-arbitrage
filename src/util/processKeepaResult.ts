@@ -43,10 +43,8 @@ export const processKeepaResult = async (processKeepaProps: {
 
   const sellQty = a_qty || 1;
 
-  const { a_prc,avgField ,avgPrice, a_useCurrPrice } = determineAdjustedSellPrice(
-    product,
-    newSellPrice!
-  );
+  const { a_prc, avgField, avgPrice, a_useCurrPrice } =
+    determineAdjustedSellPrice(product, newSellPrice!);
 
   const { salesRanks, categories, categoryTree } = result;
 
@@ -89,6 +87,21 @@ export const processKeepaResult = async (processKeepaProps: {
 
   let sameProductCnt = 0;
   const bulWrites: any = [];
+
+  if (taskType === "KEEPA_SALES") {
+    set = {
+      ...set,
+      a_pblsh: true,
+    };
+    props.unset = {
+      ...props.unset,
+      info_prop: "",
+      infoUpdatedAt: "",
+      keepaEan_lckd: "",
+      keepa_lckd: "",
+    };
+  }
+  
   if (taskType === "KEEPA_WHOLESALE") {
     props.unset = {
       ...props.unset,

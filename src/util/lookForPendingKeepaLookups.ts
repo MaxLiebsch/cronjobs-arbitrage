@@ -6,6 +6,7 @@ import { addToQueue } from "../services/keepa.js";
 import {
   KEEPA_MINUTES,
   KEEPA_RATE_LIMIT,
+  MAX_SALES_PRODUCTS,
   MAX_WHOLESALE_PRODUCTS,
 } from "../constants.js";
 import { lockProductsForKeepa } from "../db/util/crudProducts.js";
@@ -30,12 +31,16 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   if (!activeShops) return;
 
   activeShops.push({ d: "sales" } as any);
-  
+
   const standardProcessResult = await keepaStandardProcess({
     job,
     activeShops,
   });
   if (standardProcessResult) return;
+
+  const salesProcessResult = await keepaSalesProcess({ job });
+
+  if (salesProcessResult) return;
 
   const keepaWholesaleResult = await keepaWholesaleProcess({ job });
   if (keepaWholesaleResult) return;
@@ -51,6 +56,43 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     });
   }
 }
+
+async function keepaSalesProcess({ job }: { job: Job | null }) {
+  logGlobal(loggerName, `Checking for pending sales keepa lookups...`);
+  const col = await getProductsCol();
+
+  const query: Filter<DbProductRecord> = {
+    info_prop: "missing",
+    sdmn: "sales",
+    keepaEanUpdatedAt: { $exists: false },
+    keepaUpdateAt: { $exists: false },
+  };
+
+  const salesProducts = await col
+    .find(query)
+    .limit(MAX_SALES_PRODUCTS)
+    .toArray();
+
+  if (salesProducts.length) {
+    if (job) {
+      job.cancel();
+      job = null;
+    }
+    logGlobal(loggerName, `Sale products: ${salesProducts.length}`);
+    addToQueue(
+      salesProducts.map((product) => {
+        return {
+          ...product,
+          taskType: "KEEPA_SALES",
+        };
+      })
+    );
+    return true;
+  }
+
+  return false;
+}
+
 async function keepaStandardProcess({
   job,
   activeShops,
@@ -58,7 +100,7 @@ async function keepaStandardProcess({
   job: Job | null;
   activeShops: WithId<Shop>[];
 }) {
-  logGlobal(loggerName, `Checking for pending keepa lookups...`);
+  logGlobal(loggerName, `Checking for pending standard keepa lookups...`);
   const keepaProgressPerShop = await getKeepaProgressPerShop(activeShops);
   const recoveryShops = await keepaTaskRecovery(activeShops);
   const pleaseRecover = recoveryShops.some((p) => p.pending > 0);

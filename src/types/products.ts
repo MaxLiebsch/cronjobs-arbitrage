@@ -7,5 +7,5 @@ export interface ProductWithShop extends DbProductRecord {
 }
 
 export interface ProductWithTask extends DbProductRecord {
-  taskType: "KEEPA_NORMAL" | "KEEPA_EAN" | "KEEPA_WHOLESALE";
+  taskType: "KEEPA_NORMAL" | "KEEPA_EAN" | "KEEPA_WHOLESALE" | "KEEPA_SALES";
 }
