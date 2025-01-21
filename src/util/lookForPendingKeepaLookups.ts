@@ -28,6 +28,9 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   const activeShops = await getActiveShops();
   logGlobal(loggerName, `Active shops: ${activeShops?.length} loaded`);
   if (!activeShops) return;
+
+  activeShops.push({ d: "sales" } as any);
+  
   const standardProcessResult = await keepaStandardProcess({
     job,
     activeShops,
