@@ -61,10 +61,13 @@ async function keepaSalesProcess({ job }: { job: Job | null }) {
   logGlobal(loggerName, `Checking for pending sales keepa lookups...`);
   const col = await getProductsCol();
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const query: Filter<DbProductRecord> = {
     info_prop: "missing",
+    createdAt: { $gte: today.toISOString() },
     sdmn: "sales",
-    keepaEanUpdatedAt: { $exists: false },
     keepaUpdateAt: { $exists: false },
   };
 
