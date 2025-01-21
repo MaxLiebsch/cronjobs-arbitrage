@@ -31,7 +31,7 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   if (!activeShops) return;
 
   activeShops.push({ d: "sales" } as any);
-  
+
   const salesProcessResult = await keepaSalesProcess({ job });
 
   if (salesProcessResult) return;
@@ -41,7 +41,6 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
     activeShops,
   });
   if (standardProcessResult) return;
-
 
   const keepaWholesaleResult = await keepaWholesaleProcess({ job });
   if (keepaWholesaleResult) return;
@@ -66,10 +65,16 @@ async function keepaSalesProcess({ job }: { job: Job | null }) {
   today.setHours(0, 0, 0, 0);
 
   const query: Filter<DbProductRecord> = {
-    info_prop: "missing",
-    createdAt: { $gte: today.toISOString() },
-    sdmn: "sales",
-    keepaUpdateAt: { $exists: false },
+    $and: [
+      {
+        createdAt: {
+          $gte: today.toISOString(),
+        },
+      },
+      { sdmn: "sales" },
+      { info_prop: "missing" },
+      { keepaUpdatedAt: { $exists: false } },
+    ],
   };
 
   const salesProducts = await col
