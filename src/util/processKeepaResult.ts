@@ -44,7 +44,7 @@ export const processKeepaResult = async (processKeepaProps: {
   const sellQty = a_qty || 1;
 
   const { a_prc, avgField, avgPrice, a_useCurrPrice } =
-    determineAdjustedSellPrice(product, newSellPrice!);
+    determineAdjustedSellPrice({ ...product, ...result }, newSellPrice || 0);
 
   const { salesRanks, categories, categoryTree } = result;
 
@@ -101,7 +101,7 @@ export const processKeepaResult = async (processKeepaProps: {
       keepa_lckd: "",
     };
   }
-  
+
   if (taskType === "KEEPA_WHOLESALE") {
     props.unset = {
       ...props.unset,
