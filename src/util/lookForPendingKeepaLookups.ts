@@ -31,6 +31,10 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   if (!activeShops) return;
 
   activeShops.push({ d: "sales" } as any);
+  
+  const salesProcessResult = await keepaSalesProcess({ job });
+
+  if (salesProcessResult) return;
 
   const standardProcessResult = await keepaStandardProcess({
     job,
@@ -38,9 +42,6 @@ export async function lookForPendingKeepaLookups(job: Job | null = null) {
   });
   if (standardProcessResult) return;
 
-  const salesProcessResult = await keepaSalesProcess({ job });
-
-  if (salesProcessResult) return;
 
   const keepaWholesaleResult = await keepaWholesaleProcess({ job });
   if (keepaWholesaleResult) return;

@@ -83,6 +83,12 @@ export const processKeepaResult = async (processKeepaProps: {
     };
     product.costs = newCosts;
     recalculateAznMargin(product, a_prc, set);
+  } else {
+    props.unset = {
+      ...props.unset,
+      info_prop: "",
+      infoUpdatedAt: "",
+    };
   }
 
   let sameProductCnt = 0;
@@ -165,6 +171,7 @@ export const processKeepaResult = async (processKeepaProps: {
         product.costs = newCosts;
         recalculateAznMargin(product, existingSellPrice, set);
       }
+      const isComplete = product?.a_mrgn && product?.costs?.azn;
       const bulkUpdate = {
         updateOne: {
           filter: { _id: _id },
@@ -174,6 +181,7 @@ export const processKeepaResult = async (processKeepaProps: {
             },
             $unset: {
               keepa_lckd: "",
+              ...(!isComplete && { info_prop: "", infoUpdatedAt: "" }),
             },
           },
         },
