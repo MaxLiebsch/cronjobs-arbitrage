@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import {config} from 'dotenv';
-import { MongoClient } from '@dipmaxtech/clr-pkg';
+import { MongoClient, MongoClientOptions } from '@dipmaxtech/clr-pkg';
 
 config({
   path: [`.env.${process.env.NODE_ENV}`],
@@ -10,7 +10,7 @@ const uris = Object.entries(process.env).filter(([key, config]) =>
   key.includes('MONGODB_URI')
 ) as [string, string][];
 
-const options = { };
+const options:MongoClientOptions = { };
 
 let client: MongoClient;
 let clientPool: {[key: string]: Promise<MongoClient>} = {};

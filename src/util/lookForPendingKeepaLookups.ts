@@ -80,6 +80,7 @@ async function keepaSalesProcess({ job }: { job: Job | null }) {
   const salesProducts = await col
     .find(query)
     .limit(MAX_SALES_PRODUCTS)
+    .sort({ createdAt: -1 }) // Sort by createdAt to get the latest products
     .toArray();
 
   if (salesProducts.length) {

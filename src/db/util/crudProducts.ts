@@ -149,6 +149,11 @@ export const lockProductsForKeepa = async (
     if (limit) {
       options["limit"] = limit;
     }
+    if (fallback) {
+      options["sort"] = { createdAt: -1 }; // Sort by createdAt in descending order to get the latest products first
+    } else {
+      options["sort"] = { keepaUpdatedAt: 1 }; // Sort by keepaUpdatedAt in ascending order to get the oldest products first
+    }
 
     const documents = (await productCol
       .find(query, options)
