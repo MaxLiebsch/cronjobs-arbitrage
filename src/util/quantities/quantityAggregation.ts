@@ -80,5 +80,6 @@ export const quantityAggregation = (limit: number, domain: string) => [
       ],
     },
   },
+  { $sort: { createdAt: -1 } }, // Sort by createdAt newest first
   { $limit: limit },
 ];

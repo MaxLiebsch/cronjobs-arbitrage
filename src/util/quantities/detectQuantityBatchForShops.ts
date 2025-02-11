@@ -12,7 +12,7 @@ config({
 
 let intervalId = 0;
 
-export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = "v05";
+
 const loggerName = CJ_LOGGER.BATCHES;
 
 export const detectQuantityBatchInteration = async () => {

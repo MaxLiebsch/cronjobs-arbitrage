@@ -11,8 +11,7 @@ import { retrieveProductsForBatchesForShops } from "./retrieveProductsForBatches
 import { createJsonlFile } from "./createJsonlFile.js";
 import { BatchTaskTypes } from "../types/tasks.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
-import { CURRENT_MATCH_TITLES_PROMPT_VERSION } from "./titles/matchTitelsBatchForShops.js";
-import { CURRENT_DETECT_QUANTITY_PROMPT_VERSION } from "./quantities/detectQuantityBatchForShops.js";
+import { CURRENT_DETECT_QUANTITY_PROMPT_VERSION, CURRENT_MATCH_TITLES_PROMPT_VERSION } from "../constants.js";
 
 const loggerName = CJ_LOGGER.BATCHES;
 

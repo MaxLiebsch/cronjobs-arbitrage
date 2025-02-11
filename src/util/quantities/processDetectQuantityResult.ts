@@ -49,8 +49,11 @@ export function processDetectQuantityResult(
 
   const update = safeJSONParse(content) as {
     a_nm?: string;
+    a_produktart?: string;
     e_nm?: string;
+    e_produktart?: string;
     nm?: string;
+    nm_produktart?: string;
     nm_score?: string | number;
     a_score?: string | number;
     e_score?: string | number;
@@ -73,6 +76,15 @@ export function processDetectQuantityResult(
       if (key === "nm") {
         set["qty"] = qty;
       }
+    }
+    if(key === "a_produktart") {
+      set["a_produktart"] = value as string;
+    }
+    if(key === "e_produktart") {
+      set["e_produktart"] = value as string;
+    }
+    if(key === "nm_produktart") {
+      set["nm_produktart"] = value as string;
     }
   });
 

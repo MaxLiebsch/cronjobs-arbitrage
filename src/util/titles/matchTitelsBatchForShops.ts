@@ -11,7 +11,7 @@ config({
 
 let intervalId = 0;
 
-export const CURRENT_MATCH_TITLES_PROMPT_VERSION = "v01";
+
 
 
 export const matchTitlesBatchInteration = async () => {

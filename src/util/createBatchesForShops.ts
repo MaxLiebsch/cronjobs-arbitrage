@@ -33,7 +33,7 @@ export const createBatches = (
       body: {
         messages: [],
         model: "gpt-4o-mini-2024-07-18",
-        temperature: 0.7,
+        temperature: 0.3,
         max_tokens: 1000,
       },
       custom_id: "",

@@ -23,6 +23,8 @@ export const JAN_SEPT_M3_FEE = 27.54;
 export const MAX_WHOLESALE_PRODUCTS = 240;
 export const MAX_SALES_PRODUCTS = 240;
 export const OCT_DEC_M3_FEE = 42.37;
+export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = "v06";
+export const CURRENT_MATCH_TITLES_PROMPT_VERSION = "v01";
 
 export const keepaProductSearchParams = [
   "domain=3",

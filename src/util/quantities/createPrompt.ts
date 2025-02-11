@@ -19,27 +19,27 @@ export const createPrompt = (
     content += `"nm":"${product.mnfctr} ${replaceAllHiddenCharacters(
       product.nm
     )}",`;
-    let formStr = `"nm":<Menge>, "nm_score":<Wahrscheinlichkeit>"`;
+    let formStr = `"nm":<Menge>, "nm_score":<Wahrscheinlichkeit>", "nm_produktart":"<Produktart>"`;
     if (process.env.DEBUG === "explain") {
-      formStr += `,"nm_explain":"<Erklärung>", "nm_produktart":"<Produktart>"`;
+      formStr += `,"nm_explain":"<Erklärung>"`;
     }
     formatArr.push(formStr);
     props.push("nm");
   }
   if (product.e_nm) {
     content += `"e_nm":"${replaceAllHiddenCharacters(product.e_nm)}" `;
-    let formStr = `"e_nm":<Menge>, "e_score":<Wahrscheinlichkeit>"`;
+    let formStr = `"e_nm":<Menge>, "e_score":<Wahrscheinlichkeit>, "e_produktart":"<Produktart>"`;
     if (process.env.DEBUG === "explain") {
-      formStr += `,"e_explain":"<Erklärung>, "e_produktart":"<Produktart>"`;
+      formStr += `,"e_explain":"<Erklärung>"`;
     }
     formatArr.push(formStr);
     props.push("e_nm");
   }
   if (product.a_nm) {
     content += `"a_nm":"${replaceAllHiddenCharacters(product.a_nm)}"`;
-    let formStr = `"a_nm":<Menge>, "a_score":<Wahrscheinlichkeit>"`;
+    let formStr = `"a_nm":<Menge>, "a_score":<Wahrscheinlichkeit>, "a_produktart":"<Produktart>"`;
     if (process.env.DEBUG === "explain") {
-      formStr += `,"a_explain":"<Erklärung>", "a_produktart":"<Produktart>"`;
+      formStr += `,"a_explain":"<Erklärung>"`;
     }
     formatArr.push(formStr);
     props.push("a_nm");
