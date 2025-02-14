@@ -44,6 +44,8 @@ export const keepaProperties = [
   { key: "products[0].itemHeight", name: "iwhd.height" }, //Item
   { key: "products[0].itemLength", name: "iwhd.length" },
   { key: "products[0].competitivePriceThreshold", name: "cmpPrcThrshld" },
+  { key: "products[0].unitCount", name: "unitCount" }, // quantity and unit
+  { key: "products[0].variations", name: "variations" }, // Variations
   { key: "products[0].itemWidth", name: "iwhd.width" },
   { key: "products[0].itemWeight", name: "iwhd.weight" },
   { key: "products[0].packageHeight", name: "pwhd.height" }, // Package
