@@ -7,11 +7,14 @@ import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaProps } from "./keepaProps.js";
 import { ProductWithTask } from "../types/products.js";
 import { keepaProductSearchParams } from "../constants.js";
+import { KeepaQueueResponse } from "../services/keepaQueue.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
 // Function to make two requests for each ID
-export async function makeRequestsForAsin(product: ProductWithTask) {
+export async function makeRequestsForAsin(
+  product: ProductWithTask
+): Promise<KeepaQueueResponse> {
   const { sdmn, asin, _id: productId } = product;
   const trimedAsin = asin!.replace(/\W/g, "");
   try {
@@ -47,22 +50,22 @@ export async function makeRequestsForAsin(product: ProductWithTask) {
         `Request for ASIN: ${trimedAsin} - ${sdmn} failed with status ${response.status}`
       );
     }
+
+    return { success: true, data: response.data };
   } catch (error) {
-    await updateProductWithQuery(productId, {
-      $unset: {
-        keepa_lckd: "",
-      },
-    });
     if (error instanceof AxiosError) {
       logGlobal(
         loggerName,
         `Error for ASIN: ${trimedAsin} - ${sdmn}, ${error.status}, ${error.message}`
       );
-      if (error.status === 429) {
-        logGlobal(loggerName, "Rate limit reached. Waiting for 60 seconds...");
-        await sleep(1000 * 10); // Wait for 10 seconds
-        logGlobal(loggerName, "Resuming...");
+      if (error.response && "data" in error.response) {
+        return {
+          success: false,
+          product: product,
+          data: (error.response as AxiosResponse<KeepaResponse>).data,
+        };
       }
     }
+    return { success: false, product: product };
   }
 }

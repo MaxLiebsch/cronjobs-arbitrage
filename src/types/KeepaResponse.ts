@@ -10,6 +10,8 @@ export interface KeepaResponse {
   error?: Error;
 }
 
+export type KeepaLimits = Pick<KeepaResponse, "refillRate" | "tokenFlowReduction" | "tokensLeft" | "refillIn">;
+
 export interface Error {
   type: string;
   message: string;

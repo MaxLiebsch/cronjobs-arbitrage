@@ -1,4 +1,6 @@
-export const KEEPA_RATE_LIMIT = 20;
+export const KEEPA_RATE_LIMIT = 60;
+export const KEEPA_INTERVAL = "*/5 * * * *"
+export const KEEPA_PRODUCT_LIMIT = 240;
 export const MAX_EARNING_MARGIN = 150;
 export const KEEPA_MINUTES = 20;
 export const PRODUCTS_PER_MINUTE = 60;
@@ -20,8 +22,6 @@ export const SC_TIMEOUT = 8000;
 export const SC_REQUEST_TIMEOUT = 15000;
 export const DEFAULT_TRANSPORT_FEE = 4.95;
 export const JAN_SEPT_M3_FEE = 27.54;
-export const MAX_WHOLESALE_PRODUCTS = 240;
-export const MAX_SALES_PRODUCTS = 240;
 export const OCT_DEC_M3_FEE = 42.37;
 export const CURRENT_DETECT_QUANTITY_PROMPT_VERSION = "v06";
 export const CURRENT_MATCH_TITLES_PROMPT_VERSION = "v01";

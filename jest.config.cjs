@@ -11,7 +11,10 @@ module.exports = {
       useESM: true,
     },
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(p-queue|p-timeout|eventemitter3)/)'
+  ],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
-  },
+  }
 };

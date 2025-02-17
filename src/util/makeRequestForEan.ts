@@ -8,10 +8,13 @@ import { keepaEanProps } from "./keepaProps.js";
 import { keepaFallbackResetQuery } from "../db/queries.js";
 import { ProductWithTask } from "../types/products.js";
 import { keepaProductSearchParams } from "../constants.js";
+import { KeepaQueueResponse } from "../services/keepaQueue.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
-export async function makeRequestsForEan(product: ProductWithTask) {
+export async function makeRequestsForEan(
+  product: ProductWithTask
+): Promise<KeepaQueueResponse> {
   const { _id: productId, sdmn } = product;
   const ean = product.eanList[0];
 
@@ -26,7 +29,7 @@ export async function makeRequestsForEan(product: ProductWithTask) {
         result && result.modifiedCount
       }`
     );
-    return;
+    return { success: false, product: product };
   }
   try {
     const response = await axios.get<any, AxiosResponse<KeepaResponse, any>>(
@@ -64,24 +67,23 @@ export async function makeRequestsForEan(product: ProductWithTask) {
         } - ${result && result.modifiedCount}`
       );
     }
+    return { success: true, data: response.data };
   } catch (error) {
-    await updateProductWithQuery(productId, {
-      $unset: {
-        keepaEan_lckd: "",
-      },
-    });
     if (error instanceof AxiosError) {
       logGlobal(
         loggerName,
         `Error for EAN: ${ean} - ${sdmn}, ${error.status}, ${error.message}`
       );
-      if (error.status === 429) {
-        logGlobal(loggerName, "Rate limit reached. Waiting for 60 seconds...");
-        await sleep(1000 * 10); // Wait for 10 seconds
-        logGlobal(loggerName, "Resuming...");
+      if (error.response) {
+        return {
+          success: false,
+          product: product,
+          data: (error.response as AxiosResponse<KeepaResponse>).data,
+        };
       }
     } else {
       logGlobal(loggerName, `Error for EAN: ${ean} - ${sdmn}, ${error}`);
     }
+    return { success: false, product: product };
   }
 }
