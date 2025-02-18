@@ -74,12 +74,15 @@ export async function makeRequestsForEan(
         loggerName,
         `Error for EAN: ${ean} - ${sdmn}, ${error.status}, ${error.message}`
       );
-      if (error.response) {
+      if (error.response?.data) {
         return {
           success: false,
           product: product,
-          data: (error.response as AxiosResponse<KeepaResponse>).data,
+          data: error.response.data,
         };
+      } else {
+        logGlobal(loggerName, `Error for EAN: ${ean} - ${sdmn}, ${error}`);
+        return { success: false, product: product };
       }
     } else {
       logGlobal(loggerName, `Error for EAN: ${ean} - ${sdmn}, ${error}`);

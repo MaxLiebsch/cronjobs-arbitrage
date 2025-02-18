@@ -11,7 +11,9 @@ import { KeepaQueueResponse } from "../services/keepaQueue.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
-export async function makeRequestsForWholesaleEan(product: ProductWithTask): Promise<KeepaQueueResponse> {
+export async function makeRequestsForWholesaleEan(
+  product: ProductWithTask
+): Promise<KeepaQueueResponse> {
   const { _id: productId, sdmn } = product;
   const ean = product.eanList[0];
 
@@ -73,8 +75,14 @@ export async function makeRequestsForWholesaleEan(product: ProductWithTask): Pro
         loggerName,
         `Error for WHOLESALE EAN: ${ean} - ${sdmn}, ${error.status}, ${error.message}`
       );
-      if (error.response) {
-        return { success: false, product: product, data: (error.response as AxiosResponse<KeepaResponse>).data };
+      if (error.response?.data) {
+        return { success: false, product: product, data: error.response.data };
+      } else {
+        logGlobal(
+          loggerName,
+          `Error for WHOLESALE EAN: ${ean} - ${sdmn}, ${error}`
+        );
+        return { success: false, product: product };
       }
     } else {
       logGlobal(

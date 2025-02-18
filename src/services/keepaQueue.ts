@@ -51,20 +51,25 @@ export class KeepaQueue {
       debugLog("Completed", args, "pause");
       this.queue.pause();
       const { success, data, product } = args;
-      if (success && data) {
+      if (data) {
         this.keepaRatelimit.setCurrentLimits(data);
-        debugLog("Setting current limits", { tokensLeft: data.tokensLeft, refillIn: data.refillIn });
+        debugLog("Setting current limits", {
+          tokensLeft: data.tokensLeft,
+          refillIn: data.refillIn,
+        });
       }
+
       if (!success && product) {
         debugLog("Decrementing total");
         this.decrementTotal();
         debugLog("Adding product to queue since it failed");
         this.addToQueue([product]);
-        return;
       }
 
       if (this.keepaRatelimit.tokensLeft <= 0) {
-        debugLog(`Tokens left is ${this.keepaRatelimit.tokensLeft}, waiting ${this.keepaRatelimit.refillIn} ms`);
+        debugLog(
+          `Tokens left is ${this.keepaRatelimit.tokensLeft}, waiting ${this.keepaRatelimit.refillIn} ms`
+        );
         await sleep(this.keepaRatelimit.refillIn);
       }
 
@@ -75,7 +80,6 @@ export class KeepaQueue {
       } else {
         this.queue.start();
       }
-
     });
 
     this.queue.on("idle", async () => {
@@ -132,8 +136,9 @@ export class KeepaQueue {
     } else {
       if (this.job === null) {
         logGlobal(this.loggerName, "Queue is empty, starting job");
-        this.job = scheduleJob(KEEPA_INTERVAL, async () =>
-          await this.checkAndProcessPendingProducts()
+        this.job = scheduleJob(
+          KEEPA_INTERVAL,
+          async () => await this.checkAndProcessPendingProducts()
         );
       }
     }
@@ -148,7 +153,7 @@ export class KeepaQueue {
       { fn: keepaSalesProcess, args: undefined },
       { fn: keepaNormalProcess, args: { activeShops } },
       { fn: keepaWholesaleProcess, args: undefined },
-      { fn: keepaEanProcess, args: { activeShops } }
+      { fn: keepaEanProcess, args: { activeShops } },
     ] as const;
 
     for (const process of processes) {
@@ -188,6 +193,6 @@ export class KeepaQueue {
   };
 
   public isIdle = () => {
-    return this.queue.size === 0 && this.queue.pending === 0
+    return this.queue.size === 0 && this.queue.pending === 0;
   };
 }
