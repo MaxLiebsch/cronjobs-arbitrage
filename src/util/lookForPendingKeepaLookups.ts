@@ -146,9 +146,6 @@ async function prepareProducts(
   recovery: boolean,
   pendingProducts: number
 ): Promise<ProductWithTask[][]> {
-  if (pendingProducts < KEEPA_RATE_LIMIT && !recovery) {
-    return [];
-  }
   const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
   await updateTaskWithQuery(
     { type: fallback ? KeepaTaskType.KEEPA_EAN : KeepaTaskType.KEEPA_NORMAL },

@@ -140,27 +140,21 @@ export class KeepaQueue {
   }
   private async lookForPendingKeepaLookups() {
     const activeShops = await getActiveShops();
-    logGlobal(this.loggerName, `Active shops: ${activeShops?.map((s) => s.d)}`);
     if (!activeShops) return [];
 
     activeShops.push({ d: "sales" } as WithId<Shop>);
 
-    const salesProcessResult = await keepaSalesProcess();
+    const processes = [
+      { fn: keepaSalesProcess, args: undefined },
+      { fn: keepaNormalProcess, args: { activeShops } },
+      { fn: keepaWholesaleProcess, args: undefined },
+      { fn: keepaEanProcess, args: { activeShops } }
+    ] as const;
 
-    if (salesProcessResult.length) return salesProcessResult;
-
-    const standardProcessResult = await keepaNormalProcess({
-      activeShops,
-    });
-
-    if (standardProcessResult.length) return standardProcessResult;
-
-    const keepaWholesaleResult = await keepaWholesaleProcess();
-
-    if (keepaWholesaleResult.length) return keepaWholesaleResult;
-
-    const keepaEanProcessResult = await keepaEanProcess({ activeShops });
-    if (keepaEanProcessResult.length) return keepaEanProcessResult;
+    for (const process of processes) {
+      const result = await process.fn(process.args!);
+      if (result.length) return result;
+    }
 
     return [];
   }

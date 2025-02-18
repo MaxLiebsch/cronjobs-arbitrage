@@ -1,19 +1,21 @@
-import { existsAsync, readAsync, removeAsync } from "fs-jetpack";
+import { existsAsync, readAsync, removeAsync, writeAsync } from "fs-jetpack";
 import { DbProductRecord, ObjectId } from "@dipmaxtech/clr-pkg";
 import { getProductsCol } from "../src/db/mongo.js";
 import { KeepaQueue } from "../src/services/keepaQueue.js";
+import sinon from "sinon";
 
 let idleCnt = 0;
-const MAX_IDLE_CNT = 3;
+const MAX_IDLE_CNT = 2;
 const MAX_WAIT_TIME = 15 * 60 * 1000; // 15 minutes
+let clock: sinon.SinonFakeTimers;
 
 describe("Keepa Workflow", () => {
   beforeAll(async () => {
-    const dir = await existsAsync('./var/log/tasks/task-PENDING_KEEPAS.log')
-    if(dir !== 'file'){
-        throw new Error('log File not found')
-    }else{
-        await removeAsync('./var/log/tasks/task-PENDING_KEEPAS.log')
+    const dir = await existsAsync("./var/log/tasks/task-PENDING_KEEPAS.log");
+    if (dir !== "file") {
+      await writeAsync("./var/log/tasks/task-PENDING_KEEPAS.log", "");
+    } else {
+      await removeAsync("./var/log/tasks/task-PENDING_KEEPAS.log");
     }
 
     const productCol = await getProductsCol();
@@ -26,8 +28,8 @@ describe("Keepa Workflow", () => {
     const data = JSON.parse(normalFile) as any[];
     data.slice(0, 20).forEach((item) => {
       item._id = new ObjectId(item._id.$oid);
-      delete item["keepaUpdatedAt"] 
-      delete item["keepa_lckd"]
+      delete item["keepaUpdatedAt"];
+      delete item["keepa_lckd"];
       products.push(item);
     });
     const eanFile = await readAsync("./__test__/testdata/keepa/ean.json");
@@ -41,7 +43,7 @@ describe("Keepa Workflow", () => {
         Date.now() - 1000 * 60 * 60 * 24 * 16
       ).toISOString();
       delete item["keepaEan_lckd"];
-      item['info_prop'] = 'missing'
+      item["info_prop"] = "missing";
       products.push(item);
     });
 
@@ -75,23 +77,46 @@ describe("Keepa Workflow", () => {
 
     await productCol.insertMany(products);
   });
-  it("should start the workflow", async () => {
-    const keepaQueue = new KeepaQueue();
-    await keepaQueue.start();
+  it(
+    "should start the workflow",
+    async () => {
+      const keepaQueue = new KeepaQueue();
+      await keepaQueue.start();
 
-    // Wait for queue to be idle with timeout
-    const startTime = Date.now();
+      // Wait for queue to be idle with timeout
+      const startTime = Date.now();
 
-    while (Date.now() - startTime < MAX_WAIT_TIME) {
-      const isIdle = keepaQueue.isIdle();
-      console.log('isIdle:', isIdle)
-      if (isIdle) {
-        idleCnt++;
-        if (idleCnt === MAX_IDLE_CNT) {
-          break;
+      while (Date.now() - startTime < MAX_WAIT_TIME) {
+        const isIdle = keepaQueue.isIdle();
+        console.log("isIdle:", isIdle);
+        if (isIdle) {
+          idleCnt++;
+          if (idleCnt === MAX_IDLE_CNT) {
+            break;
+          }
         }
+        await new Promise((resolve) => setTimeout(resolve, 30000)); // Wait 1 second before checking again
       }
-      await new Promise((resolve) => setTimeout(resolve, 30000)); // Wait 1 second before checking again
-    }
-  }, MAX_WAIT_TIME);
+    },
+    MAX_WAIT_TIME
+  );
+
 });
+
+const addNormalProducts = async () => {
+  const productCol = await getProductsCol();
+  await productCol.deleteMany({});
+  const products: DbProductRecord[] = [];
+  const normalFile = await readAsync("./__test__/testdata/keepa/normal.json");
+  if (!normalFile) {
+    throw new Error("File not found");
+  }
+  const data = JSON.parse(normalFile) as any[];
+  data.slice(0, 20).forEach((item) => {
+    item._id = new ObjectId(item._id.$oid);
+    delete item["keepaUpdatedAt"];
+    delete item["keepa_lckd"];
+    products.push(item);
+  });
+  await productCol.insertMany(products);
+};

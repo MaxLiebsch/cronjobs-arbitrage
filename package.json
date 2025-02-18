@@ -35,8 +35,10 @@
     "@types/jest-cli": "^24.3.0",
     "@types/lodash": "^4.17.7",
     "@types/node-schedule": "^2.1.7",
+    "@types/sinon": "^17.0.3",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
+    "sinon": "^19.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
   },
