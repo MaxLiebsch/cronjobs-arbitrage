@@ -133,6 +133,9 @@ export class KeepaQueue {
         `${productsWithTask[0].taskType}: Adding products to queue: ${productsWithTask.length}`
       );
       this.addToQueue(productsWithTask);
+      if (this.queue.isPaused) {
+        this.queue.start();
+      }
     } else {
       if (this.job === null) {
         logGlobal(this.loggerName, "Queue is empty, starting job");
