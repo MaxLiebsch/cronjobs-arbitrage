@@ -1,5 +1,5 @@
-import { KEEPA_RATE_LIMIT } from "../constants";
-import { KeepaLimits } from "../types/KeepaResponse";
+import { KEEPA_RATE_LIMIT } from "../constants.js";
+import { KeepaLimits } from "../types/KeepaResponse.js";
 
 /*
   Example:
