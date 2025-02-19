@@ -1,5 +1,5 @@
 export const KEEPA_RATE_LIMIT = 60;
-export const KEEPA_INTERVAL = "*/5 * * * *"
+export const KEEPA_INTERVAL = "*/5 * * * *"  // schedule every 5 minutes;
 export const KEEPA_PRODUCT_LIMIT = 240;
 export const MAX_EARNING_MARGIN = 150;
 export const KEEPA_MINUTES = 20;

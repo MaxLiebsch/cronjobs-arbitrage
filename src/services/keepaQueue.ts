@@ -91,11 +91,7 @@ export class KeepaQueue {
       }
     });
 
-    this.queue.on("idle", async () => {
-      await updateTaskWithQuery(
-        { type: "KEEPA_NORMAL" },
-        { total: this.total, stats: this.stats }
-      );
+    this.queue.on("idle", async () => { 
       if (this.job) {
         this.job.cancel();
         this.job = null;
@@ -134,6 +130,12 @@ export class KeepaQueue {
         KEEPA_WHOLESALE: 0,
         KEEPA_SALES: 0,
       };
+    });
+    scheduleJob("*/2 * * * *", async () => {
+      await updateTaskWithQuery(
+        { type: "KEEPA_NORMAL" },
+        { total: this.total, stats: this.stats }
+      );
     });
     await this.checkAndProcessPendingProducts();
   }
