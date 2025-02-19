@@ -58,6 +58,7 @@ export async function makeRequestsForWholesaleEan(
         $set: {
           a_status: "not found",
           a_lookup_pending: false,
+          info_prop: "not_found",
         },
       });
 
