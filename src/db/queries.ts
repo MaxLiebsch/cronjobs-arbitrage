@@ -148,24 +148,10 @@ export const pendingEanKeepaProductsQuery: any = (domain: string) => {
     $and: [
       { sdmn: domain },
       { [lock]: { $exists: false } },
-      {
-        $or: [
-          {
-            $and: [
-              { info_prop: { $in: ["missing"] } },
-              { eanList: { $exists: true, $ne: [] } },
-            ],
-          },
-          {
-            $and: [
-              { a_mrgn: { $lt: 0 } },
-              { a_mrgn_pct: { $lt: 0 } },
-              { eanList: { $exists: true, $ne: [] } },
-              { info_prop: { $in: ["complete"] } },
-            ],
-          },
-        ],
-      },
+      { a_mrgn: { $lt: 0 } },
+      { a_mrgn_pct: { $lt: 0 } },
+      { eanList: { $exists: true, $ne: [] } },
+      { info_prop: { $in: ["complete"] } },
       {
         $or: [
           { [updatedAt]: { $exists: false } },

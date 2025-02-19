@@ -13,6 +13,7 @@ import { KeepaTaskType, ProductWithTask } from "../types/products.js";
 import { DbProductRecord, Shop, WithId } from "@dipmaxtech/clr-pkg";
 import { getProductsCol } from "../db/mongo.js";
 import { Filter } from "mongodb";
+import { keepaEanProps } from "./keepaProps.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 
@@ -110,7 +111,45 @@ export async function keepaWholesaleProcess() {
 
   return [];
 }
-export async function keepaEanProcess({
+
+export async function keepaNewProcess() {
+  const col = await getProductsCol();
+  const { updatedAt } = keepaEanProps;
+  const query: Filter<DbProductRecord> = {
+    $and: [
+      { info_prop: { $in: ["missing"] } },
+      { eanList: { $exists: true, $ne: [] } },
+      {
+        $or: [
+          { [updatedAt]: { $exists: false } },
+          {
+            [updatedAt]: {
+              $lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(),
+            },
+          },
+        ],
+      },
+    ],
+  };
+
+  const newProducts = await col
+    .find(query)
+    .limit(KEEPA_PRODUCT_LIMIT)
+    .sort({ createdAt: -1, info_prop: 1 }) // Sort by createdAt to get the latest products
+    .toArray();
+
+  if (newProducts.length) {
+    return newProducts.map((product) => {
+      return {
+        ...product,
+        taskType: KeepaTaskType.KEEPA_NEW,
+      };
+    });
+  }
+
+  return [];
+}
+export async function keepaNegMarginProcess({
   activeShops,
 }: {
   activeShops: WithId<Shop>[];

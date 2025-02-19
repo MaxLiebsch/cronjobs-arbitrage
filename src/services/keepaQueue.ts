@@ -12,8 +12,8 @@ import { makeRequestsForSales } from "../util/makeRequestForSales.js";
 import { KeepaRatelimit } from "../model/keepaRatelimit.js";
 import PQueue from "p-queue";
 import { KeepaResponse } from "../types/KeepaResponse.js";
-import { keepaWholesaleProcess } from "../util/lookForPendingKeepaLookups.js";
-import { keepaEanProcess } from "../util/lookForPendingKeepaLookups.js";
+import { keepaNewProcess, keepaWholesaleProcess } from "../util/lookForPendingKeepaLookups.js";
+import { keepaNegMarginProcess } from "../util/lookForPendingKeepaLookups.js";
 import { keepaNormalProcess } from "../util/lookForPendingKeepaLookups.js";
 import { getActiveShops } from "../db/util/shops.js";
 import { keepaSalesProcess } from "../util/lookForPendingKeepaLookups.js";
@@ -43,11 +43,19 @@ export class KeepaQueue {
   private stats: {
     [key in IKeepaTaskType]: number;
   } = {
-    KEEPA_NORMAL: 0,
-    KEEPA_EAN: 0,
-    KEEPA_WHOLESALE: 0,
     KEEPA_SALES: 0,
+    KEEPA_NORMAL: 0,
+    KEEPA_WHOLESALE: 0,
+    KEEPA_NEW: 0,
+    KEEPA_EAN: 0,
   };
+  private readonly taskTypeToHandler = {
+    KEEPA_SALES: makeRequestsForSales,
+    KEEPA_NORMAL: makeRequestsForAsin,
+    KEEPA_WHOLESALE: makeRequestsForWholesaleEan,
+    KEEPA_NEW: makeRequestsForEan,
+    KEEPA_EAN: makeRequestsForEan,
+  } as const;
 
   constructor() {
     this.queue = new PQueue({ concurrency: 1 });
@@ -126,9 +134,10 @@ export class KeepaQueue {
       this.total = 0;
       this.stats = {
         KEEPA_NORMAL: 0,
-        KEEPA_EAN: 0,
         KEEPA_WHOLESALE: 0,
         KEEPA_SALES: 0,
+        KEEPA_NEW: 0,
+        KEEPA_EAN: 0,
       };
     });
     scheduleJob("*/2 * * * *", async () => {
@@ -187,7 +196,8 @@ export class KeepaQueue {
       { fn: keepaSalesProcess, args: undefined },
       { fn: keepaNormalProcess, args: { activeShops } },
       { fn: keepaWholesaleProcess, args: undefined },
-      { fn: keepaEanProcess, args: { activeShops } },
+      { fn: keepaNewProcess, args: undefined },
+      { fn: keepaNegMarginProcess, args: { activeShops } },
     ] as const;
 
     for (const process of processes) {
@@ -201,16 +211,9 @@ export class KeepaQueue {
     for (const product of productsWithTask) {
       this.queue.add(async () => {
         this.incrementTotal();
-        this.incrementStats(product.taskType);
-        if (product.taskType === "KEEPA_NORMAL") {
-          return await makeRequestsForAsin(product);
-        } else if (product.taskType === "KEEPA_EAN") {
-          return await makeRequestsForEan(product);
-        } else if (product.taskType === "KEEPA_WHOLESALE") {
-          return await makeRequestsForWholesaleEan(product);
-        } else if (product.taskType === "KEEPA_SALES") {
-          return await makeRequestsForSales(product);
-        }
+        const handler = this.taskTypeToHandler[product.taskType];
+        return handler ? await handler(product) : undefined;
+
       });
     }
   }
