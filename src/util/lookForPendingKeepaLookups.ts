@@ -37,10 +37,14 @@ export async function keepaSalesProcess() {
   };
 
   const salesProducts = await col
-    .find(query)
-    .limit(KEEPA_PRODUCT_LIMIT)
-    .sort({ createdAt: -1 }) // Sort by createdAt to get the latest products
-    .toArray();
+    .aggregate([
+      { $match: query },
+      { $sort: { createdAt: -1 } },
+      { $group: { _id: "$eanList", doc: { $first: "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$doc" } },
+      { $limit: KEEPA_PRODUCT_LIMIT },
+    ])
+    .toArray() as unknown as DbProductRecord[];
 
   if (salesProducts.length) {
     return salesProducts.map((product) => {
@@ -116,7 +120,7 @@ export async function keepaNewProcess() {
   const { updatedAt } = keepaEanProps;
   const query: Filter<DbProductRecord> = {
     $and: [
-      { info_prop: 'missing' },
+      { info_prop: "missing" },
       { eanList: { $exists: true, $ne: [] } },
       {
         $or: [
@@ -130,12 +134,17 @@ export async function keepaNewProcess() {
       },
     ],
   };
-
   const newProducts = await col
-    .find(query)
-    .limit(KEEPA_PRODUCT_LIMIT)
-    .sort({ createdAt: -1, info_prop: 1 }) // Sort by createdAt to get the latest products
-    .toArray();
+    .aggregate([
+      {
+        $match: query,
+      },
+      { $sort: { createdAt: -1, info_prop: 1 } },
+      { $group: { _id: "$eanList", doc: { $first: "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$doc" } },
+      { $limit: KEEPA_PRODUCT_LIMIT },
+    ])
+    .toArray() as unknown as DbProductRecord[];
 
   if (newProducts.length) {
     return newProducts.map((product) => {
@@ -187,7 +196,7 @@ async function prepareProducts(
   const pendingProducts = pendingShops.reduce((acc, shop) => {
     return acc + shop.pending;
   }, 0);
-  
+
   if (pendingProducts < 5) {
     return [];
   }

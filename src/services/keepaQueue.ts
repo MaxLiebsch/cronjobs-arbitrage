@@ -212,6 +212,7 @@ export class KeepaQueue {
     for (const product of productsWithTask) {
       this.queue.add(async () => {
         this.incrementTotal();
+        this.incrementStats(product.taskType);
         const handler = this.taskTypeToHandler[product.taskType];
         return handler ? await handler(product) : undefined;
 
