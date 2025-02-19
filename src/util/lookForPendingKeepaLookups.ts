@@ -184,6 +184,13 @@ async function prepareProducts(
   recovery: boolean
 ): Promise<ProductWithTask[][]> {
   const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
+  const pendingProducts = pendingShops.reduce((acc, shop) => {
+    return acc + shop.pending;
+  }, 0);
+  
+  if (pendingProducts < 5) {
+    return [];
+  }
   await updateTaskWithQuery(
     { type: fallback ? KeepaTaskType.KEEPA_EAN : KeepaTaskType.KEEPA_NORMAL },
     { progress: pendingShops }

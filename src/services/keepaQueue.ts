@@ -84,7 +84,8 @@ export class KeepaQueue {
       }
 
       if (this.keepaRatelimit.tokensLeft <= 0) {
-        debugLog(
+      logGlobal(
+        this.loggerName,
           `Tokens left is ${this.keepaRatelimit.tokensLeft}, waiting ${this.keepaRatelimit.refillIn} ms`
         );
         await sleep(this.keepaRatelimit.refillIn);
