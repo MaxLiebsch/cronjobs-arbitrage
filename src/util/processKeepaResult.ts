@@ -194,6 +194,11 @@ export const processKeepaResult = async (processKeepaProps: {
     const result = await col.bulkWrite(bulWrites);
     sameProductCnt = result.modifiedCount;
   }
+
+  if (calucalationPerformed) {
+    delete props.unset.info_prop;
+  }
+
   const productUpdated = await updateProductWithQuery(productId, {
     $set: {
       ...set,
