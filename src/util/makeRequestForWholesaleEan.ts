@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
-import { processKeepaResult } from "./processKeepaResult.js";
+import { processKeepaResult, processMissingKeepaResult } from "./processKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaEanProps } from "./keepaProps.js";
@@ -62,11 +62,15 @@ export async function makeRequestsForWholesaleEan(
         },
       });
 
+      const sameProductCnt = await processMissingKeepaResult(product, {
+        info_prop: "not_found",
+      });
+
       logGlobal(
         loggerName,
         `Request for WHOLESALE EAN: ${ean} - ${sdmn} failed with status ${
           response.status
-        } - ${result && result.modifiedCount}`
+        } - ${result && result.modifiedCount} - ${sameProductCnt} other products updated`
       );
     }
     return { success: true, data: response.data };

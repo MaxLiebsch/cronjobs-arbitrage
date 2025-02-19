@@ -211,3 +211,37 @@ export const processKeepaResult = async (processKeepaProps: {
     `Updated product: ${asin} - Updated: ${productUpdated?.modifiedCount} product. ${sameProductCnt} products updated.`
   );
 };
+ 
+export const processMissingKeepaResult = async (product: ProductWithTask, set: any) => {
+  const bulWrites: any = [];
+  const col = await getProductsCol();
+  const { eanList, _id: productId } = product;
+  let sameProductCnt = 0;
+
+  const _ean = eanList[0];
+  const products = await findProducts({
+    eanList: _ean,
+    _id: { $ne: productId },
+  });
+
+  for (const product of products) {
+    const { _id } = product;
+
+    const bulkUpdate = {
+      updateOne: {
+        filter: { _id: _id },
+        update: {
+          $set: {
+              ...set
+          },
+        },
+      },
+    };
+    bulWrites.push(bulkUpdate);
+  }
+  if (bulWrites.length > 0) {
+    const result = await col.bulkWrite(bulWrites);
+    sameProductCnt = result.modifiedCount;
+  }
+  return sameProductCnt;
+};

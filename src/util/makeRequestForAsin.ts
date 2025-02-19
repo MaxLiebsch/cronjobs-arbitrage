@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
-import { processKeepaResult } from "./processKeepaResult.js";
+import {
+  processKeepaResult,
+  processMissingKeepaResult,
+} from "./processKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
-import { sleep } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
 import { keepaProps } from "./keepaProps.js";
 import { ProductWithTask } from "../types/products.js";
@@ -46,8 +48,11 @@ export async function makeRequestsForAsin(
           keepa_lckd: "",
         },
       });
+      const sameProductCnt = await processMissingKeepaResult(product, {
+        info_prop: "not_found",
+      });
       console.log(
-        `Request for ASIN: ${trimedAsin} - ${sdmn} failed with status ${response.status}`
+        `Request for ASIN: ${trimedAsin} - ${sdmn} failed with status ${response.status} - ${sameProductCnt} other products updated`
       );
     }
 
@@ -65,10 +70,12 @@ export async function makeRequestsForAsin(
           data: error.response.data,
         };
       } else {
-        logGlobal(loggerName, `Error for ASIN: ${trimedAsin} - ${sdmn}, ${error}`);
+        logGlobal(
+          loggerName,
+          `Error for ASIN: ${trimedAsin} - ${sdmn}, ${error}`
+        );
         return { success: false, product: product };
       }
-
     }
     return { success: false, product: product };
   }

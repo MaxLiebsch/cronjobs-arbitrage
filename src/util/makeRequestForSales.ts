@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
-import { processKeepaResult } from "./processKeepaResult.js";
+import { processKeepaResult, processMissingKeepaResult } from "./processKeepaResult.js";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 import { sleep } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
@@ -63,12 +63,15 @@ export async function makeRequestsForSales(
           info_prop: "not_found",
         },
       });
-
+      const sameProductCnt = await processMissingKeepaResult(product, {
+        keepaUpdatedAt: new Date().toISOString(),
+        info_prop: "not_found",
+      });
       logGlobal(
         loggerName,
         `Request for SALE EAN: ${ean} - ${sdmn} failed with status ${
           response.status
-        } - ${result && result.modifiedCount}`
+        } - ${result && result.modifiedCount} - ${sameProductCnt} other products updated`
       );
     }
     return { success: true, data: response.data };
