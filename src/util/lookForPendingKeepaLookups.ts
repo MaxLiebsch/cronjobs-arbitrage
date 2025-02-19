@@ -111,13 +111,12 @@ export async function keepaWholesaleProcess() {
 
   return [];
 }
-
 export async function keepaNewProcess() {
   const col = await getProductsCol();
   const { updatedAt } = keepaEanProps;
   const query: Filter<DbProductRecord> = {
     $and: [
-      { info_prop: { $in: ["missing"] } },
+      { info_prop: 'missing' },
       { eanList: { $exists: true, $ne: [] } },
       {
         $or: [

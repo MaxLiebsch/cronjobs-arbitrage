@@ -83,6 +83,7 @@ export const processKeepaResult = async (processKeepaProps: {
     };
     product.costs = newCosts;
     recalculateAznMargin(product, a_prc, set);
+    set["info_prop"] = "complete";
   } else {
     props.unset = {
       ...props.unset,
@@ -114,7 +115,7 @@ export const processKeepaResult = async (processKeepaProps: {
       a_status: "",
     };
   }
-  if (taskType === "KEEPA_EAN") {
+  if (taskType === "KEEPA_EAN" || taskType === "KEEPA_NEW") {
     const _ean = eanList[0];
     const products = await findProducts({
       eanList: _ean,
