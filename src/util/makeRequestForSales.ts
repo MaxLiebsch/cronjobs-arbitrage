@@ -60,6 +60,7 @@ export async function makeRequestsForSales(
       const result = await updateProductWithQuery(productId, {
         $set: {
           keepaUpdatedAt: new Date().toISOString(),
+          info_prop: "not_found",
         },
       });
 
