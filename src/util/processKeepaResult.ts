@@ -75,7 +75,7 @@ export const processKeepaResult = async (processKeepaProps: {
 
   const arbitrageCanBeCalculated =
     a_prc !== undefined && a_prc >= 0 && sellQty && costs && qty;
-
+  let calucalationPerformed = false;
   if (avgPrice && avgPrice > 0 && arbitrageCanBeCalculated) {
     const newCosts = {
       ...costs,
@@ -83,7 +83,7 @@ export const processKeepaResult = async (processKeepaProps: {
     };
     product.costs = newCosts;
     recalculateAznMargin(product, a_prc, set);
-    set["info_prop"] = "complete";
+    calucalationPerformed = true;
   } else {
     props.unset = {
       ...props.unset,
@@ -197,6 +197,7 @@ export const processKeepaResult = async (processKeepaProps: {
   const productUpdated = await updateProductWithQuery(productId, {
     $set: {
       ...set,
+      ...(calucalationPerformed && { info_prop: "complete" }),
     },
     $unset: props.unset,
   });
