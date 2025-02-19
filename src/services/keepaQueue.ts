@@ -4,7 +4,7 @@ import { Job, scheduleJob } from "node-schedule";
 import { updateTaskWithQuery } from "../db/util/updateTask.js";
 import { LocalLogger, Shop, sleep, WithId } from "@dipmaxtech/clr-pkg";
 import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
-import { ProductWithTask } from "../types/products.js";
+import { IKeepaTaskType, ProductWithTask } from "../types/products.js";
 import { makeRequestsForAsin } from "../util/makeRequestForAsin.js";
 import { makeRequestsForEan } from "../util/makeRequestForEan.js";
 import { makeRequestsForWholesaleEan } from "../util/makeRequestForWholesaleEan.js";
@@ -40,6 +40,14 @@ export class KeepaQueue {
   private logger: any = new LocalLogger().createLogger(this.loggerName);
   private job: Job | null = null;
   private _total: number = 0;
+  private stats: {
+    [key in IKeepaTaskType]: number;
+  } = {
+    KEEPA_NORMAL: 0,
+    KEEPA_EAN: 0,
+    KEEPA_WHOLESALE: 0,
+    KEEPA_SALES: 0,
+  };
 
   constructor() {
     this.queue = new PQueue({ concurrency: 1 });
@@ -62,6 +70,7 @@ export class KeepaQueue {
       if (!success && product) {
         debugLog("Decrementing total");
         this.decrementTotal();
+        this.decrementStats(product.taskType);
         debugLog("Adding product to queue since it failed");
         this.addToQueue([product]);
       }
@@ -85,7 +94,7 @@ export class KeepaQueue {
     this.queue.on("idle", async () => {
       await updateTaskWithQuery(
         { type: "KEEPA_NORMAL" },
-        { total: this.total }
+        { total: this.total, stats: this.stats }
       );
       if (this.job) {
         this.job.cancel();
@@ -106,9 +115,25 @@ export class KeepaQueue {
     scheduleJob("0 0 * * *", async () => {
       await updateTaskWithQuery(
         { type: "KEEPA_NORMAL" },
-        { total: 0, yesterday: this.total }
+        {
+          total: 0,
+          yesterday: this.total,
+          statsYesterday: this.stats,
+          stats: {
+            KEEPA_NORMAL: 0,
+            KEEPA_EAN: 0,
+            KEEPA_WHOLESALE: 0,
+            KEEPA_SALES: 0,
+          },
+        }
       );
       this.total = 0;
+      this.stats = {
+        KEEPA_NORMAL: 0,
+        KEEPA_EAN: 0,
+        KEEPA_WHOLESALE: 0,
+        KEEPA_SALES: 0,
+      };
     });
     await this.checkAndProcessPendingProducts();
   }
@@ -119,6 +144,9 @@ export class KeepaQueue {
       .findOne({ type: "KEEPA_NORMAL" });
     if (keepaTask?.total) {
       this.total = keepaTask.total;
+    }
+    if (keepaTask?.stats) {
+      this.stats = keepaTask.stats;
     }
   }
   private async checkAndProcessPendingProducts() {
@@ -133,6 +161,7 @@ export class KeepaQueue {
         `${productsWithTask[0].taskType}: Adding products to queue: ${productsWithTask.length}`
       );
       this.addToQueue(productsWithTask);
+
       if (this.queue.isPaused) {
         this.queue.start();
       }
@@ -170,6 +199,7 @@ export class KeepaQueue {
     for (const product of productsWithTask) {
       this.queue.add(async () => {
         this.incrementTotal();
+        this.incrementStats(product.taskType);
         if (product.taskType === "KEEPA_NORMAL") {
           return await makeRequestsForAsin(product);
         } else if (product.taskType === "KEEPA_EAN") {
@@ -188,6 +218,15 @@ export class KeepaQueue {
   private get total(): number {
     return this._total;
   }
+
+  private incrementStats = (type: IKeepaTaskType) => {
+    this.stats[type]++;
+  };
+
+  private decrementStats = (type: IKeepaTaskType) => {
+    this.stats[type]--;
+  };
+
   private incrementTotal = () => {
     this._total++;
   };

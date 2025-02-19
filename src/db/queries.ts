@@ -161,6 +161,7 @@ export const pendingEanKeepaProductsQuery: any = (domain: string) => {
               { a_mrgn: { $lt: 0 } },
               { a_mrgn_pct: { $lt: 0 } },
               { eanList: { $exists: true, $ne: [] } },
+              { info_prop: { $in: ["complete"] } },
             ],
           },
         ],

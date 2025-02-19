@@ -1,9 +1,6 @@
 import { getKeepaEanProgressPerShop } from "../db/util/getEanKeepaProgress.js";
 import { getKeepaProgressPerShop } from "../db/util/getKeepaProgress.js";
-import {
-  KEEPA_PRODUCT_LIMIT,
-  KEEPA_RATE_LIMIT,
-} from "../constants.js";
+import { KEEPA_PRODUCT_LIMIT, KEEPA_RATE_LIMIT } from "../constants.js";
 import { lockProductsForKeepa } from "../db/util/crudProducts.js";
 import {
   keepaEanTaskRecovery,
@@ -72,12 +69,12 @@ export async function keepaNormalProcess({
         return acc + shop.pending;
       }, 0);
 
-  pleaseRecover && logGlobal(loggerName, `Recover keepa task: ${pleaseRecover}`);
+  pleaseRecover &&
+    logGlobal(loggerName, `Recover keepa task: ${pleaseRecover}`);
   const products = await prepareProducts(
     pleaseRecover ? recoveryShops : keepaProgressPerShop,
     false,
-    pleaseRecover,
-    pendingProducts
+    pleaseRecover
   );
   if (products.length) {
     return products.flatMap((ps) => ps);
@@ -99,7 +96,10 @@ export async function keepaWholesaleProcess() {
     .toArray();
 
   if (wholeSaleProducts.length) {
-    logGlobal(loggerName, `Keepa Wholesale products: ${wholeSaleProducts.length}`);
+    logGlobal(
+      loggerName,
+      `Keepa Wholesale products: ${wholeSaleProducts.length}`
+    );
     return wholeSaleProducts.map((product) => {
       return {
         ...product,
@@ -119,7 +119,8 @@ export async function keepaEanProcess({
   const recoveryShops = await keepaEanTaskRecovery(activeShops!);
   const pleaseRecover = recoveryShops.some((p) => p.pending > 0);
 
-  pleaseRecover && logGlobal(loggerName, `Recover keepa ean task: ${pleaseRecover}`);
+  pleaseRecover &&
+    logGlobal(loggerName, `Recover keepa ean task: ${pleaseRecover}`);
 
   const pendingProducts = pleaseRecover
     ? recoveryShops.reduce((acc, shop) => {
@@ -132,8 +133,7 @@ export async function keepaEanProcess({
   const products = await prepareProducts(
     pleaseRecover ? recoveryShops : keepaProgressPerShop,
     true,
-    pleaseRecover,
-    pendingProducts
+    pleaseRecover
   );
   if (products.length) {
     return products.flatMap((ps) => ps);
@@ -143,8 +143,7 @@ export async function keepaEanProcess({
 async function prepareProducts(
   keepaProgressPerShop: PendingShop[],
   fallback: boolean,
-  recovery: boolean,
-  pendingProducts: number
+  recovery: boolean
 ): Promise<ProductWithTask[][]> {
   const pendingShops = keepaProgressPerShop.filter((shop) => shop.pending > 0);
   await updateTaskWithQuery(

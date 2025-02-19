@@ -150,7 +150,7 @@ export const lockProductsForKeepa = async (
       options["limit"] = limit;
     }
     if (fallback) {
-      options["sort"] = { createdAt: -1 }; // Sort by createdAt in descending order to get the latest products first
+      options["sort"] = { createdAt: -1, info_prop: 1 }; // Sort by createdAt in descending order to get the latest products first
     } else {
       options["sort"] = { keepaUpdatedAt: 1 }; // Sort by keepaUpdatedAt in ascending order to get the oldest products first
     }
