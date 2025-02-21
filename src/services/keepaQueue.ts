@@ -9,7 +9,6 @@ import { makeRequestsForAsin } from "../util/makeRequestForAsin.js";
 import { makeRequestsForEan } from "../util/makeRequestForEan.js";
 import { makeRequestsForWholesaleEan } from "../util/makeRequestForWholesaleEan.js";
 import { makeRequestsForSales } from "../util/makeRequestForSales.js";
-import { KeepaRatelimit } from "../model/keepaRatelimit.js";
 import PQueue from "p-queue";
 import { KeepaResponse } from "../types/KeepaResponse.js";
 import { keepaNewProcess, keepaWholesaleProcess } from "../util/lookForPendingKeepaLookups.js";
@@ -20,6 +19,7 @@ import { keepaSalesProcess } from "../util/lookForPendingKeepaLookups.js";
 import { getCrawlDataDb } from "../db/mongo.js";
 import { KEEPA_INTERVAL } from "../constants.js";
 import { debugLog } from "../util/debugLog.js";
+import { KeepaRatelimit } from "../model/keepaRatelimit.js";
 
 config({
   path: [`.env`],

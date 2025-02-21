@@ -2,7 +2,7 @@ import { KeepaProps } from "../types/keepaProps.js";
 
 export const keepaEanProps: KeepaProps = {
   lock: "keepaEan_lckd",
-  updatedAt: "keepaEanUpdatedAt",
+  updatedAt: "keepaUpdatedAt",
   unset: {
     keepaEan_lckd: "",
     info_prop: "",

@@ -23,7 +23,7 @@ export const processKeepaResult = async (processKeepaProps: {
   asin: string;
   props: {
     lock: string;
-    updatedAt: "keepaEanUpdatedAt" | "keepaUpdatedAt";
+    updatedAt: "keepaUpdatedAt";
     unset: any;
   };
 }) => {
