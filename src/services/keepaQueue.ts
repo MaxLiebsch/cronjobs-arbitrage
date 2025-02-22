@@ -19,7 +19,7 @@ import { keepaSalesProcess } from "../util/lookForPendingKeepaLookups.js";
 import { getCrawlDataDb } from "../db/mongo.js";
 import { KEEPA_INTERVAL } from "../constants.js";
 import { debugLog } from "../util/debugLog.js";
-import { KeepaRatelimit } from "../model/KeepaRatelimit.js";
+import { KeepaRatelimit } from "../model/keepa-ratelimit.js";
 
 config({
   path: [`.env`],
