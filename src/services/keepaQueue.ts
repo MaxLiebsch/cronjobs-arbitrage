@@ -19,7 +19,7 @@ import { keepaSalesProcess } from "../util/lookForPendingKeepaLookups.js";
 import { getCrawlDataDb } from "../db/mongo.js";
 import { KEEPA_INTERVAL } from "../constants.js";
 import { debugLog } from "../util/debugLog.js";
-import { KeepaRatelimit } from "../model/keepaRatelimit.js";
+import { KeepaRatelimit } from "../model/KeepaRatelimit.js";
 
 config({
   path: [`.env`],
@@ -190,9 +190,6 @@ export class KeepaQueue {
   private async lookForPendingKeepaLookups() {
     const activeShops = await getActiveShops();
     if (!activeShops) return [];
-
-    activeShops.push({ d: "sales" } as WithId<Shop>);
-
     const processes = [
       { fn: keepaSalesProcess, args: undefined },
       { fn: keepaNormalProcess, args: { activeShops } },
