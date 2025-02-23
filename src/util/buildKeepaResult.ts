@@ -16,12 +16,14 @@ export const buildKeepaResult = (analysis: KeepaResponse) => {
       property.name ? property.name : property.key.replace("products[0].", "")
     ) as keyof KeepaProperties;
     const value = get(analysis, property.key, undefined);
-
+    const priceProperties = ['curr_ansprcs', 'curr_ahsprcs'];
     if (value && value !== null && value !== -1) {
       if (property.name === "costs.ktpt") {
-        const keepaFbaPickAndPackFee = (Number(value/100) - 0.25)
+        const keepaFbaPickAndPackFee = Number(value / 100) - 0.25;
         setWith(result, key, keepaFbaPickAndPackFee, Object);
-      } else {
+      } else if (priceProperties.includes(property.name))
+        setWith(result, key, Number(value / 100), Object);
+      else {
         setWith(result, key, value, Object);
       }
     }
