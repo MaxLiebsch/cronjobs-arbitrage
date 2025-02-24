@@ -1,6 +1,6 @@
 import { getKeepaEanProgressPerShop } from "../db/util/getEanKeepaProgress.js";
 import { getKeepaProgressPerShop } from "../db/util/getKeepaProgress.js";
-import { KEEPA_PRODUCT_LIMIT, KEEPA_RATE_LIMIT } from "../constants.js";
+import { KEEPA_PRODUCT_LIMIT, KEEPA_RATE_LIMIT, MIN_FLIPS_PRODUCTS } from "../constants.js";
 import { lockProductsForKeepa } from "../db/util/crudProducts.js";
 import {
   keepaEanTaskRecovery,
@@ -384,7 +384,7 @@ export async function keepaFlipsProcess() {
     ])
     .toArray()) as unknown as DbProductRecord[];
 
-  if (newProducts.length) {
+  if (newProducts.length >= MIN_FLIPS_PRODUCTS) {
     return newProducts.map((product) => {
       return {
         ...product,

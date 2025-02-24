@@ -54,9 +54,9 @@ export class KeepaQueue {
     KEEPA_SALES: makeRequestsForSales,
     KEEPA_NORMAL: makeRequestsForAsin,
     KEEPA_WHOLESALE: makeRequestsForWholesaleEan,
+    KEEPA_FLIPS: makeRequestsForAsin,
     KEEPA_NEW: makeRequestsForEan,
     KEEPA_EAN: makeRequestsForEan,
-    KEEPA_FLIPS: makeRequestsForAsin,
   } as const;
 
   constructor() {
