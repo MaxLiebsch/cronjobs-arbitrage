@@ -11,7 +11,7 @@ import { makeRequestsForWholesaleEan } from "../util/makeRequestForWholesaleEan.
 import { makeRequestsForSales } from "../util/makeRequestForSales.js";
 import PQueue from "p-queue";
 import { KeepaResponse } from "../types/KeepaResponse.js";
-import { keepaNewProcess, keepaWholesaleProcess } from "../util/lookForPendingKeepaLookups.js";
+import { keepaFlipsProcess, keepaNewProcess, keepaWholesaleProcess } from "../util/lookForPendingKeepaLookups.js";
 import { keepaNegMarginProcess } from "../util/lookForPendingKeepaLookups.js";
 import { keepaNormalProcess } from "../util/lookForPendingKeepaLookups.js";
 import { getActiveShops } from "../db/util/shops.js";
@@ -46,6 +46,7 @@ export class KeepaQueue {
     KEEPA_SALES: 0,
     KEEPA_NORMAL: 0,
     KEEPA_WHOLESALE: 0,
+    KEEPA_FLIPS: 0,
     KEEPA_NEW: 0,
     KEEPA_EAN: 0,
   };
@@ -55,6 +56,7 @@ export class KeepaQueue {
     KEEPA_WHOLESALE: makeRequestsForWholesaleEan,
     KEEPA_NEW: makeRequestsForEan,
     KEEPA_EAN: makeRequestsForEan,
+    KEEPA_FLIPS: makeRequestsForAsin,
   } as const;
 
   constructor() {
@@ -137,6 +139,7 @@ export class KeepaQueue {
         KEEPA_NORMAL: 0,
         KEEPA_WHOLESALE: 0,
         KEEPA_SALES: 0,
+        KEEPA_FLIPS: 0,
         KEEPA_NEW: 0,
         KEEPA_EAN: 0,
       };
@@ -194,6 +197,7 @@ export class KeepaQueue {
       { fn: keepaSalesProcess, args: undefined },
       { fn: keepaNormalProcess, args: { activeShops } },
       { fn: keepaWholesaleProcess, args: undefined },
+      { fn: keepaFlipsProcess, args: undefined },
       { fn: keepaNewProcess, args: undefined },
       { fn: keepaNegMarginProcess, args: { activeShops } },
     ] as const;

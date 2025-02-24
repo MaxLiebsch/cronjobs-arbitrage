@@ -36,7 +36,7 @@ export async function keepaSalesProcess() {
     ],
   };
 
-  const salesProducts = await col
+  const salesProducts = (await col
     .aggregate([
       { $match: query },
       { $sort: { createdAt: -1 } },
@@ -44,7 +44,7 @@ export async function keepaSalesProcess() {
       { $replaceRoot: { newRoot: "$doc" } },
       { $limit: KEEPA_PRODUCT_LIMIT },
     ])
-    .toArray() as unknown as DbProductRecord[];
+    .toArray()) as unknown as DbProductRecord[];
 
   if (salesProducts.length) {
     return salesProducts.map((product) => {
@@ -134,7 +134,7 @@ export async function keepaNewProcess() {
       },
     ],
   };
-  const newProducts = await col
+  const newProducts = (await col
     .aggregate([
       {
         $match: query,
@@ -144,7 +144,7 @@ export async function keepaNewProcess() {
       { $replaceRoot: { newRoot: "$doc" } },
       { $limit: KEEPA_PRODUCT_LIMIT },
     ])
-    .toArray() as unknown as DbProductRecord[];
+    .toArray()) as unknown as DbProductRecord[];
 
   if (newProducts.length) {
     return newProducts.map((product) => {
@@ -157,6 +157,245 @@ export async function keepaNewProcess() {
 
   return [];
 }
+
+export async function keepaFlipsProcess() {
+  const col = await getProductsCol();
+  const { updatedAt } = keepaEanProps;
+  const newProducts = (await col
+    .aggregate([
+      {
+        $match: {
+          $and: [
+            { a_avg_fld: "avg30_buyBoxPrice" },
+            { a_avg_price: { $gt: 1 } },
+            { a_prc: { $gt: 1 } },
+            {
+              keepaUpdatedAt: {
+                $lte: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString(),
+              },
+            },
+          ],
+        },
+      },
+      { $group: { _id: { field2: "$asin" }, document: { $first: "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$document" } },
+      {
+        $addFields: {
+          a_avg_prc: "$a_avg_price",
+          curr_prc: {
+            $switch: {
+              branches: [
+                {
+                  case: {
+                    $and: [
+                      { $gt: ["$curr_ahsprcs", -1] },
+                      { $gt: ["$curr_ansprcs", -1] },
+                    ],
+                  },
+                  then: { $min: ["$curr_ahsprcs", "$curr_ansprcs"] },
+                },
+                {
+                  case: {
+                    $and: [
+                      { $eq: ["$curr_ahsprcs", -1] },
+                      { $gt: ["$curr_ansprcs", -1] },
+                    ],
+                  },
+                  then: "$curr_ansprcs",
+                },
+                {
+                  case: {
+                    $and: [
+                      { $eq: ["$curr_ansprcs", -1] },
+                      { $gt: ["$curr_ahsprcs", -1] },
+                    ],
+                  },
+                  then: "$curr_ahsprcs",
+                },
+              ],
+              default: null,
+            },
+          },
+        },
+      },
+      {
+        $addFields: {
+          "costs.azn": {
+            $round: [
+              {
+                $multiply: [
+                  { $divide: ["$costs.azn", "$a_prc"] },
+                  "$a_avg_prc",
+                ],
+              },
+              2,
+            ],
+          },
+        },
+      },
+      {
+        $addFields: {
+          a_mrgn: {
+            $round: [
+              {
+                $subtract: [
+                  "$a_avg_prc",
+                  {
+                    $add: [
+                      {
+                        $divide: [
+                          "$curr_prc",
+                          {
+                            $add: [
+                              1,
+                              { $divide: [{ $ifNull: ["$tax", 19] }, 100] },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        $subtract: [
+                          "$a_avg_prc",
+                          {
+                            $divide: [
+                              "$a_avg_prc",
+                              {
+                                $add: [
+                                  1,
+                                  { $divide: [{ $ifNull: ["$tax", 19] }, 100] },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      "$costs.azn",
+                      "$costs.tpt",
+                      "$costs.varc",
+                      "$costs.strg_1_hy",
+                      0,
+                    ],
+                  },
+                ],
+              },
+              2,
+            ],
+          },
+        },
+      },
+      {
+        $addFields: {
+          a_mrgn_pct: {
+            $round: [
+              { $multiply: [{ $divide: ["$a_mrgn", "$a_avg_prc"] }, 100] },
+              2,
+            ],
+          },
+        },
+      },
+      { $match: { a_mrgn: { $gt: 0 } } },
+      {
+        $project: {
+          sourceDomain: "$shop",
+          prc: 1,
+          uprc: 1,
+          lnk: 1,
+          img: 1,
+          nm: 1,
+          a: 1,
+          cur: 1,
+          eanList: 1,
+          s: 1,
+          qty_v: 1,
+          nm_v: 1,
+          ean: 1,
+          availUpdatedAt: 1,
+          qty: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          tax: 1,
+          shop: "flip",
+          _id: 1,
+          mnfctr: 1,
+          sdmn: 1,
+          a_pblsh: 1,
+          a_nm: 1,
+          a_useCurrPrice: 1,
+          a_cur: 1,
+          a_rating: 1,
+          a_reviewcnt: 1,
+          bsr: 1,
+          a_img: 1,
+          a_avg_price: 1,
+          a_avg_fld: 1,
+          dealAznUpdatedAt: 1,
+          asin: 1,
+          a_prc: 1,
+          costs: 1,
+          a_uprc: 1,
+          a_qty: 1,
+          a_orgn: 1,
+          a_mrgn: 1,
+          a_mrgn_pct: 1,
+          a_w_mrgn: 1,
+          a_w_mrgn_pct: 1,
+          a_p_w_mrgn: 1,
+          a_p_w_mrgn_pct: 1,
+          a_p_mrgn: 1,
+          a_vrfd: 1,
+          a_p_mrgn_pct: 1,
+          drops30: 1,
+          drops90: 1,
+          categories: 1,
+          numberOfItems: 1,
+          availabilityAmazon: 1,
+          categoryTree: 1,
+          salesRanks: 1,
+          monthlySold: 1,
+          ahstprcs: 1,
+          anhstprcs: 1,
+          auhstprcs: 1,
+          curr_ahsprcs: 1,
+          curr_ansprcs: 1,
+          curr_ausprcs: 1,
+          curr_salesRank: 1,
+          avg30_ahsprcs: 1,
+          avg30_ansprcs: 1,
+          avg30_ausprcs: 1,
+          avg30_salesRank: 1,
+          avg90_ahsprcs: 1,
+          avg90_ansprcs: 1,
+          avg90_ausprcs: 1,
+          avg90_salesRank: 1,
+          buyBoxIsAmazon: 1,
+          stockAmount: 1,
+          stockBuyBox: 1,
+          totalOfferCount: 1,
+          a_avg_prc: 1,
+          curr_prc: 1,
+          keepaUpdatedAt: 1,
+        },
+      },
+      {
+        $sort: { keepaUpdatedAt: -1, "bsr.number": 1, a_mrgn_pct: -1 },
+      },
+      { $skip: 0 },
+      { $limit: KEEPA_PRODUCT_LIMIT },
+    ])
+    .toArray()) as unknown as DbProductRecord[];
+
+  if (newProducts.length) {
+    return newProducts.map((product) => {
+      return {
+        ...product,
+        taskType: KeepaTaskType.KEEPA_FLIPS,
+      };
+    });
+  }
+
+  return [];
+}
+
 export async function keepaNegMarginProcess({
   activeShops,
 }: {
