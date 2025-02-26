@@ -1,4 +1,4 @@
-import { TOKEN_LIMIT } from "../constants.js";
+import { OPENAI_TOKEN_LIMIT } from "../constants.js";
 import { encodeChat } from "gpt-tokenizer";
 import { createNameMatchingPrompt } from "../util/titles/createNamingPrompt.js";
 import { ProductIdsMap, ProductWithShop } from "../types/products.js";
@@ -48,7 +48,7 @@ export const createBatches = (
     }
 
     const tokenCnt = encodeChat(prompt.body.messages, "gpt-4").length;
-    if (tokens + tokenCnt < TOKEN_LIMIT) {
+    if (tokens + tokenCnt < OPENAI_TOKEN_LIMIT) {
       tokens += tokenCnt;
       cnt++;
       prompts.push(prompt);
