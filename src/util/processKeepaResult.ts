@@ -52,7 +52,9 @@ export const processKeepaResult = async (processKeepaProps: {
     await upsertAsin(asin, result["k_eanList"] ?? []);
   }
 
-  if (!result["monthlySold"]) {
+  if (result["monthlySold"]) {
+    result["monthlySoldSource"] = "keepa";
+  } else {
     if (salesRanks && categories && categoryTree) {
       const monthlySold = calculateMonthlySales(
         categories,
@@ -60,6 +62,7 @@ export const processKeepaResult = async (processKeepaProps: {
         categoryTree
       );
       if (monthlySold) {
+        result["monthlySoldSource"] = "forecast";
         result["monthlySold"] = monthlySold;
       }
     }
@@ -211,8 +214,11 @@ export const processKeepaResult = async (processKeepaProps: {
     `Updated product: ${asin} - Updated: ${productUpdated?.modifiedCount} product. ${sameProductCnt} products updated.`
   );
 };
- 
-export const processMissingKeepaResult = async (product: ProductWithTask, set: any) => {
+
+export const processMissingKeepaResult = async (
+  product: ProductWithTask,
+  set: any
+) => {
   const bulWrites: any = [];
   const col = await getProductsCol();
   const { eanList, _id: productId } = product;
@@ -232,7 +238,7 @@ export const processMissingKeepaResult = async (product: ProductWithTask, set: a
         filter: { _id: _id },
         update: {
           $set: {
-              ...set
+            ...set,
           },
         },
       },
