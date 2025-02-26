@@ -10,7 +10,7 @@ export const MAX_AGE_PRODUCTS = 21;
 export const MAX_AGE_PROPS = 30;
 export const CHECK_PACKAGE_BATCH_INTERVAL =
   process.env.NODE_ENV === "production" ? 1000 * 60 * 1.5 : 1000 * 60 * 0.5;
-export const TOKEN_LIMIT = 3800000;
+export const OPENAI_TOKEN_LIMIT = 3800000;
 export const MAX_PACKAGE_SIZE = 11;
 export const BATCH_SIZE = process.env.NODE_ENV === "development" ? 50 : 6000;
 export const MAX_BATCH_SIZE = 300;
@@ -60,6 +60,8 @@ export const keepaProperties = [
   { key: "products[0].categoryTree", name: "" },
   { key: "products[0].salesRanks", name: "" }, // Sales Rank nullable
   { key: "products[0].monthlySold", name: "" },
+  { key: "products[0].lastSoldUpdate", name: "" },
+  { key: "products[0].monthlySoldHistory", name: "" },
   { key: "products[0].csv[0]", name: "ahstprcs" }, // Amazon history prices
   { key: "products[0].csv[1]", name: "anhstprcs" }, // Amazon new history prices
   { key: "products[0].csv[2]", name: "auhstprcs" }, // Amazon used history prices

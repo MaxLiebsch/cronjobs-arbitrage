@@ -8,7 +8,7 @@ export const buildKeepaResult = (analysis: KeepaResponse) => {
   let result: Partial<KeepaProperties> = {};
 
   const { products } = analysis;
-  const { salesRanks, csv } = products[0];
+  const { salesRanks, csv, monthlySoldHistory } = products[0];
   const [ahstprcs, anhstprcs, auhstprcs] = csv || [[], [], []];
 
   keepaProperties.forEach((property) => {
@@ -16,7 +16,7 @@ export const buildKeepaResult = (analysis: KeepaResponse) => {
       property.name ? property.name : property.key.replace("products[0].", "")
     ) as keyof KeepaProperties;
     const value = get(analysis, property.key, undefined);
-    const priceProperties = ['curr_ansprcs', 'curr_ahsprcs'];
+    const priceProperties = ["curr_ansprcs", "curr_ahsprcs"];
     if (value && value !== null && value !== -1) {
       if (property.name === "costs.ktpt") {
         const keepaFbaPickAndPackFee = Number(value / 100) - 0.25;
@@ -28,6 +28,11 @@ export const buildKeepaResult = (analysis: KeepaResponse) => {
       }
     }
   });
+
+  if (result.monthlySoldHistory) {
+    result.monthlySoldHistory = reduceSalesRankArray(monthlySoldHistory);
+  }
+  
 
   if (result.salesRanks) {
     const _salesRanks: { [key: string]: number[][] } = {};
