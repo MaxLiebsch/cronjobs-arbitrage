@@ -11,6 +11,9 @@ export const detectQuantityAggregation = (limit: number) => [
             { a_prc: { $gt: 0 } },
             { a_mrgn: { $gt: 0 } },
             {
+              "a_vrfd.nm_prop": 'complete',
+            },
+            {
               $or: [
                 {
                   "a_vrfd.qty_prop": {
@@ -28,11 +31,6 @@ export const detectQuantityAggregation = (limit: number) => [
                 },
               ],
             },
-            {
-              "a_vrfd.nm_prop": {
-                $eq: "complete",
-              },
-            },
           ],
         },
         {
@@ -43,6 +41,9 @@ export const detectQuantityAggregation = (limit: number) => [
             },
             { "e_pRange.median": { $gt: 0 } },
             { e_mrgn: { $gt: 0 } },
+            {
+              "e_vrfd.nm_prop": 'complete',
+            },
             {
               $or: [
                 { qty_prop: { $exists: false } },
@@ -56,11 +57,6 @@ export const detectQuantityAggregation = (limit: number) => [
                   "a_vrfd.qty_prop": "retry",
                 },
               ],
-            },
-            {
-              "e_vrfd.nm_prop": {
-                $eq: "complete",
-              },
             },
           ],
         },
