@@ -24,7 +24,6 @@ export const titleAggregation = (limit: number, domain: string) => [
   {
     $match: {
       $and: [
-        { nm_batchId: { $exists: false } },
         {
           $or: [
             { nm_prop: { $exists: false } },

@@ -1,16 +1,16 @@
 import { getProductsCol } from "../db/mongo.js";
 
-import "dotenv/config";
+import { ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
 import { config } from "dotenv";
+import "dotenv/config";
+import pkg from 'fs-jetpack';
+import { BatchResults } from "../types/batchResult.js";
+import { Batch, BatchTaskTypes } from "../types/tasks.js";
+import { extractId } from "./extractId.js";
 config({
   path: [`.env`],
 });
-import pkg from 'fs-jetpack';
 const { readAsync } = pkg;
-import { Batch, BatchTaskTypes } from "../types/tasks.js";
-import { ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
-import { BatchResults } from "../types/batchResult.js";
-import { extractId } from "./extractId.js";
 
 export const processFailedBatch = async (
   batchData: Batch,
@@ -38,12 +38,10 @@ export const processFailedBatch = async (
   const productCol = await getProductsCol();
   let unset: any = {
     nm_prop: "",
-    nm_batchId: "",
   };
   if (batchTaskType === "DETECT_QUANTITY") {
     unset = {
       qty_prop: "",
-      nm_batchId: "",
     };
   }
   await productCol.updateMany(

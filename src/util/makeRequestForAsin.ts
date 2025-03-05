@@ -1,15 +1,15 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { keepaProductSearchParams } from "../constants.js";
 import { updateProductWithQuery } from "../db/util/crudProducts.js";
+import { KeepaQueueResponse } from "../model/implementations/keepaQueue.js";
+import { KeepaResponse } from "../types/KeepaResponse.js";
+import { ProductWithTask } from "../types/products.js";
+import { keepaProps } from "./keepaProps.js";
+import { CJ_LOGGER, logGlobal } from "./logger.js";
 import {
   processKeepaResult,
   processMissingKeepaResult,
 } from "./processKeepaResult.js";
-import { KeepaResponse } from "../types/KeepaResponse.js";
-import { CJ_LOGGER, logGlobal } from "./logger.js";
-import { keepaProps } from "./keepaProps.js";
-import { ProductWithTask } from "../types/products.js";
-import { keepaProductSearchParams } from "../constants.js";
-import { KeepaQueueResponse } from "../services/keepaQueue.js";
 
 const loggerName = CJ_LOGGER.PENDING_KEEPAS;
 

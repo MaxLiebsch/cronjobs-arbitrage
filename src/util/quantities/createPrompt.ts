@@ -61,7 +61,7 @@ export const createPrompt = (
           role: "system",
           content: `Analysiere die Titel ${props.join(
             " ,"
-          )} aus dem Input-JSON, um die Menge der separate Verkaufseinheiten desselben Produkts im Titel zu bestimmen.
+          )}, um die Menge der separate Verkaufseinheiten desselben Produkts im Titel zu bestimmen.
           Vorgehen: 
           1. Ermittle die Produktarten (Paarprodukte, Set-Produkte, Produkte mit mehreren Teilen, Sammlung, Packung)
           2. Wende die folgenden Regeln basierend auf der Produktart an:
@@ -131,7 +131,7 @@ Antworte mit der Menge.
 
 v5:`Analysiere die Titel ${props.join(
             " ,"
-          )} aus dem Input-JSON, um die Menge der separate Verkaufseinheiten desselben Produkts im Titel zu bestimmen.
+          )}, um die Menge der separate Verkaufseinheiten desselben Produkts im Titel zu bestimmen.
           Vorgehen: 
           1. Ermittle die Produktarten (Paarprodukte, Set-Produkte, Produkte mit mehreren Teilen, Sammlung, Packung)
           2. Wende die folgenden Regeln basierend auf der Produktart an:

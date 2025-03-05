@@ -5,9 +5,9 @@ import {
   resetEbyProductQuery,
   safeJSONParse,
 } from "@dipmaxtech/clr-pkg";
+import { MINIMAL_SCORE } from "../../constants.js";
 import { BulkWrite } from "../../types/BulkTypes.js";
 import { cleanScore } from "../cleanScore.js";
-import { MINIMAL_SCORE } from "../../constants.js";
 import { extractId } from "../extractId.js";
 
 export function processMatchTitleResult(
@@ -81,7 +81,7 @@ export function processMatchTitleResult(
     updateOne: {
       filter: { _id: new ObjectId(productId) },
       update: {
-        $unset: { nm_batchId: "", nm_prop: "" },
+        $unset: { nm_prop: "" },
       },
     },
   };
