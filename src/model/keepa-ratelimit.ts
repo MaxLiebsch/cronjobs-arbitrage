@@ -24,8 +24,6 @@ export class KeepaRatelimit {
   // Tracking products through the API reduces your actual token refill rate by this value (rounded to an integer).
   tokenFlowReduction: number = 0;
 
-  constructor() {}
-
   setCurrentLimits(args: KeepaLimits) {
     this.refillIn = args.refillIn;
     this.tokenFlowReduction = args.tokenFlowReduction;

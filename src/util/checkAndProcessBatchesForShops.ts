@@ -1,21 +1,21 @@
+import pkg from 'fs-jetpack';
+import { NotFoundError, RateLimitError } from "openai";
+import { getCrawlDataDb } from "../db/mongo.js";
 import {
   deleteFile,
   retrieveBatch,
   retrieveOutputFile,
 } from "../services/openai/index.js";
-import { processFailedBatch } from "./processFailedBatch.js";
-import { getCrawlDataDb } from "../db/mongo.js";
-import fsjetpack from "fs-jetpack";
-import { NotFoundError, RateLimitError } from "openai";
-import { processResultsForShops } from "./processResultsForShops.js";
 import { Batch, BatchTaskTypes } from "../types/tasks.js";
 import { CJ_LOGGER, logGlobal } from "./logger.js";
-const { remove } = fsjetpack;
+import { processFailedBatch } from "./processFailedBatch.js";
+import { processResultsForShops } from "./processResultsForShops.js";
+const { remove } = pkg;
 
 const loggerName = CJ_LOGGER.BATCHES;
 
 // Define the retry function
-async function retry<T>(
+export async function retry<T>(
   fn: () => Promise<T>,
   retries: number,
   delay: number

@@ -1,0 +1,78 @@
+[{
+  "_id": {
+    "$oid": "67c6e80573436d782428d655"
+  },
+  "type": "AI_TASKS_NEW",
+  "active": true,
+  "taskType": "MATCH_TITLES",
+  "provider": "OPENAI",
+  "modelIdentifier": "gpt-4o-mini-2024-07-18",
+  "modelName": "GPT4_MINI",
+  "promptVersion": "v1",
+  "prefix": "nm"
+},
+{
+  "_id": {
+    "$oid": "67c6e80573436d782428d656"
+  },
+  "type": "AI_TASKS_NEW",
+  "active": true,
+  "taskType": "DETECT_QUANTITY",
+  "provider": "OPENAI",
+  "modelIdentifier": "gpt-4o-mini-2024-07-18",
+  "modelName": "GPT4_MINI",
+  "promptVersion": "v6",
+  "prefix": "qty"
+},
+{
+  "_id": {
+    "$oid": "67c6e80573436d782428d657"
+  },
+  "type": "AI_TASKS_NEW",
+  "active": true,
+  "taskType": "MATCH_TITLES",
+  "provider": "MISTRAL",
+  "modelIdentifier": "mistral-small-latest",
+  "modelName": "SMALL",
+  "promptVersion": "v1",
+  "prefix": "nm"
+},
+{
+  "_id": {
+    "$oid": "67c6e80573436d782428d658"
+  },
+  "type": "AI_TASKS_NEW",
+  "active": true,
+  "taskType": "DETECT_QUANTITY",
+  "provider": "MISTRAL",
+  "modelIdentifier": "mistral-small-latest",
+  "modelName": "SMALL",
+  "promptVersion": "v6",
+  "prefix": "qty"
+},
+{
+  "_id": {
+    "$oid": "67c6e80573436d782428d659"
+  },
+  "type": "AI_TASKS_NEW",
+  "active": true,
+  "taskType": "MATCH_TITLES",
+  "provider": "ANTHROPIC",
+  "modelIdentifier": "claude-3-5-haiku-20241022",
+  "modelName": "HAIKU",
+  "promptVersion": "v1",
+  "prefix": "nm"
+},
+{
+  "_id": {
+    "$oid": "67c6e80573436d782428d65a"
+  },
+  "type": "AI_TASKS_NEW",
+  "active": true,
+  "taskType": "DETECT_QUANTITY",
+  "provider": "ANTHROPIC",
+  "modelIdentifier": "claude-3-5-haiku-20241022",
+  "modelName": "HAIKU",
+  "promptVersion": "v6",
+  "prefix": "qty"
+}]

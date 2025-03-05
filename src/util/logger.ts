@@ -1,8 +1,4 @@
 import {
-  DbProductRecord,
-  DeleteResult,
-  InsertOneResult,
-  UpdateResult,
   CronjobTasks,
 } from "@dipmaxtech/clr-pkg";
 import pino from "pino";
@@ -45,27 +41,3 @@ export function logGlobal(name: CronjobTasks, message: string) {
 
   logger?.info(_message);
 }
-
-// export function log(
-//   message: string,
-//   result?:
-//     | UpdateResult<DbProductRecord>
-//     | InsertOneResult<Document>
-//     | DeleteResult
-// ) {
-//   const logger = getTaskLogger("TASK_Logger");
-//   let resultStr = "";
-
-//   if (result) {
-//     if ("modifiedCount" in result) {
-//       resultStr = ` Operation: ${result.modifiedCount} document(s) modified.`;
-//     } else if ("insertedId" in result) {
-//       resultStr = ` Operation: Document inserted with ID ${result.insertedId}.`;
-//     } else if ("deletedCount" in result) {
-//       resultStr = ` Operation: ${result.deletedCount} document(s) deleted.`;
-//     }
-//   }
-//   const _message = message + resultStr;
-
-//   logger?.info(_message);
-// }

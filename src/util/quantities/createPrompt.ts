@@ -12,14 +12,14 @@ export const createPrompt = (
   retry: boolean
 ): BatchRequestParams => {
   let content = "";
-  let format = "Output-Format:";
+  let format = "Gib deine Antwort nur als JSON zurück.";
   let formatArr = [];
   let props = [];
   if (product.nm) {
     content += `"nm":"${product.mnfctr} ${replaceAllHiddenCharacters(
       product.nm
     )}",`;
-    let formStr = `"nm":<Menge>, "nm_score":<Wahrscheinlichkeit>", "nm_produktart":"<Produktart>"`;
+    let formStr = `"nm":<Menge>", "nm_score":"<Wahrscheinlichkeit>", "nm_produktart":"<Produktart>"`;
     if (process.env.DEBUG === "explain") {
       formStr += `,"nm_explain":"<Erklärung>"`;
     }
@@ -28,7 +28,7 @@ export const createPrompt = (
   }
   if (product.e_nm) {
     content += `"e_nm":"${replaceAllHiddenCharacters(product.e_nm)}" `;
-    let formStr = `"e_nm":<Menge>, "e_score":<Wahrscheinlichkeit>, "e_produktart":"<Produktart>"`;
+    let formStr = `"e_nm":<Menge>", "e_score":"<Wahrscheinlichkeit>", "e_produktart":"<Produktart>"`;
     if (process.env.DEBUG === "explain") {
       formStr += `,"e_explain":"<Erklärung>"`;
     }
@@ -37,7 +37,7 @@ export const createPrompt = (
   }
   if (product.a_nm) {
     content += `"a_nm":"${replaceAllHiddenCharacters(product.a_nm)}"`;
-    let formStr = `"a_nm":<Menge>, "a_score":<Wahrscheinlichkeit>, "a_produktart":"<Produktart>"`;
+    let formStr = `"a_nm":<Menge>", "a_score":"<Wahrscheinlichkeit>", "a_produktart":"<Produktart>"`;
     if (process.env.DEBUG === "explain") {
       formStr += `,"a_explain":"<Erklärung>"`;
     }
@@ -86,7 +86,7 @@ export const createPrompt = (
           Wenn das Produkt als Sammlung, Box oder Paket verkauft wird und keine spezifische Mengenangabe vorhanden ist, betrachte die Menge als 1. Titel: "DVD-Box Set Staffel 1-3" → Menge: 1
           **Wichtig**: 
           Wenn die Menge unklar ist, gehe von 1 aus.
-          Antworte mit der Menge. ${format}`,
+          Antworte mit der Menge. Gib deine Antwort nur als JSON zurück. ${format}`,
         },
         {
           role: "user",

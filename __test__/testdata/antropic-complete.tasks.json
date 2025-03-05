@@ -1,0 +1,54 @@
+[{
+  "_id": {
+    "$oid": "67c6e80573436d782428d657"
+  },
+  "type": "AI_TASKS_NEW",
+  "taskType": "MATCH_TITLES",
+  "provider": "MISTRAL",
+  "modelIdentifier": "mistral-small-latest",
+  "modelName": "SMALL",
+  "promptVersion": "v1",
+  "prefix": "nm",
+  "active": true,
+  "errorMessage": null,
+  "retryAfter": null,
+  "batchContext": {
+    "status": "Processing",
+    "progress": {
+      "total": 0,
+      "completed": 0,
+      "failed": 0
+    },
+    "batchId": "06a6d5c4-4f63-460d-955c-f09163e0fb02",
+    "fileId": "4985fea1-7ee8-479c-9a27-bbc0004ffad0",
+    "createdAt": 1741187702,
+    "inputPath": "C:\\Users\\love\\mx\\cronjobs-arbitrage\\tmp\\batches\\MISTRAL-batch-1741187701036.json",
+    "dataIds": [
+      {
+        "$oid": "67c6fc13a666d96e73c661e6"
+      },
+      {
+        "$oid": "67c6fc04a666d96e73c661aa"
+      },
+      {
+        "$oid": "67c6fbb5a666d96e73c660d5"
+      },
+      {
+        "$oid": "67c6fab1a666d96e73c65e4c"
+      },
+      {
+        "$oid": "67c6fa23a666d96e73c65d2e"
+      },
+      {
+        "$oid": "67c6f9c5a666d96e73c65c75"
+      },
+      {
+        "$oid": "67c6f9a8a666d96e73c65c42"
+      }
+    ]
+  },
+  "total": 134,
+  "yesterdaysTotal": 0,
+  "totalBatches": 19,
+  "yesterdaysTotalBatches": 0
+}]

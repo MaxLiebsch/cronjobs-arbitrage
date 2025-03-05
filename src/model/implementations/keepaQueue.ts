@@ -1,25 +1,22 @@
-import "dotenv/config";
+import { LocalLogger, sleep } from "@dipmaxtech/clr-pkg";
 import { config } from "dotenv";
+import "dotenv/config";
 import { Job, scheduleJob } from "node-schedule";
-import { updateTaskWithQuery } from "../db/util/updateTask.js";
-import { LocalLogger, Shop, sleep, WithId } from "@dipmaxtech/clr-pkg";
-import { CJ_LOGGER, logGlobal, setTaskLogger } from "../util/logger.js";
-import { IKeepaTaskType, ProductWithTask } from "../types/products.js";
-import { makeRequestsForAsin } from "../util/makeRequestForAsin.js";
-import { makeRequestsForEan } from "../util/makeRequestForEan.js";
-import { makeRequestsForWholesaleEan } from "../util/makeRequestForWholesaleEan.js";
-import { makeRequestsForSales } from "../util/makeRequestForSales.js";
 import PQueue from "p-queue";
-import { KeepaResponse } from "../types/KeepaResponse.js";
-import { keepaFlipsProcess, keepaNewProcess, keepaWholesaleProcess } from "../util/lookForPendingKeepaLookups.js";
-import { keepaNegMarginProcess } from "../util/lookForPendingKeepaLookups.js";
-import { keepaNormalProcess } from "../util/lookForPendingKeepaLookups.js";
-import { getActiveShops } from "../db/util/shops.js";
-import { keepaSalesProcess } from "../util/lookForPendingKeepaLookups.js";
-import { getCrawlDataDb } from "../db/mongo.js";
-import { KEEPA_INTERVAL } from "../constants.js";
-import { debugLog } from "../util/debugLog.js";
-import { KeepaRatelimit } from "../model/keepa-ratelimit.js";
+import { KEEPA_INTERVAL } from "../../constants.js";
+import { getCrawlDataDb } from "../../db/mongo.js";
+import { getActiveShops } from "../../db/util/shops.js";
+import { updateTaskWithQuery } from "../../db/util/updateTask.js";
+import { KeepaResponse } from "../../types/KeepaResponse.js";
+import { IKeepaTaskType, ProductWithTask } from "../../types/products.js";
+import { debugLog } from "../../util/debugLog.js";
+import { CJ_LOGGER, logGlobal, setTaskLogger } from "../../util/logger.js";
+import { keepaFlipsProcess, keepaNegMarginProcess, keepaNewProcess, keepaNormalProcess, keepaSalesProcess, keepaWholesaleProcess } from "../../util/lookForPendingKeepaLookups.js";
+import { makeRequestsForAsin } from "../../util/makeRequestForAsin.js";
+import { makeRequestsForEan } from "../../util/makeRequestForEan.js";
+import { makeRequestsForSales } from "../../util/makeRequestForSales.js";
+import { makeRequestsForWholesaleEan } from "../../util/makeRequestForWholesaleEan.js";
+import { KeepaRatelimit } from "../keepa-ratelimit.js";
 
 config({
   path: [`.env`],
@@ -226,22 +223,18 @@ export class KeepaQueue {
   private get total(): number {
     return this._total;
   }
-
   private incrementStats = (type: IKeepaTaskType) => {
     this.stats[type]++;
   };
-
   private decrementStats = (type: IKeepaTaskType) => {
     this.stats[type]--;
   };
-
   private incrementTotal = () => {
     this._total++;
   };
   private decrementTotal = () => {
     this._total--;
   };
-
   public isIdle = () => {
     return this.queue.size === 0 && this.queue.pending === 0;
   };

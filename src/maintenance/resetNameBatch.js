@@ -32,7 +32,6 @@ const resetNameBatch = async () => {
           $unset: {
             a_vrfd: "",
             e_vrfd: "",
-            nm_batchId: "",
             nm_prop: "",
             qty_prop: "",
             qty_batchId: "",

@@ -1,18 +1,14 @@
-import "dotenv/config";
 import { config } from "dotenv";
+import "dotenv/config";
+import { getCrawlDataDb } from "../../db/mongo.js";
 import { BATCH_TASK_TYPES, BATCHES } from "../../services/productBatchProcessing.js";
 import { BatchTask } from "../../types/tasks.js";
-import { checkForPendingProductsAndCreateBatchesForShops } from "../checkForPendingProductsAndCreateBatchesForShops.js";
 import { checkAndProcessBatchesForShops } from "../checkAndProcessBatchesForShops.js";
-import { getCrawlDataDb } from "../../db/mongo.js";
 config({
   path: [`.env`],
 });
 
 let intervalId = 0;
-
-
-
 
 export const matchTitlesBatchInteration = async () => {
   clearInterval(intervalId);
@@ -31,9 +27,7 @@ export const matchTitlesBatchInteration = async () => {
   const { batches: batchesData } = task;
 
   if (batchesData.length === 0) {
-    return await checkForPendingProductsAndCreateBatchesForShops(
-      BATCH_TASK_TYPES.MATCH_TITLES
-    );
+    return "No new batches found" 
   } else {
     await checkAndProcessBatchesForShops(
       batchesData,

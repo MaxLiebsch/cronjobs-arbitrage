@@ -1,0 +1,180 @@
+[{
+  "_id": {
+    "$oid": "67c6e80573436d782428d657"
+  },
+  "type": "AI_TASKS_NEW",
+  "taskType": "MATCH_TITLES",
+  "provider": "MISTRAL",
+  "modelIdentifier": "mistral-small-latest",
+  "modelName": "SMALL",
+  "promptVersion": "v1",
+  "prefix": "nm",
+  "active": true,
+  "errorMessage": null,
+  "retryAfter": null,
+  "batchContext": {
+    "status": "Completed",
+    "progress": {
+      "total": 50,
+      "completed": 50,
+      "failed": 0
+    },
+    "batchId": "107fa9e3-f116-40a6-944c-4d1f8223bab8",
+    "fileId": "6f46c01b-41fe-4c14-9264-4b10355492e9",
+    "createdAt": 1741106422,
+    "inputPath": "C:\\Users\\love\\mx\\cronjobs-arbitrage\\tmp\\batches\\MISTRAL-batch-1741106420044.json",
+    "dataIds": [
+      {
+        "$oid": "67c6fc13a666d96e73c661e6"
+      },
+      {
+        "$oid": "67c6fc04a666d96e73c661aa"
+      },
+      {
+        "$oid": "67c6fbe7a666d96e73c66153"
+      },
+      {
+        "$oid": "67c6fbbba666d96e73c660f7"
+      },
+      {
+        "$oid": "67c6fbb5a666d96e73c660d5"
+      },
+      {
+        "$oid": "67c6fbafa666d96e73c660c2"
+      },
+      {
+        "$oid": "67c6fb69a666d96e73c6603e"
+      },
+      {
+        "$oid": "67c6fb3da666d96e73c65fe9"
+      },
+      {
+        "$oid": "67c6fb28a666d96e73c65f87"
+      },
+      {
+        "$oid": "67c6fb12a666d96e73c65f68"
+      },
+      {
+        "$oid": "67c6faeaa666d96e73c65f21"
+      },
+      {
+        "$oid": "67c6fae0a666d96e73c65efe"
+      },
+      {
+        "$oid": "67c6fad1a666d96e73c65eb9"
+      },
+      {
+        "$oid": "67c6fad1a666d96e73c65eb2"
+      },
+      {
+        "$oid": "67c6fac6a666d96e73c65ea2"
+      },
+      {
+        "$oid": "67c6fabda666d96e73c65e72"
+      },
+      {
+        "$oid": "67c6fab1a666d96e73c65e57"
+      },
+      {
+        "$oid": "67c6fab1a666d96e73c65e4c"
+      },
+      {
+        "$oid": "67c6fa76a666d96e73c65dd5"
+      },
+      {
+        "$oid": "67c6fa66a666d96e73c65dc7"
+      },
+      {
+        "$oid": "67c6fa3aa666d96e73c65d61"
+      },
+      {
+        "$oid": "67c6fa30a666d96e73c65d44"
+      },
+      {
+        "$oid": "67c6fa24a666d96e73c65d36"
+      },
+      {
+        "$oid": "67c6fa23a666d96e73c65d33"
+      },
+      {
+        "$oid": "67c6fa23a666d96e73c65d2e"
+      },
+      {
+        "$oid": "67c6fa1ea666d96e73c65d25"
+      },
+      {
+        "$oid": "67c6fa1ea666d96e73c65d24"
+      },
+      {
+        "$oid": "67c6fa1da666d96e73c65d1e"
+      },
+      {
+        "$oid": "67c6fa1da666d96e73c65d18"
+      },
+      {
+        "$oid": "67c6fa0da666d96e73c65ce4"
+      },
+      {
+        "$oid": "67c6f9f4a666d96e73c65cd5"
+      },
+      {
+        "$oid": "67c6f9e4a666d96e73c65cad"
+      },
+      {
+        "$oid": "67c6f9c5a666d96e73c65c81"
+      },
+      {
+        "$oid": "67c6f9c5a666d96e73c65c75"
+      },
+      {
+        "$oid": "67c6f9b7a666d96e73c65c62"
+      },
+      {
+        "$oid": "67c6f9b7a666d96e73c65c5b"
+      },
+      {
+        "$oid": "67c6f9b6a666d96e73c65c53"
+      },
+      {
+        "$oid": "67c6f9a8a666d96e73c65c42"
+      },
+      {
+        "$oid": "67c6f99ba666d96e73c65c17"
+      },
+      {
+        "$oid": "67c6f99aa666d96e73c65c0e"
+      },
+      {
+        "$oid": "67c6f999a666d96e73c65c07"
+      },
+      {
+        "$oid": "67c6f990a666d96e73c65c03"
+      },
+      {
+        "$oid": "67c6f97ba666d96e73c65bc8"
+      },
+      {
+        "$oid": "67c6f979a666d96e73c65bb4"
+      },
+      {
+        "$oid": "67c6f96ea666d96e73c65ba0"
+      },
+      {
+        "$oid": "67c6f96ea666d96e73c65b92"
+      },
+      {
+        "$oid": "67c6f96ea666d96e73c65b90"
+      },
+      {
+        "$oid": "67c6f96da666d96e73c65b81"
+      },
+      {
+        "$oid": "67c6f96da666d96e73c65b7f"
+      },
+      {
+        "$oid": "67c6f965a666d96e73c65b72"
+      }
+    ],
+    "completedAt": 1741106428
+  }
+}]

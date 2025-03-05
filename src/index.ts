@@ -1,11 +1,11 @@
-import { scheduleJob } from "node-schedule";
-import { controlProcessProps } from "./services/controlProcessProps.js";
-import { getCrawlDataDb } from "./db/mongo.js";
-import productBatchProcessingForShops from "./services/productBatchProcessing.js";
 import { LocalLogger } from "@dipmaxtech/clr-pkg";
-import { CJ_LOGGER, setTaskLogger } from "./util/logger.js";
+import { scheduleJob } from "node-schedule";
+import { AiTaskManager } from "./model/AiTaskManager.js";
+import { KeepaQueue } from "./model/implementations/keepaQueue.js";
+import { controlProcessProps } from "./services/controlProcessProps.js";
 import { processIncompleteDeals } from "./services/processIncompleteDeals.js";
-import { KeepaQueue } from "./services/keepaQueue.js";
+import productBatchProcessingForShops from "./services/productBatchProcessing.js";
+import { CJ_LOGGER, setTaskLogger } from "./util/logger.js";
 
 const main = async () => {
   scheduleJob("0 */16 * * *", async () => {
@@ -19,6 +19,8 @@ const main = async () => {
   keepaQueue.start().then()
   processIncompleteDeals().then();
   productBatchProcessingForShops().then();
+  const aiTaskManager = new AiTaskManager();
+  aiTaskManager.init().then();
 };
 
 main()

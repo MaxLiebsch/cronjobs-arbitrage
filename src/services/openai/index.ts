@@ -2,9 +2,9 @@ import OpenAI from "openai";
 
 import "dotenv/config";
 import { config } from "dotenv";
-import fsjetpack from "fs-jetpack";
 import { Uploadable } from "openai/uploads";
-const { createReadStream } = fsjetpack;
+import pkg from 'fs-jetpack';
+const { createReadStream } = pkg;
 
 config({
   path: [`.env`],

@@ -1,9 +1,8 @@
-import "dotenv/config";
 import { config } from "dotenv";
-import { BATCH_TASK_TYPES, BATCHES } from "../../services/productBatchProcessing.js";
-import { checkForPendingProductsAndCreateBatchesForShops } from "../checkForPendingProductsAndCreateBatchesForShops.js";
-import { checkAndProcessBatchesForShops } from "../checkAndProcessBatchesForShops.js";
+import "dotenv/config";
 import { getCrawlDataDb } from "../../db/mongo.js";
+import { BATCH_TASK_TYPES, BATCHES } from "../../services/productBatchProcessing.js";
+import { checkAndProcessBatchesForShops } from "../checkAndProcessBatchesForShops.js";
 import { CJ_LOGGER, logGlobal } from "../logger.js";
 
 config({
@@ -35,9 +34,7 @@ export const detectQuantityBatchInteration = async () => {
   const { batches: batchesData } = task;
 
   if (batchesData.length === 0) {
-    return await checkForPendingProductsAndCreateBatchesForShops(
-      BATCH_TASK_TYPES.DETECT_QUANTITY
-    );
+    return "No new batches found" 
   } else {
     const result = await checkAndProcessBatchesForShops(
       batchesData,

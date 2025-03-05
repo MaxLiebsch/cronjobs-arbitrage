@@ -1,6 +1,8 @@
+const develop = process.env.NODE_ENV === "development";
+
 export const KEEPA_RATE_LIMIT = 60;
 export const MIN_FLIPS_PRODUCTS = 60;
-export const KEEPA_INTERVAL = "*/5 * * * *"  // schedule every 5 minutes;
+export const KEEPA_INTERVAL = "*/5 * * * *"; // schedule every 5 minutes;
 export const KEEPA_PRODUCT_LIMIT = 240;
 export const MAX_EARNING_MARGIN = 150;
 export const KEEPA_MINUTES = 20;
@@ -8,11 +10,18 @@ export const PRODUCTS_PER_MINUTE = 60;
 export const MAX_RETRIES = 3;
 export const MAX_AGE_PRODUCTS = 21;
 export const MAX_AGE_PROPS = 30;
-export const CHECK_PACKAGE_BATCH_INTERVAL =
-  process.env.NODE_ENV === "production" ? 1000 * 60 * 1.5 : 1000 * 60 * 0.5;
-export const OPENAI_TOKEN_LIMIT = 3800000;
+export const CHECK_PACKAGE_BATCH_INTERVAL = develop
+  ? 1000 * 60 * 0.5
+  : 1000 * 60 * 1.5;
+
+export const RECURRENCE_RULE_AI_TASK_MANAGER = develop
+  ? "*/20 * * * * *"
+  : "*/3 * * * *";
+export const OPENAI_TOKEN_LIMIT = develop ? 30000 : 500000;
+export const ANTHROPIC_REQUEST_LIMIT = develop ? 50 : 500;
+export const MISTRAL_REQUEST_LIMIT = develop ? 50 : 500;
+export const BATCH_SIZE = develop ? 50 : 500;
 export const MAX_PACKAGE_SIZE = 11;
-export const BATCH_SIZE = process.env.NODE_ENV === "development" ? 50 : 6000;
 export const MAX_BATCH_SIZE = 300;
 export const MIN_BATCH_SIZE = 100;
 export const MINIMAL_SCORE = 0.6;

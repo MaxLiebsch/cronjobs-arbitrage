@@ -1,17 +1,16 @@
-import { getCrawlDataDb, getProductsCol } from "../db/mongo.js";
+import { getProductsCol } from "../db/mongo.js";
 
 import "dotenv/config";
 import { config } from "dotenv";
 config({
   path: [`.env`],
 });
-
-import fsjetpack from "fs-jetpack";
+import pkg from 'fs-jetpack';
+const { readAsync } = pkg;
 import { Batch, BatchTaskTypes } from "../types/tasks.js";
 import { ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
 import { BatchResults } from "../types/batchResult.js";
 import { extractId } from "./extractId.js";
-const { readAsync } = fsjetpack;
 
 export const processFailedBatch = async (
   batchData: Batch,

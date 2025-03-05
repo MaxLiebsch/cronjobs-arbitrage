@@ -10,6 +10,19 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
+"@anthropic-ai/sdk@^0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@anthropic-ai/sdk/-/sdk-0.36.3.tgz#0ca754f047e2847c8b1d064550f05e9a8e7e16b3"
+  integrity sha512-+c0mMLxL/17yFZ4P5+U6bTWiCSFZUKJddrv01ud2aFBWnTPLdRncYV76D3q1tqfnL7aCnhRtykFnoCFzvr4U3Q==
+  dependencies:
+    "@types/node" "^18.11.18"
+    "@types/node-fetch" "^2.6.4"
+    abort-controller "^3.0.0"
+    agentkeepalive "^4.2.1"
+    form-data-encoder "1.7.2"
+    formdata-node "^4.3.2"
+    node-fetch "^2.6.7"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.24.7":
   version "7.24.7"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.24.7.tgz"
@@ -1434,6 +1447,13 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@mistralai/mistralai@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@mistralai/mistralai/-/mistralai-1.5.0.tgz#c278e5f1909d5882de4c38effec3685a02c8002b"
+  integrity sha512-AIn8pwAwA/fDvEUvmkt+40zH1ZmfaG3Q7oUWl17GUEC1tU7ZPwYz8Cv9P59lyS1SisHdDSu81oknO7f1ywkz8Q==
+  dependencies:
+    zod-to-json-schema "^3.24.1"
+
 "@mongodb-js/saslprep@^1.1.5":
   version "1.1.7"
   resolved "https://registry.npmjs.org/@mongodb-js/saslprep/-/saslprep-1.1.7.tgz"
@@ -2063,9 +2083,11 @@ cron-parser@^4.2.0:
 "cronjobs-arbitrage@file:.":
   version "0.0.15"
   dependencies:
+    "@anthropic-ai/sdk" "^0.36.3"
     "@date-fns/utc" "^1.2.0"
+    "@mistralai/mistralai" "^1.5.0"
     axios "^1.7.2"
-    cronjobs-arbitrage "file:../../AppData/Local/Yarn/Cache/v6/npm-cronjobs-arbitrage-0.0.15-a0c3b91f-131a-4501-9b55-a5add7b0f8ba-1739866752086/node_modules/cronjobs-arbitrage"
+    cronjobs-arbitrage "file:../../AppData/Local/Yarn/Cache/v6/npm-cronjobs-arbitrage-0.0.15-e4e230c0-8ad9-4f05-9f90-941cbec4ab77-1740515869529/node_modules/cronjobs-arbitrage"
     fs-jetpack "^5.1.0"
     gpt-tokenizer "^2.1.2"
     https-proxy-agent "^7.0.5"
@@ -2077,6 +2099,7 @@ cron-parser@^4.2.0:
     p-queue "^8.1.0"
     pino "^9.4.0"
     ts-jest "^29.2.2"
+    zod "^3.24.2"
 
 cross-env@^7.0.3:
   version "7.0.3"
@@ -2374,11 +2397,9 @@ globals@^11.1.0:
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
 gpt-tokenizer@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.npmjs.org/gpt-tokenizer/-/gpt-tokenizer-2.1.2.tgz"
-  integrity sha512-HSuI5d6uey+c7x/VzQlPfCoGrfLyAc28vxWofKbjR9PJHm0AjQGSWkKw/OJnb+8S1g7nzgRsf0WH3dK+NNWYbg==
-  dependencies:
-    rfc4648 "^1.5.2"
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/gpt-tokenizer/-/gpt-tokenizer-2.8.1.tgz#505d5d05ed8db9871ad6f50adcbb87111654134c"
+  integrity sha512-8+a9ojzqfgiF3TK4oivGYjlycD8g5igLt8NQw3ndOIgLVKSGJDhUDNAfYSbtyyuTkha3R/R9F8XrwC7/B5TKfQ==
 
 graceful-fs@^4.2.9:
   version "4.2.11"
@@ -3473,11 +3494,6 @@ resolve@^1.14.2, resolve@^1.20.0:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
-rfc4648@^1.5.2:
-  version "1.5.3"
-  resolved "https://registry.npmjs.org/rfc4648/-/rfc4648-1.5.3.tgz"
-  integrity sha512-MjOWxM065+WswwnmNONOT+bD1nXzY9Km6u3kzvnx8F8/HXGZdz3T6e6vZJ8Q/RIMUSp/nxqjH3GwvJDy8ijeQQ==
-
 safe-buffer@~5.2.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
@@ -3916,3 +3932,13 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod-to-json-schema@^3.24.1:
+  version "3.24.1"
+  resolved "https://registry.yarnpkg.com/zod-to-json-schema/-/zod-to-json-schema-3.24.1.tgz#f08c6725091aadabffa820ba8d50c7ab527f227a"
+  integrity sha512-3h08nf3Vw3Wl3PK+q3ow/lIil81IT2Oa7YpQyUUDsEWbXveMesdfK1xBd2RhCkynwZndAxixji/7SYJJowr62w==
+
+zod@^3.24.2:
+  version "3.24.2"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.2.tgz#8efa74126287c675e92f46871cfc8d15c34372b3"
+  integrity sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==

@@ -1,0 +1,58 @@
+import {
+  DbProductRecord,
+  replaceAllHiddenCharacters,
+} from "@dipmaxtech/clr-pkg";
+import { PromptTemplate } from "../../PromptTemplate.js";
+
+export class MatchTitlesOpenaiPromptTemplate
+  implements PromptTemplate<DbProductRecord>
+{
+  formatInstruction(context: DbProductRecord): string {
+    const { nm, e_nm, a_nm } = context;
+    let format = "";
+    let targetTitle = "";
+    let formatArr = [];
+    if (e_nm) {
+      targetTitle = "e_nm";
+      let formatStr = `"e_isMatch":<Boolean>, "e_score":<Wahrscheinlichkeit>"`;
+      if (process.env.DEBUG === "explain") {
+        formatStr += `,"e_explain":"<Erklärung>"`;
+      }
+      formatArr.push(formatStr);
+    }
+    if (a_nm) {
+      targetTitle += ` und a_nm`;
+      let formatStr = `"a_isMatch":<Boolean>, "a_score":<Wahrscheinlichkeit>"`;
+      if (process.env.DEBUG === "explain") {
+        formatStr += `,"a_explain":"<Erklärung>"`;
+      }
+      formatArr.push(formatStr);
+    }
+    format += "{" + formatArr.join(",") + "}";
+    return `Du bist ein Onlineshop-Verkäufer für Konsumgüter. Du analysierst die Titel der Inserate anderer Onlineshops 
+und bewertest anhand der Titel, ob es sich um das gleiche Produkt handelt. Gleicheit bedeutet, dass auch das Zubehör gleich ist.
+Wichtig: Zubehör, Ersatzteile oder ähnliche Produkte sind nicht identisch. Produkeigenschaften müssen berücksichtigt werden.
+Das Hauptprodukt ist "nm". Vergleich "nm" jeweils mit ${targetTitle} und bewerte, 
+ob es sich um das gleiche Produkt handeln könnte, auch wenn die Anzahl 
+bzw. die Menge der Artikel unterschiedlich ist. Provide the response in the following JSON format: ${format}`;
+  }
+
+  formatMessage(context: DbProductRecord): string {
+    const { nm, e_nm, a_nm, mnfctr } = context;
+    let content = "";
+    if (nm) {
+      content += `"nm":"${mnfctr || ""} ${replaceAllHiddenCharacters(nm)}",`;
+    }
+    if (e_nm) {
+      content += `"e_nm":"${replaceAllHiddenCharacters(e_nm)}" `;
+      let formatStr = `"e_isMatch":<Boolean>, "e_score":<Wahrscheinlichkeit>"`;
+      if (process.env.DEBUG === "explain") {
+        formatStr += `,"e_explain":"<Erklärung>"`;
+      }
+    }
+    if (a_nm) {
+      content += `"a_nm":"${replaceAllHiddenCharacters(a_nm)}"`;
+    }
+    return content;
+  }
+}

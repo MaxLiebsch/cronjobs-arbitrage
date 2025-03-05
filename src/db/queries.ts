@@ -13,8 +13,8 @@ export const totalPositivAmazon = {
 export const totalPositivEbay = {
   $and: [
     { e_pblsh: true },
-    { e_prc: { $gt: 0 } },
-    { e_uprc: { $gt: 0 } },
+    { 'e_pRange.median': { $gt: 0 } },
+    { 'e_uprc': { $gt: 0 } },
     { e_mrgn: { $gt: 0 } },
     { e_mrgn_pct: { $gt: 0 } },
   ],
@@ -23,7 +23,7 @@ export const totalPositivEbay = {
 export const totalPositivEbayCond = {
   $and: [
     { e_pblsh: true },
-    { $gt: ["$e_prc", 0] },
+    { $gt: ["$e_pRange.median", 0] },
     { $gt: ["$e_uprc", 0] },
     { $gt: ["$e_mrgn", 0] },
     { $gt: ["$e_mrgn_pct", 0] },
@@ -42,7 +42,7 @@ export const ebayMarginCalculationAggregationStep = [
             $round: [
               {
                 $subtract: [
-                  "$e_prc",
+                  "$e_pRange.median",
                   {
                     $add: [
                       {
@@ -89,7 +89,7 @@ export const ebayMarginCalculationAggregationStep = [
               {
                 $multiply: [
                   {
-                    $divide: ["$e_mrgn", "$e_prc"],
+                    $divide: ["$e_mrgn", "$e_pRange.median"],
                   },
                   100,
                 ],

@@ -1,7 +1,6 @@
 import {
-  amazonTransportFee,
   Dimensions,
-  roundToTwoDecimals,
+  roundToTwoDecimals
 } from "@dipmaxtech/clr-pkg";
 import { packageSize } from "../constants.js";
 import transportFees from "../static/transportFees.js";
