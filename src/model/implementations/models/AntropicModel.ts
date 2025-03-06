@@ -9,8 +9,8 @@ import {
 } from "@anthropic-ai/sdk/resources/messages";
 import { DbProductRecord, ObjectId, safeJSONParse } from "@dipmaxtech/clr-pkg";
 import { ANTHROPIC_REQUEST_LIMIT } from "../../../constants.js";
-import { retry } from "../../../util/checkAndProcessBatchesForShops.js";
 import { extractId } from "../../../util/extractId.js";
+import { retry } from "../../../util/retry.js";
 import { AiTaskResult, AiTaskResultStatus } from "../../AITask.js";
 import { BatchStatus } from "../../BatchContext.js";
 import { ApiBasedProcessor } from "../../BatchProceessor.js";

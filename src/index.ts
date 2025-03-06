@@ -4,7 +4,6 @@ import { AiTaskManager } from "./model/AiTaskManager.js";
 import { KeepaQueue } from "./model/implementations/keepaQueue.js";
 import { controlProcessProps } from "./services/controlProcessProps.js";
 import { processIncompleteDeals } from "./services/processIncompleteDeals.js";
-import productBatchProcessingForShops from "./services/productBatchProcessing.js";
 import { CJ_LOGGER, setTaskLogger } from "./util/logger.js";
 
 const main = async () => {
@@ -18,7 +17,6 @@ const main = async () => {
   const keepaQueue = new KeepaQueue();
   keepaQueue.start().then()
   processIncompleteDeals().then();
-  productBatchProcessingForShops().then();
   const aiTaskManager = new AiTaskManager();
   aiTaskManager.init().then();
 };
