@@ -49,7 +49,6 @@ export class AiTaskManager {
       for (const aiTask of this.aitasks) {
         await this.processTaskBatch(aiTask);
       }
-      this.startProgressCheck();
     });
   }
   public stopProgressCheck() {
