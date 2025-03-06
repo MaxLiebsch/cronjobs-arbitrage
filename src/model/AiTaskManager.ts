@@ -47,6 +47,35 @@ export class AiTaskManager {
         return getProviderPriority(a) - getProviderPriority(b);
       });
       for (const aiTask of this.aitasks) {
+        const remoteTask = await this.taskRepository.findById(
+          aiTask.taskContext
+        );
+        // Replace the task in aiTasks with the latest version from the repository
+        if (remoteTask) {
+          const index = this.aitasks.findIndex(
+            (t) =>
+              t.taskContext.provider === remoteTask.provider &&
+              t.taskContext.taskType === remoteTask.taskType
+          );
+          if (index !== -1 && remoteTask.active) {
+            const { _task } = await generateTaskcontext(remoteTask);
+            this.aitasks[index] = _task;
+          } else if (index !== -1 && !remoteTask.active) {
+            continue; // Skip processing this task because it is inactive
+          }
+        } else {
+          const index = this.aitasks.findIndex(
+            (t) =>
+              t.taskContext.provider === aiTask.taskContext.provider &&
+              t.taskContext.taskType === aiTask.taskContext.taskType
+          );
+
+          aiTaskLog(
+            `Task ${aiTask.taskContext.taskType} for ${aiTask.taskContext.provider} not found in repository`
+          );
+          this.aitasks.splice(index, 1);
+          continue;
+        }
         await this.processTaskBatch(aiTask);
       }
     });
