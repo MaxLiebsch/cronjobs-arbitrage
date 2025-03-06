@@ -68,7 +68,6 @@ export class MatchTitlesTask extends AiTask<DbProductRecord> {
 
       const { a_vrfd, e_vrfd } = product;
       const update = result.result;
-      console.log(productId,'match titles update:', update)
       const bulkUpdate: any = {
         updateOne: {
           filter: { _id: product._id },
