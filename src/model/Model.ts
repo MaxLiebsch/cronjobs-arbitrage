@@ -6,7 +6,7 @@ import { PromptTemplate } from "./PromptTemplate.js";
 
 
 export type OpenAIModels= 'gpt-4o-mini-2024-07-18'
-export type AnthropicModels= 'claude-3-5-haiku-20241022'
+export type AnthropicModels= 'claude-3-haiku-20240307'
 export type MistralModels= 'mistral-small-latest'
 
 export type ModelType = OpenAIModels | AnthropicModels | MistralModels;
@@ -16,7 +16,7 @@ export const MODEL_NAMES: Record<AiProvider, Record<string, ModelType>> = {
     GPT4_MINI: "gpt-4o-mini-2024-07-18",
   },
   ANTHROPIC: {
-    HAIKU: "claude-3-5-haiku-20241022",
+    HAIKU: "claude-3-haiku-20240307",
   },
   MISTRAL: {
     SMALL: "mistral-small-latest",

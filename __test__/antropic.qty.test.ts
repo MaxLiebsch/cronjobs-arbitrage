@@ -43,7 +43,7 @@ export const testQtyPrompt = async () => {
   console.log("prompts:", JSON.stringify(prompt.body.messages[1], null, 2));
   console.log("prompts:", JSON.stringify(prompt.body.messages[0], null, 2));
   const response = await anthropic.messages.create({
-    model: "claude-3-5-haiku-20241022",
+    model: "claude-3-haiku-20240307",
     max_tokens: 1024,
     temperature:0,
     system: prompt.body.messages[0].content,
