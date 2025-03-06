@@ -38,7 +38,7 @@ export class DetectQuantityTask extends AiTask<DbProductRecord> {
     }
 
     const batch = await this.model.startBatch(this.template, products);
-    if ('error' in batch) {
+    if ("error" in batch) {
       aiTaskLog(
         `Error starting batch for ${this.taskContext.taskType} for ${this.taskContext.provider}: ${batch.error}`
       );
@@ -70,7 +70,6 @@ export class DetectQuantityTask extends AiTask<DbProductRecord> {
       }
 
       const update = result.result;
-      console.log(productId,' detect quantity update:', update)
       if (!update) {
         bulkSpotterUpdates.push({
           updateOne: {
@@ -87,13 +86,20 @@ export class DetectQuantityTask extends AiTask<DbProductRecord> {
 
       // Process quantities
       if (update.nm) {
-        set["qty"] = update.nm > 0 ? update.nm : 1;
+        // Ensure numeric values for quantities
+        const nmValue =
+          typeof update.nm === "string" ? parseInt(update.nm) : update.nm;
+        set["qty"] = !isNaN(nmValue) && nmValue > 0 ? nmValue : 1;
       }
       if (update.a_nm) {
-        set["a_qty"] = update.a_nm > 0 ? update.a_nm : 1;
+        const a_nmValue =
+          typeof update.a_nm === "string" ? parseInt(update.a_nm) : update.a_nm;
+        set["a_qty"] = !isNaN(a_nmValue) && a_nmValue > 0 ? a_nmValue : 1;
       }
       if (update.e_nm) {
-        set["e_qty"] = update.e_nm > 0 ? update.e_nm : 1;
+        const e_nmValue =
+          typeof update.e_nm === "string" ? parseInt(update.e_nm) : update.e_nm;
+        set["e_qty"] = !isNaN(e_nmValue) && e_nmValue > 0 ? e_nmValue : 1;
       }
 
       // Process product types
