@@ -34,7 +34,7 @@ export class ProductManager {
   async getDataset(query: any[]): Promise<DbProductRecord[]> {
     const col = await getProductsCol();
     const products = await col.aggregate(query).toArray() as DbProductRecord[];
-    if(products.length > THRESHOLD_PRODUCTS_TO_LOCK){
+    if(products.length >= THRESHOLD_PRODUCTS_TO_LOCK){
       await this.lockProducts(products);
       return products;
     }
