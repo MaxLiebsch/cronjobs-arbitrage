@@ -1,6 +1,6 @@
 import { scheduleJob } from "node-schedule";
-import { TaskRepository } from "./TaskRepository";
-import { TaskContext } from "./Taskcontext";
+import { TaskRepository } from "./TaskRepository.js";
+import { TaskContext } from "./Taskcontext.js";
 
 export class AiTaskTotal {
   private total = 0;
