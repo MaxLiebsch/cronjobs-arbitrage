@@ -132,9 +132,13 @@ export class AiTaskManager {
       if (isFailure) {
         aiTaskLog(`Deleting file ${aiTask.taskContext.batchContext.fileId}`);
       }
-      await (aiTask.model as unknown as FileBasedProcessor).deleteFile(
-        aiTask.taskContext.batchContext.fileId
-      );
+      try {
+        await (aiTask.model as unknown as FileBasedProcessor).deleteFile(
+          aiTask.taskContext.batchContext.fileId  
+        );
+      } catch (error) {
+        aiTaskLog(`Error deleting file ${aiTask.taskContext.batchContext.fileId}: ${error}`);
+      }
     }
     if (aiTask.taskContext.batchContext.inputPath) {
       if (isFailure) {
