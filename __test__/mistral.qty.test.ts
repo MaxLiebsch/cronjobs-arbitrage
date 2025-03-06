@@ -2,6 +2,7 @@ import { Mistral } from "@mistralai/mistralai";
 import { getArbispotterDb, getProductsCol } from "../src/db/mongo.js";
 import { createPrompt } from "../src/util/quantities/createPrompt.js";
 
+import { ObjectId } from "@dipmaxtech/clr-pkg";
 import { config } from "dotenv";
 import "dotenv/config";
 config({
@@ -24,7 +25,7 @@ export const testQtyPrompt = async () => {
   const col = await getProductsCol();
 
   const products = await col
-    .find({ eanList: "5060947541153", sdmn: "idealo.de" }, { limit: 1 })
+    .find({_id: new ObjectId('67c7036ca666d96e73c67445')}, { limit: 1 })
     .toArray();
   const prompt = createPrompt(
     products[0].sdmn,

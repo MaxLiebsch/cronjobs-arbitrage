@@ -10,48 +10,25 @@ export class DetectQuantityOpenaiPromptTemplate
   formatMessage(context: DbProductRecord): string {
     const { nm, e_nm, a_nm, mnfctr, sdmn, _id } = context;
     let content = "";
-    let format = "Provide the response in the following JSON format:";
-    let formatArr = [];
-    let props = [];
     if (nm) {
       content += `"nm":"${mnfctr} ${replaceAllHiddenCharacters(nm)}",`;
-      let formStr = `"nm":<Menge>", "nm_score":"<Wahrscheinlichkeit>", "nm_produktart":"<Produktart>"`;
-      if (process.env.DEBUG === "explain") {
-        formStr += `,"nm_explain":"<Erklärung>"`;
-      }
-      formatArr.push(formStr);
-      props.push("nm");
     }
     if (e_nm) {
       content += `"e_nm":"${replaceAllHiddenCharacters(e_nm)}" `;
-      let formStr = `"e_nm":<Menge>", "e_score":"<Wahrscheinlichkeit>", "e_produktart":"<Produktart>"`;
-      if (process.env.DEBUG === "explain") {
-        formStr += `,"e_explain":"<Erklärung>"`;
-      }
-      formatArr.push(formStr);
-      props.push("e_nm");
     }
     if (a_nm) {
       content += `"a_nm":"${replaceAllHiddenCharacters(a_nm)}"`;
-      let formStr = `"a_nm":<Menge>", "a_score":"<Wahrscheinlichkeit>", "a_produktart":"<Produktart>"`;
-      if (process.env.DEBUG === "explain") {
-        formStr += `,"a_explain":"<Erklärung>"`;
-      }
-      formatArr.push(formStr);
-      props.push("a_nm");
     }
-    format += "{" + formatArr.join(",") + "}";
     content = "{" + content + "}";
-
     return content;
   }
   formatInstruction(context: DbProductRecord): string {
     const { nm, e_nm, a_nm } = context;
-    let format = "Provide the response in the following JSON format:";
+    let format = "";
     let formatArr = [];
     let props = [];
     if (nm) {
-      let formStr = `"nm":<Menge>", "nm_score":"<Wahrscheinlichkeit>", "nm_produktart":"<Produktart>"`;
+      let formStr = `"nm":<Menge>", "nm_score":"<Wahrscheinlichkeit: 0-1>", "nm_produktart":"<Produktart>"`;
       if (process.env.DEBUG === "explain") {
         formStr += `,"nm_explain":"<Erklärung>"`;
       }
@@ -59,7 +36,7 @@ export class DetectQuantityOpenaiPromptTemplate
       props.push("nm");
     }
     if (e_nm) {
-      let formStr = `"e_nm":<Menge>", "e_score":"<Wahrscheinlichkeit>", "e_produktart":"<Produktart>"`;
+      let formStr = `"e_nm":<Menge>", "e_score":"<Wahrscheinlichkeit: 0-1>", "e_produktart":"<Produktart>"`;
       if (process.env.DEBUG === "explain") {
         formStr += `,"e_explain":"<Erklärung>"`;
       }
@@ -67,7 +44,7 @@ export class DetectQuantityOpenaiPromptTemplate
       props.push("e_nm");
     }
     if (a_nm) {
-      let formStr = `"a_nm":<Menge>", "a_score":"<Wahrscheinlichkeit>", "a_produktart":"<Produktart>"`;
+      let formStr = `"a_nm":<Menge>", "a_score":"<Wahrscheinlichkeit: 0-1>", "a_produktart":"<Produktart>"`;
       if (process.env.DEBUG === "explain") {
         formStr += `,"a_explain":"<Erklärung>"`;
       }
@@ -102,7 +79,7 @@ export class DetectQuantityOpenaiPromptTemplate
           Wenn das Produkt als Sammlung, Box oder Paket verkauft wird und keine spezifische Mengenangabe vorhanden ist, betrachte die Menge als 1. Titel: "DVD-Box Set Staffel 1-3" → Menge: 1
           **Wichtig**: 
           Wenn die Menge unklar ist, gehe von 1 aus.
-          Antworte mit der Menge. ${format}`;
+          Antworte mit der Menge. Gib deine Antwort nur als JSON zurück. ${format}`;
   }
 }
 

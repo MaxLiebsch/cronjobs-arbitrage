@@ -72,6 +72,8 @@ export const detectQuantityAggregation = (limit: number) => [
               { e_pblsh: true },
               { $gt: ["$e_pRange.median", 0] },
               { $gt: ["$e_uprc", 0] },
+              { $gt: ["$e_qty", 0] },
+              { $gt: ["$qty", 0] },
               { $gt: ["$e_mrgn", 0] },
               { $gt: ["$e_mrgn_pct", 0] },
             ],
